@@ -192,6 +192,8 @@ static class RoundPacth
     {
         if (__instance.GetCurrentRound() == 0)
         {
+            SantaStory.SantaStoryUI.CreatePanel();
+            
             bool towerPlaced = false;
             Il2CppSystem.Action<bool> something = (Il2CppSystem.Action<bool>)delegate (bool s)
             {
@@ -200,6 +202,11 @@ static class RoundPacth
             Il2CppSystem.Action<bool> spawn = something;
 
             InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), Game.instance.model.GetTowerFromId("DartMonkey").Duplicate(), ObjectId.Create(9999, 0), false, something, true, true);
+        }
+        
+        if (__instance.GetCurrentRound() == 1)
+        {
+            SantaStory.SantaStoryUI.instance.Close();
         }
     }
 }

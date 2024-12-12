@@ -37,6 +37,14 @@ public class Values
         get { return snowstormRound; }
         set { snowstormRound = value; }
     }
+    
+    private static int Snowflake = 0;
+
+    public static int snowflake
+    {
+        get { return Snowflake; }
+        set { Snowflake = value; }
+    }
 }
 
 public class ChirstmasMod : BloonsTD6Mod
@@ -148,3 +156,20 @@ static class SnowstormPacth
         }
     }
 }
+
+[HarmonyPatch(typeof(Bloon), nameof(Bloon.Damage))]
+static class SnowflakePacth
+{
+    private static readonly System.Random random = new System.Random();
+    
+    [HarmonyPostfix]
+    public static void Postfix(Bloon __instance)
+    {
+        if (random.Next(75) == 0)
+        {
+            Values.snowflake++;
+            MelonLogger.Msg("Snowflakes: " + Values.snowflake);
+        }
+    }
+}
+

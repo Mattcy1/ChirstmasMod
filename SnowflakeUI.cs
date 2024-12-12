@@ -31,6 +31,7 @@ public class Snowflake
                 var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, 1000, 1250, 600), VanillaSprites.BrownPanel);
                 instance = panel.AddComponent<SnowflakeUI>();
                 var image = panel.AddImage(new("Image_", -450, 150, 275), VanillaSprites.NinjaMonkeySnowflakesIcon);
+                image.AddText(new("Title_", 0, -200, 350, 200), $"Snowflakes: " + Values.snowflake, 60);
             }
         }
     }

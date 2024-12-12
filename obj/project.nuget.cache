@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "NeQo7tvrrLQ=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Mattheo\\OneDrive\\Documents\\BTD6 Mod Sources\\ChirstmasMod\\ChirstmasMod.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Mattheo\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.32\\microsoft.windowsdesktop.app.ref.6.0.32.nupkg.sha512",
+    "C:\\Users\\Mattheo\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.32\\microsoft.netcore.app.ref.6.0.32.nupkg.sha512",
+    "C:\\Users\\Mattheo\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.32\\microsoft.aspnetcore.app.ref.6.0.32.nupkg.sha512"
+  ],
+  "logs": []
+}

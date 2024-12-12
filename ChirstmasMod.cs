@@ -3,9 +3,13 @@ using BTD_Mod_Helper;
 using BTD_Mod_Helper.Extensions;
 using ChirstmasMod;
 using HarmonyLib;
+using Il2CppAssets.Scripts;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
+using Il2CppAssets.Scripts.Models.Map;
+using Il2CppAssets.Scripts.Models.Rounds;
 using Il2CppAssets.Scripts.Models.Towers;
+using Il2CppAssets.Scripts.Simulation;
 using Il2CppAssets.Scripts.Simulation.Bloons;
 using Il2CppAssets.Scripts.Simulation.Objects;
 using Il2CppAssets.Scripts.Simulation.Towers;
@@ -14,6 +18,7 @@ using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppSystem;
 using Il2CppSystem.Linq.Expressions.Interpreter;
+using UnityEngine;
 
 [assembly: MelonInfo(typeof(ChirstmasMod.ChirstmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -86,6 +91,11 @@ public class ChirstmasMod : BloonsTD6Mod
             }
             tower.UpdateRootModel(towerModel);
         }
+    }
+
+    public override void OnNewGameModel(GameModel result, MapModel map)
+    {
+       OpenerUI.CreatePanel();
     }
 
     public override void OnRoundEnd()
@@ -169,6 +179,27 @@ static class SnowflakePacth
         {
             Values.snowflake++;
             MelonLogger.Msg("Snowflakes: " + Values.snowflake);
+        }
+    }
+}
+
+[HarmonyPatch(typeof(Simulation), nameof(Simulation.RoundStart))]
+static class RoundPacth
+{
+    
+    [HarmonyPostfix]
+    public static void Postfix(Simulation __instance)
+    {
+        if (__instance.GetCurrentRound() == 0)
+        {
+            bool towerPlaced = false;
+            Il2CppSystem.Action<bool> something = (Il2CppSystem.Action<bool>)delegate (bool s)
+            {
+                towerPlaced = s;
+            };
+            Il2CppSystem.Action<bool> spawn = something;
+
+            InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), Game.instance.model.GetTowerFromId("DartMonkey").Duplicate(), ObjectId.Create(9999, 0), false, something, true, true);
         }
     }
 }

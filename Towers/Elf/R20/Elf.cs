@@ -30,6 +30,8 @@ namespace TemplateMod.Towers.Elf.R20
             towerModel.isSubTower = true;
             towerModel.range = 20;
 
+            towerModel.GetWeapon().projectile.ApplyDisplay<Snowball>();
+
             towerModel.AddBehavior(new TowerExpireModel("TowerExpireModel", 40, 3, false, false));
         }
 

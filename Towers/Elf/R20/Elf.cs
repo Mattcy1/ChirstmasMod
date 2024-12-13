@@ -6,6 +6,7 @@ using Il2CppAssets.Scripts.Data;
 using Il2CppAssets.Scripts.Data.Cosmetics.Pets;
 using Il2CppAssets.Scripts.Data.TrophyStore;
 using Il2CppAssets.Scripts.Models.Towers;
+using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Models.TowerSets;
 using Il2CppAssets.Scripts.Unity.Display;
 using System.Linq;
@@ -26,6 +27,8 @@ namespace TemplateMod.Towers.Elf.R20
         {
             towerModel.isSubTower = true;
             towerModel.range = 20;
+
+            towerModel.AddBehavior(new AgeModel("AgeModel", 40, 3, false, null));
         }
 
         public class ElfDisplay : ModTowerDisplay<Elf>

@@ -6,10 +6,12 @@ using Il2CppAssets.Scripts.Data;
 using Il2CppAssets.Scripts.Data.Cosmetics.Pets;
 using Il2CppAssets.Scripts.Data.TrophyStore;
 using Il2CppAssets.Scripts.Models.Towers;
+using Il2CppAssets.Scripts.Models.Towers.Behaviors;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Models.TowerSets;
 using Il2CppAssets.Scripts.Unity.Display;
 using System.Linq;
+using UnityEngine;
 
 namespace TemplateMod.Towers.Elf.R20
 {
@@ -28,7 +30,22 @@ namespace TemplateMod.Towers.Elf.R20
             towerModel.isSubTower = true;
             towerModel.range = 20;
 
-            towerModel.AddBehavior(new AgeModel("AgeModel", 40, 3, false, null));
+            towerModel.AddBehavior(new TowerExpireModel("TowerExpireModel", 40, 3, false, false));
+        }
+
+        public class Snowball : ModDisplay
+        {
+            public override string BaseDisplay => Generic2dDisplay;
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+                Set2DTexture(node, "Snowball");
+
+                var trail = node.gameObject.AddComponent<ProjectileTrailEffect>();
+                var gradient = new Gradient();
+                gradient.colorKeys = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<GradientColorKey>([new(new(1, 1, 1, 1), 0), new(new(1, 1, 1, 0), 1)]);
+                trail.trailRenderer.colorGradient = gradient;
+            }
         }
 
         public class ElfDisplay : ModTowerDisplay<Elf>

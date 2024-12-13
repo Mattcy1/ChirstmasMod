@@ -1,5 +1,7 @@
 using MelonLoader;
 using BTD_Mod_Helper;
+using BTD_Mod_Helper.Api;
+using BTD_Mod_Helper.Api.Towers;
 using BTD_Mod_Helper.Extensions;
 using ChirstmasMod;
 using HarmonyLib;
@@ -9,6 +11,7 @@ using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
 using Il2CppAssets.Scripts.Models.Map;
 using Il2CppAssets.Scripts.Models.Rounds;
 using Il2CppAssets.Scripts.Models.Towers;
+using Il2CppAssets.Scripts.Models.TowerSets;
 using Il2CppAssets.Scripts.Simulation;
 using Il2CppAssets.Scripts.Simulation.Bloons;
 using Il2CppAssets.Scripts.Simulation.Objects;
@@ -50,6 +53,14 @@ public class Values
         get { return Snowflake; }
         set { Snowflake = value; }
     }
+    
+    private static int Gift = 0;
+
+    public static int gift
+    {
+        get { return Gift; }
+        set { Gift = value; }
+    }
 }
 
 public class ChirstmasMod : BloonsTD6Mod
@@ -74,6 +85,21 @@ public class ChirstmasMod : BloonsTD6Mod
                 attack.range -= 10; 
             }
             tower.UpdateRootModel(towerModel);
+        }
+    }
+
+    public override void OnTowerDestroyed(Tower tower)
+    {
+        if (tower.towerModel.baseId == ModContent.TowerID<Santa>())
+        {
+            bool towerPlaced = false;
+            Il2CppSystem.Action<bool> something = (Il2CppSystem.Action<bool>)delegate (bool s)
+            {
+                towerPlaced = s;
+            };
+            Il2CppSystem.Action<bool> spawn = something;
+
+            InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), ModContent.GetTowerModel<Santa>(), ObjectId.Create(9999, 0), false, something, true, true, false, 0);
         }
     }
 
@@ -151,6 +177,34 @@ public class ChirstmasMod : BloonsTD6Mod
     }
 }
 
+public class Santa : ModTower
+{
+    public override string Portrait => "Santa";
+    public override string Icon => "Santa";
+
+    public override TowerSet TowerSet => TowerSet.Primary;
+    public override string BaseTower => TowerType.DartMonkey;
+    public override int Cost => 0;
+    public override bool DontAddToShop => false;
+
+    public override int TopPathUpgrades => 0;
+    public override int MiddlePathUpgrades => 0;
+    public override int BottomPathUpgrades => 0;
+    public override string Description => "Sante has come to help us save christmas! after the grinch stole all the gits";
+
+    public override string DisplayName => "Santa";
+
+    public override void ModifyBaseTowerModel(TowerModel towerModel)
+    {
+        towerModel.range += 30;
+        towerModel.GetAttackModel().range += 30;
+        towerModel.GetWeapon().projectile.GetDamageModel().damage += 1;
+        towerModel.dontDisplayUpgrades = true;
+        towerModel.canAlwaysBeSold = false;
+        towerModel.blockSelling = true;
+    }
+}
+
 [HarmonyPatch(typeof(Bloon), nameof(Bloon.OnSpawn))]
 static class SnowstormPacth
 {
@@ -192,7 +246,9 @@ static class RoundPacth
     {
         if (__instance.GetCurrentRound() == 0)
         {
-            SantaStory.SantaStoryUI.CreatePanel();
+            var text = "Help Santa defeat 5 different bosses sent by the Grinch to save Christmas!\nAfter the Grinch stole all the presents, you are the only one who can save Christmas! Each boss you face gets stronger and stronger, but so do you with every victory.\n\nDefeating all 5 bosses and collecting the 5 gifts will reward you with the ultimate prize: 10,000 Monkey Money.\n\nAre you ready for the challenge? The fate of Christmas is in your hands!";
+            
+            SantaStory.SantaStoryUI.CreateNormalSantaPanel(text, 37);
             
             bool towerPlaced = false;
             Il2CppSystem.Action<bool> something = (Il2CppSystem.Action<bool>)delegate (bool s)
@@ -201,7 +257,33 @@ static class RoundPacth
             };
             Il2CppSystem.Action<bool> spawn = something;
 
-            InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), Game.instance.model.GetTowerFromId("DartMonkey").Duplicate(), ObjectId.Create(9999, 0), false, something, true, true);
+            InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), ModContent.GetTowerModel<Santa>(), ObjectId.Create(9999, 0), false, something, true, true, false, 0);
+        }
+
+        if (__instance.GetCurrentRound() == 18)
+        {
+            var text = "The Poppermint is approaching next round! Prepare yourself for the fight. Here’s $1000 to help your defenses spend it wisely!";
+            
+            SantaStory.SantaStoryUI.CreateWorriedSantaPanel(text, 50);
+            InGame.instance.AddCash(1000);
+        }
+        
+        if (__instance.GetCurrentRound() == 20)
+        {
+            var text = "You truly are the hero Christmas needs. Keep pushing forward only you can save Christmas! I can feel it... I’ve grown stronger, and so have you!";
+            
+            Gift.GiftUI.CreatePanel(1000, 10);
+            SantaStory.SantaStoryUI.CreateSalutingSantaPanel(text, 50);
+        }
+        
+        if (__instance.GetCurrentRound() == 21)
+        {
+            SantaStory.SantaStoryUI.instance.Close();
+        }
+        
+        if (__instance.GetCurrentRound() == 19)
+        {
+            SantaStory.SantaStoryUI.instance.Close();
         }
         
         if (__instance.GetCurrentRound() == 1)
@@ -210,4 +292,7 @@ static class RoundPacth
         }
     }
 }
+
+
+
 

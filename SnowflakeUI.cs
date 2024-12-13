@@ -32,6 +32,8 @@ public class Snowflake
                 instance = panel.AddComponent<SnowflakeUI>();
                 var image = panel.AddImage(new("Image_", -450, 150, 275), VanillaSprites.NinjaMonkeySnowflakesIcon);
                 image.AddText(new("Title_", 0, -200, 350, 200), $"Snowflakes: " + Values.snowflake, 60);
+                var image1 = panel.AddImage(new("Image_", 450, 150, 275), VanillaSprites.GiftRed);
+                image1.AddText(new("Title_", 0, -200, 350, 200), $"Gift: " + Values.gift + " / 5", 60);
             }
         }
     }

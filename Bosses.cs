@@ -1,4 +1,4 @@
-﻿using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
+using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
 using Il2CppAssets.Scripts.Models.Bloons;
 using Il2CppAssets.Scripts.Unity.Scenes;
 using Il2CppAssets.Scripts.Unity;
@@ -13,6 +13,7 @@ using Il2CppSystem;
 using Il2CppAssets.Scripts.Simulation.Bloons;
 using System.Runtime.InteropServices;
 using BTD_Mod_Helper.Api;
+using ChirstmasMod;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Simulation.Towers.Behaviors.Abilities.Behaviors;
 
@@ -46,6 +47,8 @@ namespace BossHandlerNamespace
             public static void Postfix()
             {
                 BloonModel CandyCaneBoss = CreateBossBase(35000, 1f);
+                
+                //Poppermint
 
                 CandyCaneBoss.ApplyDisplay<BossDisplay>();
 
@@ -69,15 +72,30 @@ namespace BossHandlerNamespace
                 
                 CandyCaneBoss.AddBehavior(health);
                 CandyCaneBoss.AddBehavior(spawn);
+                
+                BloonModel FrostyBoss = CreateBossBase(125000, 1f);
+                
+                //Frosty the Snowbloon
+                
+                BossRegisteration frostyBossRegisteration = new BossRegisteration(FrostyBoss, "Frosty", "Frosty The Snowbloon", true, "FrostyIcon", 0 ,"Frosty the Snowbloon is a chilling force. Immune to ice attacks, As it progresses, every time it loses a skull, it stuns all towers, freezing them in place. While Frosty is alive, a relentless snowstorm will rage across the battlefield, Defeating Frosty will bring you one step closer to saving Christmas!");
+                
+                frostyBossRegisteration.SpawnOnRound(40);
+                
+                HealthPercentTriggerModel health1 = Game.instance.model.GetBloon("Bloonarius1").GetBehavior<HealthPercentTriggerModel>().Duplicate();
+                health1.percentageValues = new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1f };
+                health1.actionIds = new string[] { "Freeze" };
+
+                StunTowersInRadiusActionModel stun = Game.instance.model.GetBloon("Vortex1").GetBehavior<StunTowersInRadiusActionModel>();
+                stun.stunDuration = 5f;
+                stun.actionId = "Freeze";
+                stun.radius = 999f;
+                
+                FrostyBoss.AddBehavior(health1);
+                FrostyBoss.AddBehavior(stun);
             }
         }
         public static void BossInit(Bloon bloon, BloonModel bloonModel, BossRegisteration registration)
         {
-            // This function runs when a boss is spawned. The parameters include the boss and its registration info
-            // You can put code here to spawn minions, effects,  start a monobehavior, etc
-
-
-      
         }
 
         [RegisterTypeInIl2Cpp]
@@ -98,25 +116,14 @@ namespace BossHandlerNamespace
 
             public void Update()
             {
-             
-
                 if(boss != null)
                 {
-                    // If the boss is active, do stuff
                 }
                 else
                 {
-                    // If the bloon is destroyed, end this Monobehavior. 
                     this.Destroy();
                 }
             }
-
-
         }
-
-
     }
-
-
-    
 }

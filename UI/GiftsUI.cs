@@ -1,6 +1,7 @@
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Extensions;
+using ChirstmasMod;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using MelonLoader;
@@ -34,6 +35,7 @@ public class Gift
                 var image = panel.AddImage(new("Image_", 0, 0, 1000), VanillaSprites.GiftRed);
                 var Claim = image.AddButton(new("Button_", 0, -500, 450, 450 / 2), VanillaSprites.GreenBtnLong, new System.Action(() =>
                 {
+                    Values.gift += 1;
                     InGame.instance.AddCash(Cash);
                     InGame.instance.AddHealth(Lives);
                     instance.Close();

@@ -10,7 +10,7 @@ using Il2CppAssets.Scripts.Models.TowerSets;
 using Il2CppAssets.Scripts.Unity.Display;
 using System.Linq;
 
-namespace TemplateMod
+namespace TemplateMod.Towers.Elf.R20
 {
     public class Elf : ModTower
     {
@@ -37,7 +37,7 @@ namespace TemplateMod
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
 
-                foreach(var rend in node.GetMeshRenderers())
+                foreach (var rend in node.GetMeshRenderers())
                 {
                     rend.SetMainTexture(GetTexture("Elf"));
                     rend.ApplyOutlineShader();

@@ -3,7 +3,6 @@
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>TemplateMod</RootNamespace>
         <Configurations>Debug;Release</Configurations>
-        <Nullable>enable</Nullable>
         <AssemblyName>TemplateMod</AssemblyName>
         <LangVersion>latest</LangVersion>
         <Optimize>False</Optimize>
@@ -11,6 +10,9 @@
     </PropertyGroup>
     <ItemGroup>
         <Content Include=".github\workflows\build.yml" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Towers\PresentLauncher\" />
     </ItemGroup>
 
     <Import Project="..\btd6.targets" />

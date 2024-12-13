@@ -256,16 +256,16 @@ namespace BossHandlerNamespace
                
 
 
-                barImage = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("HealthBar", 0, 0, 1000, 100), ModContent.GetSpriteReference<BossHandler>("healthBar").GetGUID());
-                healthBlockBar = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("Bar", 0, 0, 1000, 100), ModContent.GetSpriteReference<BossHandler>("fillBar").GetGUID());
+                barImage = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("HealthBar", 0, 0, 1000, 100), ModContent.GetTextureGUID<BossHandler>("healthBar"));
+                healthBlockBar = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("Bar", 0, 0, 1000, 100), ModContent.GetTextureGUID<BossHandler>("fillBar"));
 
                 textBox = mainBossPanel.AddText(new BTD_Mod_Helper.Api.Components.Info("TextBox", 0, 0, 2000, 200), "Text", 70);
 
                 nameText = mainBossPanel.AddText(new BTD_Mod_Helper.Api.Components.Info("NameBox", 0, 100, 2000, 200), registeration.displayName, 80);
 
-                extraPanel = mainBossPanel.gameObject.AddModHelperPanel(new BTD_Mod_Helper.Api.Components.Info("ExtraIconPanel", 0, -100, 700, 100), ModContent.GetSpriteReference<BossHandler>("iconBG").GetGUID());
+                extraPanel = mainBossPanel.gameObject.AddModHelperPanel(new BTD_Mod_Helper.Api.Components.Info("ExtraIconPanel", 0, -100, 700, 100), ModContent.GetTextureGUID<BossHandler>("iconBG"));
                 //extraPanel.Background.sprite = ModContent.GetSprite<BossHandler>("iconBGglow");
-                extraPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("Glow", -350, 0, 120), ModContent.GetSpriteReference<BossHandler>("iconBGglow").GetGUID());
+                extraPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("Glow", -350, 0, 120), ModContent.GetTextureGUID<BossHandler>("iconBGglow"));
 
                 extraIcon = extraPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("ExtraIcon", -350, 0, 120), "descriptionButton");
 
@@ -275,7 +275,7 @@ namespace BossHandlerNamespace
                 extraPanel.Hide();
 
 
-                bossIcon = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", -550, 0, 150), ModContent.GetSpriteReference<BossHandler>("blank").GetGUID());
+                bossIcon = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", -550, 0, 150), ModContent.GetTextureGUID<BossHandler>("blank"));
 
                 mainBossPanel.transform.localPosition = new Vector3(1000, 1080, 0);
                 mainBossPanel.Show();
@@ -303,10 +303,10 @@ namespace BossHandlerNamespace
                     };
 
                
-                    descriptionToggle = mainBossPanel.AddButton(new BTD_Mod_Helper.Api.Components.Info("ShowDescription", 550, 0, 100), ModContent.GetSpriteReference<BossHandler>("descriptionButton").GetGUID(), descriptionToggleAction);
+                    descriptionToggle = mainBossPanel.AddButton(new BTD_Mod_Helper.Api.Components.Info("ShowDescription", 550, 0, 100), ModContent.GetTextureGUID<BossHandler>("descriptionButton"), descriptionToggleAction);
 
 
-                    descriptionBox = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("DescriptionBox", 0, 0, registeration.sizeX, registeration.sizeY), ModContent.GetSpriteReference<BossHandler>("descriptionBox").GetGUID());
+                    descriptionBox = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("DescriptionBox", 0, 0, registeration.sizeX, registeration.sizeY), ModContent.GetTextureGUID<BossHandler>("descriptionBox"));
                     description = descriptionBox.AddText(new BTD_Mod_Helper.Api.Components.Info("Description", 0, 0, registeration.sizeX, registeration.sizeY), registeration.description, 40, Il2CppTMPro.TextAlignmentOptions.Top);
 
 
@@ -334,7 +334,7 @@ namespace BossHandlerNamespace
                         if (healthBar != healthBarInUse)
                         {
                             healthBarInUse = healthBar;
-                            barImage.AddImage(new BTD_Mod_Helper.Api.Components.Info("HealthBar", 0, 0, 1000, 100), ModContent.GetSpriteReference<BossHandler>(healthBarInUse).GetGUID());
+                            barImage.AddImage(new BTD_Mod_Helper.Api.Components.Info("HealthBar", 0, 0, 1000, 100), ModContent.GetTextureGUID<BossHandler>(healthBarInUse));
                         }
 
                         if (registeration.usesExtraInfo)
@@ -395,8 +395,7 @@ namespace BossHandlerNamespace
                 InGame.instance.bridge.GetBloonFromId(bloon).spawnRound += registeration.continueRounds;
 
                 nameText.SetText( registeration.displayName);
-                bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetSpriteReference<BossHandler>(registeration.icon).GetGUID());
-                //bossIcon.Image.sprite = ModContent.GetSprite<BossHandler>(registeration.icon);
+                bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetTextureGUID<BossHandler>(registeration.icon));
                 mainBossPanel.Show();
 
                 showDescription = false;

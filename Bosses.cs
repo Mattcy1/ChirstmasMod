@@ -31,9 +31,12 @@ namespace BossHandlerNamespace
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             { 
-                SetMeshTexture(node, "FirstTexture", 0);
-                SetMeshTexture(node, "FirstTexture", 1);
-                SetMeshTexture(node, "FirstTexture", 2);
+                SetMeshTexture(node, "PoppermintDiffuse", 0);
+                SetMeshTexture(node, "PoppermintDiffuse", 1);
+                SetMeshTexture(node, "PoppermintDiffuse", 2);
+                SetMeshOutlineColor(node, Color.red, 1);
+                SetMeshOutlineColor(node, Color.red, 2);
+                SetMeshOutlineColor(node, Color.red, 3);
             }
 
         }
@@ -53,7 +56,7 @@ namespace BossHandlerNamespace
                 CandyCaneBoss.ApplyDisplay<BossDisplay>();
 
 
-                BossRegisteration candyCaneRegisteration = new BossRegisteration(CandyCaneBoss, "CandyCaneBoss", "The Poppermint", true, "CandyCaneIcon", 0 ,"The Poppermint: For every 10% of its health lost, it spawns 5 Candy Cane Bloons to swarm the battlefield. Defeating this boss will grant Santa a powerful upgrade, making him stronger for the battles ahead.");
+                BossRegisteration candyCaneRegisteration = new BossRegisteration(CandyCaneBoss, "CandyCaneBoss", "Poppermint", true, "PoppermintIcon", 0 ,"The Poppermint: For every 10% of its health lost, it spawns 5 Candy Cane Bloons to swarm the battlefield. Defeating this boss will grant Santa a powerful upgrade, making him stronger for the battles ahead.");
                 
                 candyCaneRegisteration.SpawnOnRound(20);
 

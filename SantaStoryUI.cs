@@ -23,15 +23,39 @@ public class SantaStory
             }
         }
 
-        public static void CreatePanel()
+        public static void CreateNormalSantaPanel(string text, int size)
         {
             if (InGame.instance != null)
             {
                 RectTransform rect = InGame.instance.uiRect;
                 var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
                 instance = panel.AddComponent<SantaStoryUI>();
-                var image = panel.AddImage(new("Image_", 800, 0, 325, 750), ModContent.GetSpriteReference<ChirstmasMod>("Santa").GetGUID());
-                panel.AddText(new("Title_", 0, 0, 1150, 500), $"Help Santa defeat 5 different bosses sent by the Grinch to save Christmas!\nAfter the Grinch stole all the presents, you are the only one who can save Christmas! Each boss you face gets stronger and stronger, but so do you with every victory.\n\nDefeating all 5 bosses and collecting the 5 gifts will reward you with the ultimate prize: 10,000 Monkey Money.\n\nAre you ready for the challenge? The fate of Christmas is in your hands!", 37);
+                var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetSpriteReference<ChirstmasMod>("Santa").GetGUID());
+                panel.AddText(new("Title_", 0, 0, 1150, 500), $"{text}", size);
+            }
+        }
+        
+        public static void CreateWorriedSantaPanel(string text, int size)
+        {
+            if (InGame.instance != null)
+            {
+                RectTransform rect = InGame.instance.uiRect;
+                var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
+                instance = panel.AddComponent<SantaStoryUI>();
+                var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetSpriteReference<ChirstmasMod>("worrysanta").GetGUID());
+                panel.AddText(new("Title_", 0, 0, 1150, 500), $"{text}", size);
+            }
+        }
+        
+        public static void CreateSalutingSantaPanel(string text, int size)
+        {
+            if (InGame.instance != null)
+            {
+                RectTransform rect = InGame.instance.uiRect;
+                var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
+                instance = panel.AddComponent<SantaStoryUI>();
+                var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetSpriteReference<ChirstmasMod>("santaSalute").GetGUID());
+                panel.AddText(new("Title_", 0, 0, 1150, 500), $"{text}", size);
             }
         }
     }

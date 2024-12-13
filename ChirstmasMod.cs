@@ -1,28 +1,39 @@
+using System.Linq;
 using MelonLoader;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Towers;
 using BTD_Mod_Helper.Extensions;
 using ChirstmasMod;
+using CommandLine;
 using HarmonyLib;
 using Il2CppAssets.Scripts;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
+using Il2CppAssets.Scripts.Models.Effects;
 using Il2CppAssets.Scripts.Models.Map;
 using Il2CppAssets.Scripts.Models.Rounds;
 using Il2CppAssets.Scripts.Models.Towers;
+using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities;
+using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
+using Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack;
+using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Models.TowerSets;
 using Il2CppAssets.Scripts.Simulation;
 using Il2CppAssets.Scripts.Simulation.Bloons;
 using Il2CppAssets.Scripts.Simulation.Objects;
 using Il2CppAssets.Scripts.Simulation.Towers;
 using Il2CppAssets.Scripts.Unity;
+using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
+using Il2CppNinjaKiwi.Common.ResourceUtils;
 using Il2CppSystem;
 using Il2CppSystem.Linq.Expressions.Interpreter;
+using TemplateMod.Towers.Elf.R20;
 using UnityEngine;
 using TemplateMod.UI;
+using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
 
 [assembly: MelonInfo(typeof(ChirstmasMod.ChirstmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -62,6 +73,8 @@ public class Values
         get { return Gift; }
         set { Gift = value; }
     }
+    
+    public static PrefabReference SnowstormPrefab;
 }
 
 public class ChirstmasMod : BloonsTD6Mod
@@ -103,6 +116,16 @@ public class ChirstmasMod : BloonsTD6Mod
             InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), ModContent.GetTowerModel<Santa>(), ObjectId.Create(9999, 0), false, something, true, true, false, 0);
         }
     }
+
+    //public override void OnUpdate()
+    //{
+    //    if (Values.Snowstorm == true)
+    //    {
+    //        Values.SnowstormPrefab = Game.instance.model.GetTowerFromId("IceMonkey-040").GetDescendant<ActivateAttackModel>().GetDescendant<CreateEffectOnAbilityModel>().effectModel.assetId;
+    //    
+    //        InGame.instance.bridge.Simulation.SpawnEffect(Values.SnowstormPrefab, new Vector3(0, 140, 0), 0, 1, 0.1f);
+    //    }
+    //}
 
     public override void OnTowerUpgraded(Tower tower, string upgradeName, TowerModel newBaseTowerModel)
     {
@@ -217,7 +240,7 @@ static class SnowstormPacth
             BuffBloonSpeedModel buff = Game.instance.model.GetBloon("Vortex1").GetBehavior<BuffBloonSpeedModel>();
             buff.speedBoost = 1.5f;
             var mutator = buff.Mutator;
-            __instance.AddMutator(mutator, 480);
+            __instance.AddMutator(mutator, 99999);
         }
     }
 }
@@ -275,6 +298,69 @@ static class RoundPacth
             
             Gift.GiftUI.CreatePanel(1000, 10);
             SantaStory.SantaStoryUI.CreateSalutingSantaPanel(text, 50);
+
+            foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
+            {
+                if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
+                {
+                    var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
+
+                    tm.GetWeapon().rate = 0.5f;
+                    tm.range += 5;
+                    tm.GetAttackModel().range += 5;
+                    
+                    tower.tower.UpdateRootModel(tm);
+                }
+            }
+        }
+        
+        if (__instance.GetCurrentRound() == 38)
+        {
+            var text = "Watch out! I’ve heard the next boss is incredibly tough. Not only is he immune to ice attacks, but he also creates a devastating snowstorm while he’s on the battlefield!";
+            
+            SantaStory.SantaStoryUI.CreateWorriedSantaPanel(text, 50);
+        }
+
+        if (__instance.GetCurrentRound() == 39)
+        {
+            Values.Snowstorm = true;
+            Values.SnowstormRound = 1;
+            PopupScreen.instance?.ShowOkPopup("Snowstorm started");
+        }
+        
+        if (__instance.GetCurrentRound() == 40)
+        {
+            var text = "Good job, Soldier! The boss has been defeated, and now there are only 3 more to go! You're making great progress! And by the way, my workers have arrived to help you out things are looking even better now. Keep going, you're almost there!";
+            
+            SantaStory.SantaStoryUI.CreateSalutingSantaPanel(text, 50);
+            Gift.GiftUI.CreatePanel(5000, 100);
+            
+            foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
+            {
+                if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
+                {
+                    var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
+                    
+                    AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
+                    Avatarspawner[0].weapons[0].rate = 5f;
+                    Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
+                    Avatarspawner[0].name = "ElfSpawner";
+                    Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<Elf>(), 0, false, false, false, false, false));
+                    tm.AddBehavior(Avatarspawner[0]);
+                    
+                    tower.tower.UpdateRootModel(tm);
+                }
+            }
+        }
+        
+        if (__instance.GetCurrentRound() == 41)
+        {
+            SantaStory.SantaStoryUI.instance.Close();
+        }
+        
+        if (__instance.GetCurrentRound() == 39)
+        {
+            SantaStory.SantaStoryUI.instance.Close();
         }
         
         if (__instance.GetCurrentRound() == 21)

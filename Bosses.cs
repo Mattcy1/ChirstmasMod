@@ -100,7 +100,7 @@ namespace BossHandlerNamespace
                 
                 BloonModel Crumbly = CreateBossBase(50000, 1f);
                 
-                BossRegisteration crumblyBossRegisteration = new BossRegisteration(Crumbly, "Crumbly", "Crumbly", true, "CrumblyIcon", 0, "");
+                BossRegisteration crumblyBossRegisteration = new BossRegisteration(Crumbly, "Crumbly", "Crumbly", true, "CrumblyIcon", 0, "I’m Crumbly, the Gingerbread Boss! I’ve got 5 lives, and with each one, my HP doubles. To make things even sweeter, my speed increases every second—I’ve gotta go fast! Catch me if you can!");
                 
                 crumblyBossRegisteration.usesExtraInfo = true;
                 crumblyBossRegisteration.extraInfoText = "Test";

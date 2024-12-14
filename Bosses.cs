@@ -1,23 +1,30 @@
+using System.Threading;
+using System.Threading.Tasks;
 using BTD_Mod_Helper.Api.Display;
 using BTD_Mod_Helper.Extensions;
+using ChristmasMod;
 using HarmonyLib;
 using Il2CppAssets.Scripts.Models.Bloons;
 using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
+using Il2CppAssets.Scripts.Simulation;
 using Il2CppAssets.Scripts.Simulation.Bloons;
+using Il2CppAssets.Scripts.Simulation.Bloons.Behaviors;
+using Il2CppAssets.Scripts.Simulation.SMath;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using Il2CppAssets.Scripts.Unity.Scenes;
+using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using MelonLoader;
+using TemplateMod.UI;
 using UnityEngine;
 using static BossHandlerNamespace.BossHandler;
+using Color = UnityEngine.Color;
+using Math = Il2CppAssets.Scripts.Simulation.SMath.Math;
 
 namespace BossHandlerNamespace
 {
-
-
     internal class Bosses
     {
-
         class BossDisplay : ModDisplay
         {
             public override string BaseDisplay => Game.instance.model.GetBloon("Bad").display.guidRef;
@@ -49,7 +56,7 @@ namespace BossHandlerNamespace
                 CandyCaneBoss.ApplyDisplay<BossDisplay>();
 
 
-                BossRegisteration candyCaneRegisteration = new BossRegisteration(CandyCaneBoss, "CandyCaneBoss", "Poppermint", true, "PoppermintIcon", 20, "The Poppermint: For every 10% of its health lost, it spawns 5 Candy Cane Bloons to swarm the battlefield. Defeating this boss will grant Santa a powerful upgrade, making him stronger for the battles ahead.");
+                BossRegisteration candyCaneRegisteration = new BossRegisteration(CandyCaneBoss, "CandyCaneBoss", "Poppermint", true, "PoppermintIcon", 0, "The Poppermint: For every 10% of its health lost, it spawns 5 Candy Cane Bloons to swarm the battlefield. Defeating this boss will grant Santa a powerful upgrade, making him stronger for the battles ahead.");
 
                 candyCaneRegisteration.SpawnOnRound(20);
 
@@ -73,7 +80,7 @@ namespace BossHandlerNamespace
 
                 //Frosty the Snowbloon
 
-                BossRegisteration frostyBossRegisteration = new BossRegisteration(FrostyBoss, "Frosty", "Frosty The Snowbloon", true, "FrostyIcon", 20, "Frosty the Snowbloon is a chilling force. Immune to ice attacks, As it progresses, every time it loses a skull, it stuns all towers, freezing them in place. While Frosty is alive, a relentless snowstorm will rage across the battlefield, Defeating Frosty will bring you one step closer to saving Christmas!");
+                BossRegisteration frostyBossRegisteration = new BossRegisteration(FrostyBoss, "Frosty", "Frosty The Snowbloon", true, "FrostyIcon", 0, "Frosty the Snowbloon is a chilling force. Immune to ice attacks, As it progresses, every time it loses a skull, it stuns all towers, freezing them in place. While Frosty is alive, a relentless snowstorm will rage across the battlefield, Defeating Frosty will bring you one step closer to saving Christmas!");
 
                 frostyBossRegisteration.SpawnOnRound(40);
 
@@ -88,32 +95,108 @@ namespace BossHandlerNamespace
 
                 FrostyBoss.AddBehavior(health1);
                 FrostyBoss.AddBehavior(stun);
+                
+                // Crumbly 
+                
+                BloonModel Crumbly = CreateBossBase(50000, 1f);
+                
+                BossRegisteration crumblyBossRegisteration = new BossRegisteration(Crumbly, "Crumbly", "Crumbly", true, "CrumblyIcon", 0, "");
+                
+                crumblyBossRegisteration.usesExtraInfo = true;
+                crumblyBossRegisteration.extraInfoText = "Test";
+                crumblyBossRegisteration.extraInfoIcon = "descriptionButton";
+                crumblyBossRegisteration.fakeHealth = 50000;
+                crumblyBossRegisteration.fakeMaxHealth = 50000;
+                crumblyBossRegisteration.SpawnOnRound(60);
+                crumblyBossRegisteration.usesHealthOverride = true;
             }
         }
         public static void BossInit(Bloon bloon, BloonModel bloonModel, BossRegisteration registration)
         {
+            if (bloonModel.id == "Crumbly")
+            {
+                MonoBehaviorTemplate mono = StartMonobehavior<MonoBehaviorTemplate>();
+                
+                mono.boss = bloon;
+                mono.registration = registration;
+            }
         }
 
         [RegisterTypeInIl2Cpp]
         public class MonoBehaviorTemplate : MonoBehaviour
         {
             public Bloon boss;
-
+            public double SpeedMultiplier = 1f;
+            public BossRegisteration registration;
+            public int fakeHealth = 50000;
+            public int fakeMaxHealth = 50000;
+            
             public MonoBehaviorTemplate() : base()
             {
 
             }
             public void Start()
             {
-
-
-
             }
-
             public void Update()
             {
                 if (boss != null)
                 {
+                    if (TimeManager.FastForwardActive == true)
+                    {
+                        SpeedMultiplier += 3 * 0.001f;
+                    }
+                    else
+                    {
+                        SpeedMultiplier += 1 * 0.001f;
+                    }
+
+                    
+                    boss.trackSpeedMultiplier = (float)SpeedMultiplier;
+                    
+                    registration.usesExtraInfo = true;
+                    registration.extraInfoText = "Speed: " + (SpeedMultiplier - 1) * 100 + "%"; 
+                    
+                    registration.fakeHealth = fakeHealth;
+                    registration.fakeMaxHealth = fakeMaxHealth;
+
+                    if (boss.health < boss.bloonModel.maxHealth)
+                    {
+                        fakeHealth -= (boss.bloonModel.maxHealth - boss.health);
+                    }
+                    boss.health = boss.bloonModel.maxHealth;
+                    
+                    fakeHealth = Math.Max(0, fakeHealth);
+
+                    if (fakeHealth == 0 && Values.bossDead == false)
+                    {
+                        Values.bossDead = true; 
+                        
+                        boss.trackSpeedMultiplier = -10;
+                        boss.Rotation = boss.PercThroughMap() * 20000;
+                        boss.prevRot = boss.Rotation;
+
+                        Task.Run(async () => {
+                            await Task.Delay(2000); 
+
+                            if (Values.DefeatedCounter <= 6)
+                            {
+                                fakeMaxHealth *= 2; 
+                                fakeHealth = fakeMaxHealth;
+                                boss.trackSpeedMultiplier = 1;
+                                SpeedMultiplier = 1f;
+                                boss.Rotation = boss.prevRot;
+                                Values.DefeatedCounter++;
+                            }
+
+                            Values.bossDead = false; 
+                        });
+                    }
+
+                    if (Values.DefeatedCounter == 5)
+                    {
+                        boss.Destroy();
+                    }
                 }
                 else
                 {

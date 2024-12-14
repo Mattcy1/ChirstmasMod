@@ -1,21 +1,17 @@
-using System.Linq;
-using MelonLoader;
+global using SantaEmotion = TemplateMod.UI.SantaStory.SantaEmotion;
+global using SantaMessage = TemplateMod.UI.SantaStory.SantaMessage;
+
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Towers;
 using BTD_Mod_Helper.Extensions;
-using ChirstmasMod;
-using CommandLine;
+using ChristmasMod;
 using HarmonyLib;
 using Il2CppAssets.Scripts;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
-using Il2CppAssets.Scripts.Models.Effects;
 using Il2CppAssets.Scripts.Models.Map;
-using Il2CppAssets.Scripts.Models.Rounds;
 using Il2CppAssets.Scripts.Models.Towers;
-using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities;
-using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Models.TowerSets;
@@ -26,22 +22,39 @@ using Il2CppAssets.Scripts.Simulation.Towers;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
+using Il2CppAssets.Scripts.Unity.UI_New.InGame.RightMenu;
+using Il2CppAssets.Scripts.Unity.UI_New.InGame.StoreMenu;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppNinjaKiwi.Common.ResourceUtils;
-using Il2CppSystem;
-using Il2CppSystem.Linq.Expressions.Interpreter;
+using MelonLoader;
+using System.Linq;
 using TemplateMod.Towers.Elf.R20;
-using UnityEngine;
+using TemplateMod.Towers.PresentLauncher;
 using TemplateMod.UI;
-using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
+using UnityEngine;
 
-[assembly: MelonInfo(typeof(ChirstmasMod.ChirstmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
+[assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
-namespace ChirstmasMod;
+namespace ChristmasMod;
+
+[HarmonyPatch(typeof(ShopMenu), nameof(ShopMenu.CreateTowerButton))]
+static class ShopMenu_CreateTowerButton
+{
+    [HarmonyPostfix]
+    public static void Postfix(ITowerPurchaseButton __result)
+    {
+        if (__result.TowerModel.baseId == ModContent.GetInstance<PresentLauncher>().Id && !PresentLauncher.AddedToShop)
+        {
+            ChristmasMod.PresentLauncherButton = __result.GameObject.transform.parent.gameObject;
+            __result.GameObject.transform.parent.gameObject.SetActive(false);
+        }
+    }
+}
 
 public class Values
 {
+
     private static bool snowstorm = false;
 
     public static bool Snowstorm
@@ -49,7 +62,7 @@ public class Values
         get { return snowstorm; }
         set { snowstorm = value; }
     }
-    
+
     private static int snowstormRound = 0;
 
     public static int SnowstormRound
@@ -57,7 +70,7 @@ public class Values
         get { return snowstormRound; }
         set { snowstormRound = value; }
     }
-    
+
     private static int Snowflake = 0;
 
     public static int snowflake
@@ -65,7 +78,7 @@ public class Values
         get { return Snowflake; }
         set { Snowflake = value; }
     }
-    
+
     private static int Gift = 0;
 
     public static int gift
@@ -73,17 +86,19 @@ public class Values
         get { return Gift; }
         set { Gift = value; }
     }
-    
+
     public static PrefabReference SnowstormPrefab;
 }
 
-public class ChirstmasMod : BloonsTD6Mod
+public class ChristmasMod : BloonsTD6Mod
 {
     private static readonly System.Random random = new System.Random();
-    
+
+    internal static GameObject PresentLauncherButton = null;
+
     public override void OnApplicationStart()
     {
-        ModHelper.Msg<ChirstmasMod>("ChirstmasMod loaded!");
+        ModHelper.Msg<ChristmasMod>("ChirstmasMod loaded!");
     }
 
     public override void OnTowerCreated(Tower tower, Entity target, Model modelToUse)
@@ -93,10 +108,10 @@ public class ChirstmasMod : BloonsTD6Mod
             var towerModel = tower.rootModel.Cast<TowerModel>().Duplicate();
 
             towerModel.range -= 10;
-                
+
             foreach (var attack in towerModel.GetAttackModels())
             {
-                attack.range -= 10; 
+                attack.range -= 10;
             }
             tower.UpdateRootModel(towerModel);
         }
@@ -134,10 +149,10 @@ public class ChirstmasMod : BloonsTD6Mod
             var towerModel = tower.rootModel.Cast<TowerModel>().Duplicate();
 
             towerModel.range -= 10;
-                
+
             foreach (var attack in towerModel.GetAttackModels())
             {
-                attack.range -= 10; 
+                attack.range -= 10;
             }
             tower.UpdateRootModel(towerModel);
         }
@@ -145,7 +160,7 @@ public class ChirstmasMod : BloonsTD6Mod
 
     public override void OnNewGameModel(GameModel result, MapModel map)
     {
-       OpenerUI.CreatePanel();
+        OpenerUI.CreatePanel();
     }
 
     public override void OnRoundEnd()
@@ -155,22 +170,22 @@ public class ChirstmasMod : BloonsTD6Mod
             PopupScreen.instance?.ShowOkPopup("Snowstorm started");
             Values.Snowstorm = true;
             Values.SnowstormRound = 3;
-            
+
             MelonLogger.Msg("Snowstorm Starting" + Values.Snowstorm + Values.SnowstormRound);
-            
+
             foreach (var tower in InGame.instance.GetTowers())
             {
                 var towerModel = tower.rootModel.Cast<TowerModel>().Duplicate();
 
                 towerModel.range -= 10;
-                
+
                 foreach (var attack in towerModel.GetAttackModels())
                 {
-                    attack.range -= 10; 
+                    attack.range -= 10;
                 }
                 tower.UpdateRootModel(towerModel);
             }
-            
+
         }
 
         if (Values.Snowstorm == true && Values.SnowstormRound > 0)
@@ -182,18 +197,18 @@ public class ChirstmasMod : BloonsTD6Mod
         if (Values.Snowstorm == true && Values.SnowstormRound == 0)
         {
             Values.Snowstorm = false;
-            
+
             MelonLogger.Msg("Snowstorm finished" + Values.Snowstorm);
-            
+
             foreach (var tower in InGame.instance.GetTowers())
             {
                 var towerModel = tower.rootModel.Cast<TowerModel>().Duplicate();
 
                 towerModel.range += 10;
-                
+
                 foreach (var attack in towerModel.GetAttackModels())
                 {
-                    attack.range += 10; 
+                    attack.range += 10;
                 }
                 tower.UpdateRootModel(towerModel);
             }
@@ -230,7 +245,7 @@ public class Santa : ModTower
 }
 
 [HarmonyPatch(typeof(Bloon), nameof(Bloon.OnSpawn))]
-static class SnowstormPacth
+static class SnowstormPatch
 {
     [HarmonyPostfix]
     public static void Postfix(Bloon __instance)
@@ -246,10 +261,10 @@ static class SnowstormPacth
 }
 
 [HarmonyPatch(typeof(Bloon), nameof(Bloon.Damage))]
-static class SnowflakePacth
+static class SnowflakePatch
 {
     private static readonly System.Random random = new System.Random();
-    
+
     [HarmonyPostfix]
     public static void Postfix(Bloon __instance)
     {
@@ -262,18 +277,18 @@ static class SnowflakePacth
 }
 
 [HarmonyPatch(typeof(Simulation), nameof(Simulation.RoundStart))]
-static class RoundPacth
+static class RoundPatch
 {
-    
+
     [HarmonyPostfix]
     public static void Postfix(Simulation __instance)
     {
         if (__instance.GetCurrentRound() == 0)
         {
             var text = "Help Santa defeat 5 different bosses sent by the Grinch to save Christmas!\nAfter the Grinch stole all the presents, you are the only one who can save Christmas! Each boss you face gets stronger and stronger, but so do you with every victory.\n\nDefeating all 5 bosses and collecting the 5 gifts will reward you with the ultimate prize: 10,000 Monkey Money.\n\nAre you ready for the challenge? The fate of Christmas is in your hands!";
-            
-            SantaStory.SantaStoryUI.CreateNormalSantaPanel(text, 37);
-            
+
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+
             bool towerPlaced = false;
             Il2CppSystem.Action<bool> something = (Il2CppSystem.Action<bool>)delegate (bool s)
             {
@@ -287,17 +302,20 @@ static class RoundPacth
         if (__instance.GetCurrentRound() == 18)
         {
             var text = "The Poppermint is approaching next round! Prepare yourself for the fight. Here’s $1000 to help your defenses spend it wisely!";
-            
-            SantaStory.SantaStoryUI.CreateWorriedSantaPanel(text, 50);
+
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text);
             InGame.instance.AddCash(1000);
         }
-        
+
         if (__instance.GetCurrentRound() == 20)
         {
-            var text = "You truly are the hero Christmas needs. Keep pushing forward only you can save Christmas! I can feel it... I’ve grown stronger, and so have you!";
-            
+            SantaMessage[] messages = [new("You truly are the hero Christmas needs. Keep pushing forward only you can save Christmas! I can feel it... I’ve grown stronger, and so have you!", SantaEmotion.SantaSalute), new("I have added the present launcher to the shop! This tower uses snowflakes so be sure to not sell all of them.", SantaEmotion.SantaHappy)];
+
+            SantaStory.SantaStoryUI.CreatePanel(messages);
+
+            ChristmasMod.PresentLauncherButton.SetActive(true);
+
             Gift.GiftUI.CreatePanel(1000, 10);
-            SantaStory.SantaStoryUI.CreateSalutingSantaPanel(text, 50);
 
             foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
             {
@@ -308,17 +326,17 @@ static class RoundPacth
                     tm.GetWeapon().rate = 0.5f;
                     tm.range += 5;
                     tm.GetAttackModel().range += 5;
-                    
+
                     tower.tower.UpdateRootModel(tm);
                 }
             }
         }
-        
+
         if (__instance.GetCurrentRound() == 38)
         {
             var text = "Watch out! I’ve heard the next boss is incredibly tough. Not only is he immune to ice attacks, but he also creates a devastating snowstorm while he’s on the battlefield!";
-            
-            SantaStory.SantaStoryUI.CreateWorriedSantaPanel(text, 50);
+
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text);
         }
 
         if (__instance.GetCurrentRound() == 39)
@@ -327,59 +345,30 @@ static class RoundPacth
             Values.SnowstormRound = 1;
             PopupScreen.instance?.ShowOkPopup("Snowstorm started");
         }
-        
+
         if (__instance.GetCurrentRound() == 40)
         {
             var text = "Good job, Soldier! The boss has been defeated, and now there are only 3 more to go! You're making great progress! And by the way, my workers have arrived to help you out things are looking even better now. Keep going, you're almost there!";
-            
-            SantaStory.SantaStoryUI.CreateSalutingSantaPanel(text, 50);
+
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaSalute, text);
             Gift.GiftUI.CreatePanel(5000, 100);
-            
+
             foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
             {
                 if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
                 {
                     var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
-                    
+
                     AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
                     Avatarspawner[0].weapons[0].rate = 5f;
                     Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
                     Avatarspawner[0].name = "ElfSpawner";
                     Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<Elf>(), 0, false, false, false, false, false));
                     tm.AddBehavior(Avatarspawner[0]);
-                    
+
                     tower.tower.UpdateRootModel(tm);
                 }
             }
         }
-        
-        if (__instance.GetCurrentRound() == 41)
-        {
-            SantaStory.SantaStoryUI.instance.Close();
-        }
-        
-        if (__instance.GetCurrentRound() == 39)
-        {
-            SantaStory.SantaStoryUI.instance.Close();
-        }
-        
-        if (__instance.GetCurrentRound() == 21)
-        {
-            SantaStory.SantaStoryUI.instance.Close();
-        }
-        
-        if (__instance.GetCurrentRound() == 19)
-        {
-            SantaStory.SantaStoryUI.instance.Close();
-        }
-        
-        if (__instance.GetCurrentRound() == 1)
-        {
-            SantaStory.SantaStoryUI.instance.Close();
-        }
     }
 }
-
-
-
-

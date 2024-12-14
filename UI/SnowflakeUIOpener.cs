@@ -1,8 +1,6 @@
-using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Extensions;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
-using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;

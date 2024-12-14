@@ -1,109 +1,29 @@
 ﻿
-using MelonLoader;
-
-
-using Harmony;
-
-using System.Linq;
-
-using System;
-
 using BTD_Mod_Helper;
-using BTD_Mod_Helper.Extensions;
-using System.Collections.Generic;
-
-using BTD_Mod_Helper.Api.Display;
-
 using BTD_Mod_Helper.Api;
-using BTD_Mod_Helper.Api.Towers;
-using Il2CppAssets.Scripts.Unity.Display;
-using Il2CppAssets.Scripts.Unity;
-using UnityEngine;
-using Il2CppAssets.Scripts.Models.Effects;
-using Il2CppAssets.Scripts.Unity.UI_New.InGame;
-using Il2CppAssets.Scripts.Models.Towers;
-using Il2CppAssets.Scripts.Unity.Bridge;
-using Il2CppAssets.Scripts.Models.TowerSets;
-using Il2CppAssets.Scripts.Models.Map;
-using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
-using Il2CppAssets.Scripts.Models.Towers.Behaviors;
-using Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions;
-using Il2CppAssets.Scripts.Models.Towers.Projectiles;
-using Il2Cpp;
-using Il2CppAssets.Scripts.Simulation.Towers.Behaviors;
-using Il2CppAssets.Scripts.Models;
-using Il2CppAssets.Scripts.Models.Bloons.Behaviors.Actions;
-using Il2CppAssets.Scripts.Simulation.Towers;
-using Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors;
-using Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack;
-using Il2CppAssets.Scripts.Models.GenericBehaviors;
-using Il2CppAssets.Scripts.Simulation.Towers.Weapons;
-using Il2CppAssets.Scripts.Models.Towers.Weapons;
-using Il2CppAssets.Scripts.Models.Towers.TowerFilters;
-using Il2CppAssets.Scripts.Simulation.Bloons;
-using Il2CppAssets.Scripts.Simulation.Towers.Projectiles;
-using Il2CppAssets.Scripts.Utils;
-using Il2CppAssets.Scripts.Models.Bloons;
-using Il2CppAssets.Scripts.Simulation.Towers.Behaviors.Abilities;
-using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors;
-using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities;
-using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
-
-using static BossHandlerNamespace.Bosses;
-
-using Il2CppAssets.Scripts.Models.Rounds;
-using Il2CppAssets.Scripts.Unity.UI_New.InGame.Stats;
-using Il2CppAssets.Scripts.Simulation.Map.Triggers;
-using Il2CppAssets.Scripts.Simulation.Track;
-using Il2CppAssets.Scripts.Simulation.Bloons.Behaviors;
-using Il2CppAssets.Scripts.Unity.Map.Triggers;
-using MapEvent = Il2CppAssets.Scripts.Simulation.Map.Triggers.MapEvent;
-using Il2CppAssets.Scripts.Simulation.Towers.Projectiles.Behaviors;
-using Il2CppAssets.Scripts.Simulation.SMath;
-using Vector2 = Il2CppAssets.Scripts.Simulation.SMath.Vector2;
-using CreateEffectOnExpireModel = Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExpireModel;
-using Random = System.Random;
-using static Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.MorphTowerModel;
-using CreateEffectOnExpire = Il2CppAssets.Scripts.Simulation.Towers.Projectiles.Behaviors.CreateEffectOnExpire;
-using Il2CppAssets.Scripts.Simulation.SimulationBehaviors;
-using UnityEngine.Windows;
-using Il2CppAssets.Scripts.Simulation;
-using Il2CppAssets.Scripts.Simulation.Towers.Behaviors.Attack;
-using Il2CppAssets.Scripts.Simulation.Objects;
-using static Il2CppAssets.Scripts.Models.Towers.Behaviors.ParagonTowerModel;
-using Il2CppAssets.Scripts;
-using static Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.AddBehaviorToBloonModel;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using Quaternion = Il2CppAssets.Scripts.Simulation.SMath.Quaternion;
-using Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors;
-using Math = Il2CppAssets.Scripts.Simulation.SMath.Math;
-using Il2CppTMPro;
-using UnityEngine.Assertions;
-using Il2CppAssets.Scripts.Unity.Scenes;
-using Il2CppAssets.Scripts.Models.Towers.Filters;
-using Il2CppAssets.Scripts.Simulation.Towers.Behaviors.Attack.Behaviors;
 //using NinjaKiwi.Common.ResourceUtils;
 using BTD_Mod_Helper.Api.Components;
-using Il2CppAssets.Scripts.Unity.UI_New.Utils;
-using static MelonLoader.MelonLogger;
-using Il2CppAssets.Scripts.Unity.Towers;
-using Tower = Il2CppAssets.Scripts.Simulation.Towers.Tower;
-using TowerBehavior = Il2CppAssets.Scripts.Simulation.Towers.TowerBehavior;
-using Il2CppAssets.Scripts.Simulation.Towers.Weapons.Behaviors;
-using Vector3 = UnityEngine.Vector3;
-using Il2CppAssets.Scripts.Simulation.Towers.Behaviors.Abilities.Behaviors;
-using static BossHandlerNamespace.BossHandler;
-using Il2CppAssets.Scripts.Data.Boss;
-using Il2CppAssets.Scripts.SimulationTests;
 using BTD_Mod_Helper.Api.ModOptions;
+using BTD_Mod_Helper.Extensions;
+using HarmonyLib;
+using Il2CppAssets.Scripts;
 using Il2CppAssets.Scripts.Data;
-using Il2CppAssets.Scripts.Unity.Achievements.List;
-using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml.Linq;
-using UnityEngine.Rendering;
-using Il2CppAssets.Scripts.Unity.UI_New;
+using Il2CppAssets.Scripts.Data.Boss;
+using Il2CppAssets.Scripts.Models.Bloons;
+using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
+using Il2CppAssets.Scripts.Models.Rounds;
 using Il2CppAssets.Scripts.Models.Towers.Mods;
+using Il2CppAssets.Scripts.Simulation.Bloons;
+using Il2CppAssets.Scripts.Unity;
+using Il2CppAssets.Scripts.Unity.UI_New.InGame;
+using MelonLoader;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
+using static BossHandlerNamespace.Bosses;
+using Math = Il2CppAssets.Scripts.Simulation.SMath.Math;
+using Vector3 = UnityEngine.Vector3;
 
 namespace BossHandlerNamespace
 {
@@ -112,10 +32,10 @@ namespace BossHandlerNamespace
     {
 
         public static ModHelperPanel panel;
-     
+
 
         public static readonly ModSettingInt HealthPercentMultiplier = 100;
-        public static readonly ModSettingInt SpeedPercentMultiplier = 100;  
+        public static readonly ModSettingInt SpeedPercentMultiplier = 100;
 
         public static Dictionary<string, BossRegisteration> bossRegisterations = new Dictionary<string, BossRegisteration>();
 
@@ -165,21 +85,21 @@ namespace BossHandlerNamespace
 
                 this.boss = boss;
                 this.isMainBoss = isMainBoss;
-              
+
                 // The inputted boss health is divided by 100, but then multiplied by 100 which is the default
                 // HP multiplier under mod settings. That way the user can adjust the health to their preference.
 
 
                 boss.id = boss.name = boss._name = id;
 
-               
+
                 Game.instance.model.bloonsByName[id] = boss;
                 Game.instance.model.bloons = Game.instance.model.bloons.Take(0).Append(boss).Concat(Game.instance.model.bloons.Skip(0)).ToArray();
 
 
                 bossRegisterations[boss.id] = this;
 
-                
+
             }
 
 
@@ -222,12 +142,12 @@ namespace BossHandlerNamespace
             public ModHelperImage healthBlockBar;
             public ModHelperText nameText;
             public ModHelperText textBox;
-     
+
             public ModHelperText description;
             public ModHelperImage descriptionBox;
             public BossType bossType;
             public ModHelperImage bossIcon;
-          
+
             public BossRegisteration registeration;
             public bool showDescription = false;
 
@@ -235,10 +155,10 @@ namespace BossHandlerNamespace
             public static string healthBarInUse = "healthBar";
 
             public ModHelperPanel extraPanel;
-         
+
             public ModHelperImage iconGlow;
             public ModHelperImage extraIcon;
-            
+
             public ModHelperText extraTextObject;
             public string extraText = "";
             public ModHelperButton descriptionToggle;
@@ -246,14 +166,14 @@ namespace BossHandlerNamespace
             public void Start()
             {
 
-              // Adds various components for the boss UI
+                // Adds various components for the boss UI
 
                 LayoutGroup group = InGame.instance.GetInGameUI().GetComponentInChildrenByName<LayoutGroup>("LayoutGroup");
 
 
                 mainBossPanel = group.gameObject.AddModHelperPanel(new BTD_Mod_Helper.Api.Components.Info("MainBoss", 2000, 300));
 
-               
+
 
 
                 barImage = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("HealthBar", 0, 0, 1000, 100), ModContent.GetTextureGUID<BossHandler>("healthBar"));
@@ -280,40 +200,40 @@ namespace BossHandlerNamespace
                 mainBossPanel.transform.localPosition = new Vector3(1000, 1080, 0);
                 mainBossPanel.Show();
 
-                
-                    // If the description property in the registration has text, adds a toggle
-                    // to show and hide the description.
-                    Il2CppSystem.Action descriptionToggleAction = (Il2CppSystem.Action)delegate ()
+
+                // If the description property in the registration has text, adds a toggle
+                // to show and hide the description.
+                Il2CppSystem.Action descriptionToggleAction = (Il2CppSystem.Action)delegate ()
+                {
+
+
+                    if (showDescription)
                     {
+                        showDescription = false;
+                        descriptionBox.Hide();
+                    }
+                    else
+                    {
+                        showDescription = true;
+
+                        descriptionBox.Show();
 
 
-                        if (showDescription)
-                        {
-                            showDescription = false;
-                            descriptionBox.Hide();
-                        }
-                        else
-                        {
-                            showDescription = true;
-                            
-                            descriptionBox.Show();
-                            
-                          
-                        }
-                    };
-
-               
-                    descriptionToggle = mainBossPanel.AddButton(new BTD_Mod_Helper.Api.Components.Info("ShowDescription", 550, 0, 100), ModContent.GetTextureGUID<BossHandler>("descriptionButton"), descriptionToggleAction);
+                    }
+                };
 
 
-                    descriptionBox = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("DescriptionBox", 0, 0, registeration.sizeX, registeration.sizeY), ModContent.GetTextureGUID<BossHandler>("descriptionBox"));
-                    description = descriptionBox.AddText(new BTD_Mod_Helper.Api.Components.Info("Description", 0, 0, registeration.sizeX, registeration.sizeY), registeration.description, 40, Il2CppTMPro.TextAlignmentOptions.Top);
+                descriptionToggle = mainBossPanel.AddButton(new BTD_Mod_Helper.Api.Components.Info("ShowDescription", 550, 0, 100), ModContent.GetTextureGUID<BossHandler>("descriptionButton"), descriptionToggleAction);
+
+
+                descriptionBox = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("DescriptionBox", 0, 0, registeration.sizeX, registeration.sizeY), ModContent.GetTextureGUID<BossHandler>("descriptionBox"));
+                description = descriptionBox.AddText(new BTD_Mod_Helper.Api.Components.Info("Description", 0, 0, registeration.sizeX, registeration.sizeY), registeration.description, 40, Il2CppTMPro.TextAlignmentOptions.Top);
 
 
 
-              
-                    descriptionBox.Hide();
-               
+
+                descriptionBox.Hide();
+
 
                 UpdateInfo();
             }
@@ -343,7 +263,7 @@ namespace BossHandlerNamespace
                         }
                         int health = 0;
                         int maxHealth = 0;
-                        if(registeration.usesHealthOverride)
+                        if (registeration.usesHealthOverride)
                         {
                             health = registeration.fakeHealth;
                             maxHealth = registeration.fakeMaxHealth;
@@ -385,7 +305,7 @@ namespace BossHandlerNamespace
                 {
                     mainBossPanel.Destroy();
                 }
-               
+
             }
 
             public void UpdateInfo()
@@ -394,7 +314,7 @@ namespace BossHandlerNamespace
 
                 InGame.instance.bridge.GetBloonFromId(bloon).spawnRound += registeration.continueRounds;
 
-                nameText.SetText( registeration.displayName);
+                nameText.SetText(registeration.displayName);
                 bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetTextureGUID<BossHandler>(registeration.icon));
                 mainBossPanel.Show();
 
@@ -405,7 +325,7 @@ namespace BossHandlerNamespace
 
                     extraIcon.Image.sprite = ModContent.GetSprite<BossHandler>(registeration.extraInfoIcon);
                     extraTextObject.SetText(extraText);
-                  
+
 
                     extraPanel.Show();
                 }
@@ -421,16 +341,16 @@ namespace BossHandlerNamespace
                 description.SetText("\n" + registeration.description);
 
                 descriptionBox.Image.rectTransform.sizeDelta = new UnityEngine.Vector2(registeration.sizeX, registeration.sizeY);
-                    description.Text.rectTransform.sizeDelta = new UnityEngine.Vector2(registeration.sizeX, registeration.sizeY);
+                description.Text.rectTransform.sizeDelta = new UnityEngine.Vector2(registeration.sizeX, registeration.sizeY);
 
-                    if (registeration.usesExtraInfo)
-                    {
-                        descriptionBox.gameObject.transform.localPosition = new Vector3(0, (-registeration.sizeY / 2) - 200);
-                    }
-                    else
-                    {
-                        descriptionBox.gameObject.transform.localPosition = new Vector3(0, (-registeration.sizeY / 2) - 50);
-                    }
+                if (registeration.usesExtraInfo)
+                {
+                    descriptionBox.gameObject.transform.localPosition = new Vector3(0, (-registeration.sizeY / 2) - 200);
+                }
+                else
+                {
+                    descriptionBox.gameObject.transform.localPosition = new Vector3(0, (-registeration.sizeY / 2) - 50);
+                }
 
                 // If there is no description, removes the toggle from view
 
@@ -454,7 +374,7 @@ namespace BossHandlerNamespace
             BloonModel bossBase = Game.instance.model.GetBloon("Bad").Duplicate();
 
 
-            bossBase.maxHealth =  (int)(health * 0.01f * HealthPercentMultiplier);
+            bossBase.maxHealth = (int)(health * 0.01f * HealthPercentMultiplier);
 
             bossBase.speed = (float)(speed * 0.01f * SpeedPercentMultiplier);
 
@@ -464,7 +384,7 @@ namespace BossHandlerNamespace
             bossBase.damageDisplayStates = new DamageStateModel[] { };
 
             bossBase.RemoveBehaviors<DamageStateModel>();
-            
+
             bossBase.RemoveBehavior<SpawnChildrenModel>();
 
             bossBase.mods = new ApplyModModel[] { };
@@ -482,15 +402,15 @@ namespace BossHandlerNamespace
             return obj as T;
 
         }
-            [HarmonyPatch(typeof(Bloon), nameof(Bloon.Initialise))]
+        [HarmonyPatch(typeof(Bloon), nameof(Bloon.Initialise))]
         public class BloonSpawn
         {
             [HarmonyPostfix]
             public static void Postfix(Bloon __instance)
             {
-               
-              // When a Bloon spawns, checks if it was registered as a boss.
-              
+
+                // When a Bloon spawns, checks if it was registered as a boss.
+
                 if (bossRegisterations.ContainsKey(__instance.bloonModel.id))
                 {
 
@@ -503,7 +423,7 @@ namespace BossHandlerNamespace
 
                         if (bossPanel == null)
                         {
-                       
+
                             /*
                              If there is already a bossPanel, it wont create another one.
                              You should not have multiple main bosses at once as the UIs would just block eachother
@@ -523,14 +443,14 @@ namespace BossHandlerNamespace
                             bossPanel.UpdateInfo();
                         }
 
-                       
 
-                        
+
+
                     }
-                    
-                 
-                    
-                    
+
+
+
+
                     /*
                      Runs Boss Init and passes through the Bloon along with tis registration info, so the modder
                      can alter the boss further from there.
@@ -538,15 +458,15 @@ namespace BossHandlerNamespace
                      Non-main bosses will still run BossInit incase you want minions to run code when spawned.
 
                     */
-                    
+
 
 
                     BossInit(__instance, __instance.bloonModel, registration);
-            
+
                 }
             }
         }
-       
+
 
 
 

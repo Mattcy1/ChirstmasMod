@@ -1,4 +1,4 @@
-﻿namespace ChirstmasMod;
+﻿namespace ChristmasMod;
 
 public static class ModHelperData
 {
@@ -8,6 +8,6 @@ public static class ModHelperData
 
     public const string Description = "An empty mod";
 
-    public const string RepoOwner = "Mattcy1"; 
-    public const string RepoName = "ChirstmasMod"; 
+    public const string RepoOwner = "Mattcy1";
+    public const string RepoName = "ChirstmasMod";
 }

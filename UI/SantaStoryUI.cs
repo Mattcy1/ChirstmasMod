@@ -3,18 +3,32 @@ using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Extensions;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using MelonLoader;
+using System;
+using System.Linq;
 using UnityEngine;
 
 namespace TemplateMod.UI;
 
 public class SantaStory
 {
+    public struct SantaMessage(string message, SantaEmotion emotion)
+    {
+        public string Message = message;
+        public SantaEmotion Emotion = emotion;
+    }
+
+    public enum SantaEmotion
+    {
+        SantaHappy,
+        SantaWorry,
+        SantaSalute
+    }
+
+
     [RegisterTypeInIl2Cpp(false)]
     public class SantaStoryUI : MonoBehaviour
     {
         public static SantaStoryUI instance = null;
-
-
         public void Close()
         {
             if (gameObject)
@@ -23,39 +37,76 @@ public class SantaStory
             }
         }
 
-        public static void CreateNormalSantaPanel(string text, int size)
+        public static void CreatePanel(SantaEmotion emotion, string text)
+        {
+            CreatePanel(new SantaMessage(text, emotion));
+        }
+
+        public static void CreatePanel(SantaMessage msg)
         {
             if (InGame.instance != null)
             {
+                if(instance != null)
+                {
+                    instance.Close();
+                }
+
                 RectTransform rect = InGame.instance.uiRect;
                 var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
                 instance = panel.AddComponent<SantaStoryUI>();
-                var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetTextureGUID<ChirstmasMod.ChirstmasMod>("SantaHappy"));
-                panel.AddText(new("Title_", 0, 0, 1150, 500), $"{text}", size);
+                var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetTextureGUID<ChristmasMod.ChristmasMod>(msg.Emotion.ToString()));
+                var text_ = panel.AddText(new("Title_", 0, 0, 1150, 500), $"{msg.Message}");
+                text_.Text.enableAutoSizing = text_;
+
+                var btn = panel.AddButton(new("CloseBtn", 625, 300, 100), VanillaSprites.CloseBtn, new Action(instance.Close));
             }
         }
 
-        public static void CreateWorriedSantaPanel(string text, int size)
+        public static void CreatePanel(SantaEmotion[] emotions, string[] texts)
         {
-            if (InGame.instance != null)
+            SantaMessage[] msgs = new SantaMessage[texts.Length];
+
+            for (int i = 0; i < texts.Length; i++)
             {
-                RectTransform rect = InGame.instance.uiRect;
-                var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
-                instance = panel.AddComponent<SantaStoryUI>();
-                var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetTextureGUID<ChirstmasMod.ChirstmasMod>("SantaWorry"));
-                panel.AddText(new("Title_", 0, 0, 1150, 500), $"{text}", size);
+                SantaEmotion? emotionToUse = emotions[i];
+                emotionToUse ??= SantaEmotion.SantaHappy;
+
+                msgs[i] = new(texts[i], (SantaEmotion)emotionToUse);
+            }
+
+            if (msgs.Length == 1)
+            {
+                CreatePanel(msgs[0]);
+            }
+            else
+            {
+                CreatePanel(msgs);
             }
         }
 
-        public static void CreateSalutingSantaPanel(string text, int size)
+        public static void CreatePanel(SantaMessage[] msgs)
         {
-            if (InGame.instance != null)
+            if (instance != null)
             {
-                RectTransform rect = InGame.instance.uiRect;
-                var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
-                instance = panel.AddComponent<SantaStoryUI>();
-                var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetTextureGUID<ChirstmasMod.ChirstmasMod>("SantaSalute"));
-                panel.AddText(new("Title_", 0, 0, 1150, 500), $"{text}", size);
+                instance.Close();
+            }
+
+            RectTransform rect = InGame.instance.uiRect;
+            var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
+            instance = panel.AddComponent<SantaStoryUI>();
+            var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetTextureGUID<ChristmasMod.ChristmasMod>(msgs[0].Emotion.ToString()));
+            var text_ = panel.AddText(new("Title_", 0, 0, 1150, 500), $"{msgs[0].Message}");
+            text_.Text.enableAutoSizing = text_;
+
+            var newMsgs = msgs.Skip(1).ToArray();
+
+            if (newMsgs.Length <= 1)
+            {
+                var btn = panel.AddButton(new("NextBtn", 625, 300, 100), VanillaSprites.ContinueBtn, new Action(() => CreatePanel(newMsgs[0])));
+            }
+            else
+            {
+                var btn = panel.AddButton(new("NextBtn", 625, 300, 100), VanillaSprites.ContinueBtn, new Action(() => CreatePanel(newMsgs)));
             }
         }
     }

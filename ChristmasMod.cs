@@ -29,6 +29,7 @@ using Il2CppNinjaKiwi.Common.ResourceUtils;
 using MelonLoader;
 using System.Linq;
 using TemplateMod.Towers.Elf.R20;
+using TemplateMod.Towers.NonGameModeSanta;
 using TemplateMod.Towers.PresentLauncher;
 using TemplateMod.UI;
 using UnityEngine;
@@ -44,11 +45,11 @@ static class ShopMenu_CreateTowerButton
     [HarmonyPostfix]
     public static void Postfix(ITowerPurchaseButton __result)
     {
-        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<Elf>()];
+        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<Elf>(), ModContent.TowerID<RegularSanta>()];
 
         if (InGame.instance.GetGameModel().gameMode == ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
         {
-            if(ids.Contains(__result.TowerModel.baseId))
+            if (ids.Contains(__result.TowerModel.baseId))
             {
                 __result.GameObject.transform.parent.gameObject.SetActive(false);
 
@@ -57,6 +58,10 @@ static class ShopMenu_CreateTowerButton
                     ChristmasMod.PresentLauncherButton = __result.GameObject.transform.parent.gameObject;
                 }
             }
+        }
+        else if (__result.TowerModel.baseId == ModContent.TowerID<Santa>())
+        {
+            __result.GameObject.transform.parent.gameObject.SetActive(false);
         }
     }
 }

@@ -309,7 +309,7 @@ static class RoundPatch
     [HarmonyPostfix]
     public static void Postfix(Simulation __instance)
     {
-        if (__instance.GetCurrentRound() == 0)
+        if (__instance.GetCurrentRound() == 2)
         {
             var text = "Help Santa defeat 5 different bosses sent by the Grinch to save Christmas!\nAfter the Grinch stole all the presents, you are the only one who can save Christmas! Each boss you face gets stronger and stronger, but so do you with every victory.\n\nDefeating all 5 bosses and collecting the 5 gifts will reward you with the ultimate prize: 10,000 Monkey Money.\n\nAre you ready for the challenge? The fate of Christmas is in your hands!";
 

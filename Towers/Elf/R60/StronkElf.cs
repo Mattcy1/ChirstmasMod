@@ -8,44 +8,38 @@ using Il2CppAssets.Scripts.Models.TowerSets;
 using Il2CppAssets.Scripts.Unity.Display;
 using UnityEngine;
 
-namespace TemplateMod.Towers.Elf.R20
+namespace TemplateMod.Towers.Elf.R60
 {
-    public class Elf : ModTower
+    public class StronkElf : ModTower
     {
         public override TowerSet TowerSet => TowerSet.Primary;
 
-        public override string BaseTower => TowerType.DartMonkey;
+        public override string BaseTower => TowerID<R20.Elf>();
 
         //public override bool DontAddToShop => true;
 
         public override string Icon => Portrait;
 
-        public override string Description => "One of Santa's Minions, throws snow balls.";
+        public override string Description => "One of Santa's Minions, throws balls of ice.";
 
-        public override int Cost => 160;
+        public override int Cost => 0;
 
         public override void ModifyBaseTowerModel(TowerModel towerModel)
         {
-            towerModel.isSubTower = true;
-            towerModel.range = 20;
+            var wpn = towerModel.GetWeapon();
+            var proj = wpn.projectile;
 
-            var proj = towerModel.GetWeapon().projectile;
-            proj.ApplyDisplay<Snowball>();
-            proj.GetBehavior<TravelStraitModel>().speed /= 2;
-            proj.GetBehavior<TravelStraitModel>().lifespan /= 2;
-
-            towerModel.AddBehavior(new TowerExpireModel("TowerExpireModel", 40, 3, false, false));
+            proj.GetDamageModel().damage += 2;
+            proj.ApplyDisplay<IceBall>();
         }
 
-        public class Snowball : ModDisplay
+        public class IceBall : ModDisplay
         {
             public override string BaseDisplay => Generic2dDisplay;
 
-            public override float Scale => 0.85f;
-
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-                Set2DTexture(node, "Snowball");
+                Set2DTexture(node, Name);
 
                 var trailRenderer = node.gameObject.AddComponent<TrailRenderer>();
                 var gradient = new Gradient();
@@ -58,7 +52,7 @@ namespace TemplateMod.Towers.Elf.R20
             }
         }
 
-        public class ElfDisplay : ModTowerDisplay<StronkElf>
+        public class StronkElfDisplay : ModTowerDisplay<StronkElf>
         {
             public override string BaseDisplay => MonkeyVillageElfPet;
 
@@ -69,7 +63,7 @@ namespace TemplateMod.Towers.Elf.R20
 
                 foreach (var rend in node.GetMeshRenderers())
                 {
-                    rend.SetMainTexture(GetTexture("Elf"));
+                    rend.SetMainTexture(GetTexture("StronkElf"));
                     rend.ApplyOutlineShader();
                 }
             }

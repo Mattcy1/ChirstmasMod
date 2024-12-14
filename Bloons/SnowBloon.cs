@@ -21,6 +21,8 @@ namespace TemplateMod.Bloons
             bloonModel.speed *= 1.5f;
             bloonModel.maxHealth = 5;
 
+            bloonModel.AddToChildren(BloonType.sWhite, 1);
+
             bloonModel.bloonProperties = Il2Cpp.BloonProperties.White;
 
             bloonModel.AddBehavior(Game.instance.model.GetBloon("Ceramic").GetBehavior<CreateSoundOnDamageBloonModel>().Duplicate());

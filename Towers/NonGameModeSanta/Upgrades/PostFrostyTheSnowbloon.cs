@@ -14,7 +14,7 @@ namespace TemplateMod.Towers.NonGameModeSanta.Upgrades
     {
         public override int Path => Middle;
 
-        public override int Tier => 1;
+        public override int Tier => 2;
 
         public override int Cost => 530;
 
@@ -24,7 +24,7 @@ namespace TemplateMod.Towers.NonGameModeSanta.Upgrades
             Avatarspawner[0].weapons[0].rate = 5f;
             Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
             Avatarspawner[0].name = "ElfSpawner";
-            Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<Elf>(), 0, false, false, false, false, false));
+            Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<Elf.R20.Elf>(), 0, false, false, false, false, false));
             towerModel.AddBehavior(Avatarspawner[0]);
         }
     }

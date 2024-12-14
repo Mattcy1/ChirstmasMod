@@ -1,4 +1,4 @@
-﻿
+
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
 //using NinjaKiwi.Common.ResourceUtils;
@@ -187,9 +187,9 @@ namespace BossHandlerNamespace
                 //extraPanel.Background.sprite = ModContent.GetSprite<BossHandler>("iconBGglow");
                 extraPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("Glow", -350, 0, 120), ModContent.GetTextureGUID<BossHandler>("iconBGglow"));
 
-                extraIcon = extraPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("ExtraIcon", -350, 0, 120), "descriptionButton");
+                extraIcon = extraPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("ExtraIcon", 0, 0, 120), ModContent.GetTextureGUID<BossHandler>("blank"));
 
-                extraTextObject = extraPanel.AddText(new BTD_Mod_Helper.Api.Components.Info("ExtraIconText", 0, 0, 1000, 100), "Nothing", 40);
+                extraTextObject = extraPanel.AddText(new BTD_Mod_Helper.Api.Components.Info("ExtraIconText", 0, 0, 1000, 100), "", 40);
                 extraTextObject.Text.alignment = Il2CppTMPro.TextAlignmentOptions.Center;
 
                 extraPanel.Hide();
@@ -287,9 +287,8 @@ namespace BossHandlerNamespace
 
                         textBox.Text.text = $"{health:n0}" + "/" + $"{maxHealth:n0}";
                         nameText.Show();
-
-
-
+                        
+                        extraTextObject.SetText(registeration.extraInfoText);
                     }
                     else
                     {
@@ -322,10 +321,8 @@ namespace BossHandlerNamespace
                 descriptionBox.Hide();
                 if (registeration.usesExtraInfo)
                 {
-
-                    extraIcon.Image.sprite = ModContent.GetSprite<BossHandler>(registeration.extraInfoIcon);
-                    extraTextObject.SetText(extraText);
-
+                    extraIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("ExtraIcon", -350, 0, 120), ModContent.GetTextureGUID<BossHandler>(registeration.extraInfoIcon));
+                    extraTextObject.SetText(registeration.extraInfoText);
 
                     extraPanel.Show();
                 }

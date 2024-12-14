@@ -44,10 +44,19 @@ static class ShopMenu_CreateTowerButton
     [HarmonyPostfix]
     public static void Postfix(ITowerPurchaseButton __result)
     {
-        if (__result.TowerModel.baseId == ModContent.GetInstance<PresentLauncher>().Id && !PresentLauncher.AddedToShop)
+        string[] ids = [ModContent.TowerID<Santa>(), ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<Elf>()];
+
+        if (InGame.instance.GetGameModel().gameMode != ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
         {
-            ChristmasMod.PresentLauncherButton = __result.GameObject.transform.parent.gameObject;
-            __result.GameObject.transform.parent.gameObject.SetActive(false);
+            if(ids.Contains(__result.TowerModel.baseId))
+            {
+                __result.GameObject.transform.parent.gameObject.SetActive(false);
+
+                if (__result.TowerModel.baseId == ModContent.TowerID<PresentLauncher>() && !PresentLauncher.AddedToShop)
+                {
+                    ChristmasMod.PresentLauncherButton = __result.GameObject.transform.parent.gameObject;
+                }
+            }
         }
     }
 }
@@ -103,6 +112,16 @@ public class ChristmasMod : BloonsTD6Mod
     private static readonly System.Random random = new System.Random();
 
     internal static GameObject PresentLauncherButton = null;
+
+    public override void OnRestart()
+    {
+        PresentLauncher.AddedToShop = false;
+    }
+
+    public override void OnMatchEnd()
+    {
+        PresentLauncher.AddedToShop = false;
+    }
 
     public override void OnApplicationStart()
     {

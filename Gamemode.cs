@@ -15,7 +15,7 @@ public class Gamemode
     internal class CustomRS : ModRoundSet
     {
 
-        public override string BaseRoundSet => RoundSetType.Empty;
+        public override string BaseRoundSet => RoundSetType.Default;
         public override int DefinedRounds => 100;
         public override string DisplayName => "Christmas Gamemode";
 

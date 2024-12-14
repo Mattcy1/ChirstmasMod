@@ -18,6 +18,8 @@ namespace TemplateMod.Towers.Elf.R20
 
         //public override bool DontAddToShop => true;
 
+        public override string Icon => Portrait;
+
         public override int Cost => 0;
 
         public override void ModifyBaseTowerModel(TowerModel towerModel)

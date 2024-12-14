@@ -62,6 +62,14 @@ public class Values
         get { return snowstorm; }
         set { snowstorm = value; }
     }
+    
+    private static bool Trivia1 = false;
+
+    public static bool trivia1
+    {
+        get { return Trivia1; }
+        set { Trivia1 = value; }
+    }
 
     private static int snowstormRound = 0;
 
@@ -103,6 +111,24 @@ public class ChristmasMod : BloonsTD6Mod
 
     public override void OnTowerCreated(Tower tower, Entity target, Model modelToUse)
     {
+        if (Values.trivia1 == true)
+        {
+            if (tower.towerModel.baseId == "Mermonkey")
+            {
+                Gift.GiftUI.CreatePanel(2000, 50);
+
+                Values.trivia1 = false;
+                
+                if (SantaStory.SantaStoryUI.instance != null)
+                {
+                    SantaStory.SantaStoryUI.instance.Close();
+                }
+                
+                var text = "The correct answer was Mermonkey! Enjoy your gift!";
+                SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+            }
+        }
+        
         if (Values.Snowstorm == true)
         {
             var towerModel = tower.rootModel.Cast<TowerModel>().Duplicate();
@@ -330,6 +356,13 @@ static class RoundPatch
                     tower.tower.UpdateRootModel(tm);
                 }
             }
+        }
+
+        if (__instance.GetCurrentRound() == 29)
+        {
+            var text = "Can you guess the tower? Which tower becomes less effective when placed in specific map locations, despite not having any direct penalties or debuffs listed?";
+            Values.trivia1 = true;
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
         }
 
         if (__instance.GetCurrentRound() == 38)

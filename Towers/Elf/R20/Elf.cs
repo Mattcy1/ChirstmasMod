@@ -58,7 +58,7 @@ namespace TemplateMod.Towers.Elf.R20
             }
         }
 
-        public class ElfDisplay : ModTowerDisplay<StronkElf>
+        public class ElfDisplay : ModTowerDisplay<Elf>
         {
             public override string BaseDisplay => MonkeyVillageElfPet;
 

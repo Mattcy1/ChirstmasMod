@@ -12,6 +12,8 @@ namespace TemplateMod.Towers.Elf.R60
 {
     public class StronkElf : ModTower
     {
+        protected override int Order => 1;
+
         public override TowerSet TowerSet => TowerSet.Primary;
 
         public override string BaseTower => TowerID<R20.Elf>();

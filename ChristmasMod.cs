@@ -92,7 +92,23 @@ public class Values
         get { return snowstormRound; }
         set { snowstormRound = value; }
     }
+    
+    private static int defeated = 0;
 
+    public static int DefeatedCounter
+    {
+        get { return defeated; }
+        set { defeated = value; }
+    }
+
+    private static bool BossDead = false;
+
+    public static bool bossDead
+    {
+        get { return BossDead; }
+        set { BossDead = value; }
+    }
+    
     private static int Snowflake = 0;
 
     public static int snowflake
@@ -328,10 +344,50 @@ static class SnowflakePatch
     }
 }
 
+[HarmonyPatch(typeof(Ability), nameof(Ability.Activate))]
+static class GiftAbility
+{
+    private static readonly System.Random random = new System.Random();
+
+    [HarmonyPostfix]
+    public static void Postfix(Ability __instance)
+    {
+        foreach (var bloon in InGame.instance.GetBloons())
+        {
+            if (__instance.abilityModel.displayName == "SantaAbility")
+            {
+                if (bloon.bloonModel.isBoss)
+                {
+                    //Do nothing
+                }
+                else if (!bloon.bloonModel.isBoss)
+                {
+                    InGame.instance.bridge.simulation.SpawnEffect(ModContent.CreatePrefabReference<GiftEffect>(), bloon.Position, 0, 2);
+                    bloon.Damage(50, null, true, true,false);
+                    MelonLogger.Msg("Casted");
+                }
+            }
+        }
+    }
+}
+
+public class GiftEffect : ModDisplay
+{
+    public override string BaseDisplay => "6d84b13b7622d2744b8e8369565bc058";
+
+    public override void ModifyDisplayNode(UnityDisplayNode node)
+    {
+        RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[0], ModContent.GetTexture<ChristmasMod>("blank"));
+        RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[3], ModContent.GetTexture<ChristmasMod>("GiftsParticle"));
+        RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[2], ModContent.GetTexture<ChristmasMod>("GiftsParticle"));
+        RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[1], ModContent.GetTexture<ChristmasMod>("blank"));
+        ((Component)((Il2CppArrayBase<Renderer>)node.genericRenderers)[2]).GetComponent<ParticleSystem>().startSpeed *= 0.2f;
+    }
+}
+
 [HarmonyPatch(typeof(Simulation), nameof(Simulation.RoundStart))]
 static class RoundPatch
 {
-
     [HarmonyPostfix]
     public static void Postfix(Simulation __instance)
     {
@@ -428,6 +484,43 @@ static class RoundPatch
                     tower.tower.UpdateRootModel(tm);
                 }
             }
+        }
+        
+        if (__instance.GetCurrentRound() == 58)
+        {
+            var text = "I have some bad news... This next boss is SUPER STRONG! It has 5 lives, and with each life, its HP doubles. On top of that, it gets faster every second! This will be your toughest fight yet, soldier.\n\nHere’s 7500 cash to help.";
+
+            InGame.instance.AddCash(7500);
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text);
+        }
+        
+        if (__instance.GetCurrentRound() == 60)
+        {
+            var text = "Wow, that boss was insanely tough!  But we’ve come out stronger than ever. I’ve unlocked a new ability check it out!\n\nGet ready, soldier. The next battle is right around the corner, and we’ll need everything we’ve got to win. Let’s keep pushing forward!";
+
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaSalute, text);
+            
+            Gift.GiftUI.CreatePanel(10000, 50);
+
+            foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
+            {
+                if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
+                {
+                    var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
+
+                    var ability = Game.instance.model.GetTowerFromId("DartlingGunner-040").GetAbility().Duplicate();
+                    ability.RemoveBehavior<ActivateAttackModel>();
+                    ability.cooldown = 60;
+                    ability.Cooldown = 60;
+                    ability.SetName("SantaAbility"); 
+                    ability.displayName = "SantaAbility";
+                    ability.name = "SantaAbility";
+                    tm.AddBehavior(ability);
+
+                    tower.tower.UpdateRootModel(tm);
+                }
+            }
+            AbilityMenu.instance.AbilitiesChanged();
         }
     }
 }

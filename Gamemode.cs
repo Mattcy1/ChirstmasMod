@@ -7,6 +7,7 @@ using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Difficulty;
 using Il2CppAssets.Scripts.Models.Gameplay.Mods;
 using Il2CppAssets.Scripts.Models.Rounds;
+using Il2CppAssets.Scripts.Simulation;
 
 namespace ChristmasMod;
 

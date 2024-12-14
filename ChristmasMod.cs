@@ -44,9 +44,9 @@ static class ShopMenu_CreateTowerButton
     [HarmonyPostfix]
     public static void Postfix(ITowerPurchaseButton __result)
     {
-        string[] ids = [ModContent.TowerID<Santa>(), ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<Elf>()];
+        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<Elf>()];
 
-        if (InGame.instance.GetGameModel().gameMode != ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
+        if (InGame.instance.GetGameModel().gameMode == ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
         {
             if(ids.Contains(__result.TowerModel.baseId))
             {
@@ -275,6 +275,8 @@ public class Santa : ModTower
     public override int MiddlePathUpgrades => 0;
     public override int BottomPathUpgrades => 0;
     public override string Description => "Sante has come to help us save christmas! after the grinch stole all the gits";
+
+    public override int ShopTowerCount => 1;
 
     public override string DisplayName => "Santa";
 

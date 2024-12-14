@@ -8,6 +8,7 @@ using Il2CppAssets.Scripts.Simulation.Bloons;
 using Il2CppAssets.Scripts.Simulation.Towers;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
+using UnityEngine;
 namespace TemplateMod.Bloons
 {
     public class SnowBloon : ModBloon
@@ -49,9 +50,9 @@ namespace TemplateMod.Bloons
                 {
                     var towerModel = tower.towerModel;
 
-                    if (towerModel.baseId == "BombShooter" || towerModel.baseId == "MortarMonkey")
+                    if ((towerModel.baseId == "BombShooter" || towerModel.baseId == "MortarMonkey") && __instance.bloonModel.name == BloonID<SnowBloon>())
                     {
-                        totalAmount = 999;
+                        __instance.SetHealth((int)Mathf.Round(totalAmount));
                     }
                 }
             }

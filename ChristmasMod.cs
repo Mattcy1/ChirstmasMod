@@ -35,6 +35,7 @@ using Il2CppNinjaKiwi.Common.ResourceUtils;
 using MelonLoader;
 using System.Linq;
 using TemplateMod.Towers.Elf.R20;
+using TemplateMod.Towers.Elf.R60;
 using TemplateMod.Towers.NonGameModeSanta;
 using TemplateMod.Towers.PresentLauncher;
 using TemplateMod.UI;
@@ -51,7 +52,7 @@ static class ShopMenu_CreateTowerButton
     [HarmonyPostfix]
     public static void Postfix(ITowerPurchaseButton __result)
     {
-        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<Elf>(), ModContent.TowerID<RegularSanta>()];
+        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<Elf>(), ModContent.TowerID<RegularSanta>(), ModContent.TowerID<StronkElf>()];
 
         if (InGame.instance.GetGameModel().gameMode == ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
         {
@@ -65,10 +66,10 @@ static class ShopMenu_CreateTowerButton
                 }
             }
         }
-        else if (__result.TowerModel.baseId == ModContent.TowerID<Santa>())
-        {
-            __result.GameObject.transform.parent.gameObject.SetActive(false);
-        }
+        //else if (__result.TowerModel.baseId == ModContent.TowerID<Santa>())
+        //{
+        //    __result.GameObject.transform.parent.gameObject.SetActive(false);
+        //}
     }
 }
 
@@ -427,7 +428,10 @@ static class RoundPatch
 
             SantaStory.SantaStoryUI.CreatePanel(messages);
 
-            ChristmasMod.PresentLauncherButton.SetActive(true);
+            if (ChristmasMod.PresentLauncherButton != null)
+            {
+                ChristmasMod.PresentLauncherButton.SetActive(true);
+            }
 
             Gift.GiftUI.CreatePanel(1000, 10);
 
@@ -522,6 +526,12 @@ static class RoundPatch
                     ability.displayName = "SantaAbility";
                     ability.name = "SantaAbility";
                     tm.AddBehavior(ability);
+                    AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
+                    Avatarspawner[0].weapons[0].rate = 10f;
+                    Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
+                    Avatarspawner[0].name = "ElfSpawner";
+                    Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<StronkElf>(), 0, false, false, false, false, false));
+                    tm.AddBehavior(Avatarspawner[0]);
 
                     tower.tower.UpdateRootModel(tm);
                 }

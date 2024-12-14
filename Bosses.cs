@@ -49,7 +49,7 @@ namespace BossHandlerNamespace
                 CandyCaneBoss.ApplyDisplay<BossDisplay>();
 
 
-                BossRegisteration candyCaneRegisteration = new BossRegisteration(CandyCaneBoss, "CandyCaneBoss", "Poppermint", true, "PoppermintIcon", 0, "The Poppermint: For every 10% of its health lost, it spawns 5 Candy Cane Bloons to swarm the battlefield. Defeating this boss will grant Santa a powerful upgrade, making him stronger for the battles ahead.");
+                BossRegisteration candyCaneRegisteration = new BossRegisteration(CandyCaneBoss, "CandyCaneBoss", "Poppermint", true, "PoppermintIcon", 20, "The Poppermint: For every 10% of its health lost, it spawns 5 Candy Cane Bloons to swarm the battlefield. Defeating this boss will grant Santa a powerful upgrade, making him stronger for the battles ahead.");
 
                 candyCaneRegisteration.SpawnOnRound(20);
 
@@ -73,7 +73,7 @@ namespace BossHandlerNamespace
 
                 //Frosty the Snowbloon
 
-                BossRegisteration frostyBossRegisteration = new BossRegisteration(FrostyBoss, "Frosty", "Frosty The Snowbloon", true, "FrostyIcon", 0, "Frosty the Snowbloon is a chilling force. Immune to ice attacks, As it progresses, every time it loses a skull, it stuns all towers, freezing them in place. While Frosty is alive, a relentless snowstorm will rage across the battlefield, Defeating Frosty will bring you one step closer to saving Christmas!");
+                BossRegisteration frostyBossRegisteration = new BossRegisteration(FrostyBoss, "Frosty", "Frosty The Snowbloon", true, "FrostyIcon", 20, "Frosty the Snowbloon is a chilling force. Immune to ice attacks, As it progresses, every time it loses a skull, it stuns all towers, freezing them in place. While Frosty is alive, a relentless snowstorm will rage across the battlefield, Defeating Frosty will bring you one step closer to saving Christmas!");
 
                 frostyBossRegisteration.SpawnOnRound(40);
 

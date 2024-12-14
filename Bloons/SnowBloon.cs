@@ -25,8 +25,6 @@ namespace TemplateMod.Bloons
             bloonModel.AddToChildren(BloonType.sWhite, 1);
 
             bloonModel.bloonProperties = Il2Cpp.BloonProperties.White;
-
-            bloonModel.AddBehavior(Game.instance.model.GetBloon("Ceramic").GetBehavior<CreateSoundOnDamageBloonModel>().Duplicate());
         }
 
 
@@ -54,6 +52,17 @@ namespace TemplateMod.Bloons
                     {
                         __instance.SetHealth((int)Mathf.Round(totalAmount));
                     }
+                }
+            }
+
+            [HarmonyPostfix]
+            public static void Postfix(Bloon __instance)
+            {
+                if(__instance.health > 0 && __instance.bloonModel.baseId == BloonID<SnowBloon>())
+                {
+                    System.Random rand = new();
+
+                    GetAudioClip<ChristmasMod.ChristmasMod>("SnowBloon_" + rand.Next(4)).Play();
                 }
             }
         }

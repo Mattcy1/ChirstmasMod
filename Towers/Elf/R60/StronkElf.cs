@@ -1,10 +1,17 @@
-﻿using BTD_Mod_Helper.Api.Display;
+﻿using BTD_Mod_Helper;
+using BTD_Mod_Helper.Api.Display;
 using BTD_Mod_Helper.Api.Towers;
 using BTD_Mod_Helper.Extensions;
+using ChristmasMod;
+using HarmonyLib;
+using Il2CppAssets.Scripts.Models.Audio;
 using Il2CppAssets.Scripts.Models.Towers;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors;
+using Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Models.TowerSets;
+using Il2CppAssets.Scripts.Simulation.Towers.Projectiles.Behaviors;
+using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using UnityEngine;
 
@@ -24,20 +31,56 @@ namespace TemplateMod.Towers.Elf.R60
 
         public override string Description => "One of Santa's Minions, throws balls of ice.";
 
-        public override int Cost => 0;
+        public override int Cost => 500;
 
         public override void ModifyBaseTowerModel(TowerModel towerModel)
         {
             var wpn = towerModel.GetWeapon();
             var proj = wpn.projectile;
 
+            wpn.rate *= 0.8f;
+
             proj.GetDamageModel().damage += 2;
+            proj.pierce = 1;
             proj.ApplyDisplay<IceBall>();
+            proj.id = "StronkElfIceBall";
+
+            var iceShard = Game.instance.model.GetTower("DartMonkey").GetWeapon().projectile.Duplicate();
+            iceShard.ApplyDisplay<IceShard>();
+            iceShard.pierce = 1;
+
+            var createProjectileOnExhaustPierceModel = new CreateProjectileOnExhaustPierceModel("CreateProjectileOnExhaustPierceModel", iceShard, new ArcEmissionModel("ArcEmissionModel", 1, 0, 90, null, true, false), 4, 1, 0, true, new(""), 0, false, false);
+            proj.AddBehavior(createProjectileOnExhaustPierceModel);
+        }
+
+        [HarmonyPatch(typeof(CreateProjectileOnExhaustPierce), nameof(CreateProjectileOnExhaustPierce.Collide))]
+        static class CreateProjectileOnExhaustPierceModel_Exhausted
+        {
+            [HarmonyPostfix]
+            public static void Postfix(CreateProjectileOnExhaustPierce __instance)
+            {
+                if (__instance.projectile.projectileModel.id == "StronkElfIceBall")
+                {
+                    System.Random rand = new();
+
+                    GetAudioClip<ChristmasMod.ChristmasMod>("IceShatter" + rand.Next(4)).Play();
+                }
+            }
+        }
+
+        public class IceShard : IceBall 
+        {
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+                Set2DTexture(node, Name);
+            }
         }
 
         public class IceBall : ModDisplay
         {
             public override string BaseDisplay => Generic2dDisplay;
+
+            public override float Scale => 0.85f;
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {

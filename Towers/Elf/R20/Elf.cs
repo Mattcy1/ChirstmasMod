@@ -1,11 +1,15 @@
 ﻿using BTD_Mod_Helper.Api.Display;
 using BTD_Mod_Helper.Api.Towers;
 using BTD_Mod_Helper.Extensions;
+using HarmonyLib;
 using Il2CppAssets.Scripts.Models.Towers;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Models.TowerSets;
+using Il2CppAssets.Scripts.Simulation.Bloons;
+using Il2CppAssets.Scripts.Simulation.Towers.Projectiles;
 using Il2CppAssets.Scripts.Unity.Display;
+using TemplateMod.Bloons;
 using UnityEngine;
 
 namespace TemplateMod.Towers.Elf.R20
@@ -31,10 +35,26 @@ namespace TemplateMod.Towers.Elf.R20
 
             var proj = towerModel.GetWeapon().projectile;
             proj.ApplyDisplay<Snowball>();
-            proj.GetBehavior<TravelStraitModel>().speed /= 2;
-            proj.GetBehavior<TravelStraitModel>().lifespan /= 2;
+            proj.GetBehavior<TravelStraitModel>().speed /= 4;
+            proj.pierce = 1;
+            proj.id = "Snowball_Elf";
 
             towerModel.AddBehavior(new TowerExpireModel("TowerExpireModel", 40, 3, false, false));
+        }
+
+        [HarmonyPatch(typeof(Projectile), nameof(Projectile.CollideBloon))]
+        static class Projectile_CollideBloon
+        {
+            [HarmonyPostfix]
+            public static void Postfix(Projectile __instance, Bloon bloon)
+            {
+                if(__instance.projectileModel.id == "Snowball_Elf" && bloon.bloonModel.baseId != BloonID<SnowBloon>())
+                {
+                    System.Random rand = new();
+
+                    GetAudioClip<ChristmasMod.ChristmasMod>("SnowBloon_" + rand.Next(4)).Play();
+                }
+            }
         }
 
         public class Snowball : ModDisplay

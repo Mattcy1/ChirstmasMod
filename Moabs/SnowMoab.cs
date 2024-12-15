@@ -17,8 +17,13 @@ namespace TemplateMod.Moabs
     {
         public class WeakSnowMoab : ModBloon<SnowMoab>
         {
+            protected override int Order => 1; 
+
             public override void ModifyBaseBloonModel(BloonModel bloonModel)
             {
+                bloonModel.id = GetId<ChristmasMod.ChristmasMod>(Name);
+                bloonModel.RemoveAllChildren();
+                bloonModel.AddToChildren<SnowBloon>(2);
                 bloonModel.maxHealth = 20;
             }
         }

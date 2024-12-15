@@ -15,6 +15,14 @@ namespace TemplateMod.Moabs
 {
     public class SnowMoab : ModBloon
     {
+        public class WeakSnowMoab : ModBloon<SnowMoab>
+        {
+            public override void ModifyBaseBloonModel(BloonModel bloonModel)
+            {
+                bloonModel.maxHealth = 20;
+            }
+        }
+
         public override string BaseBloon => BloonType.sMoab;
 
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
@@ -22,6 +30,7 @@ namespace TemplateMod.Moabs
             bloonModel.RemoveAllChildren();
             bloonModel.AddToChildren<SnowBloon>(5);
             bloonModel.maxHealth = 100;
+            bloonModel.speed *= 1.25f;
             bloonModel.isImmuneToSlow = true;
             bloonModel.bloonProperties = Il2Cpp.BloonProperties.White;
         }

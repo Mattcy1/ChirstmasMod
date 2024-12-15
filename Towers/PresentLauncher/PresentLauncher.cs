@@ -7,9 +7,8 @@ using Il2CppAssets.Scripts.Unity.Display;
 
 namespace TemplateMod.Towers.PresentLauncher
 {
-    public class PresentLauncher : ModTower
+    public class PresentLauncher : ModTower<ChristmasTowers>
     {
-        public override TowerSet TowerSet => TowerSet.Primary;
 
         public static bool AddedToShop = false;
 

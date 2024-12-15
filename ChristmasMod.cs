@@ -33,9 +33,15 @@ using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppNinjaKiwi.Common.ResourceUtils;
 using MelonLoader;
+using MelonLoader.Utils;
+using Newtonsoft.Json;
+using System.IO;
 using System.Linq;
+using TemplateMod.Moabs;
+using TemplateMod.Towers;
 using TemplateMod.Towers.Elf.R20;
 using TemplateMod.Towers.Elf.R60;
+using TemplateMod.Towers.Elf.R80;
 using TemplateMod.Towers.NonGameModeSanta;
 using TemplateMod.Towers.PresentLauncher;
 using TemplateMod.UI;
@@ -52,7 +58,7 @@ static class ShopMenu_CreateTowerButton
     [HarmonyPostfix]
     public static void Postfix(ITowerPurchaseButton __result)
     {
-        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<Elf>(), ModContent.TowerID<RegularSanta>(), ModContent.TowerID<StronkElf>()];
+        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<RegularSanta>(), ModContent.TowerID<ElfLord>()];
 
         if (InGame.instance.GetGameModel().gameMode == ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
         {
@@ -63,6 +69,10 @@ static class ShopMenu_CreateTowerButton
                 if (__result.TowerModel.baseId == ModContent.TowerID<PresentLauncher>() && !PresentLauncher.AddedToShop)
                 {
                     ChristmasMod.PresentLauncherButton = __result.GameObject.transform.parent.gameObject;
+                }
+                else if (__result.TowerModel.baseId == ModContent.TowerID<ElfLord>() && !ElfLord.AddedToShop)
+                {
+                    ElfLord.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
             }
         }
@@ -144,11 +154,21 @@ public class ChristmasMod : BloonsTD6Mod
     public override void OnRestart()
     {
         PresentLauncher.AddedToShop = false;
+        ElfLord.AddedToShop = false;
+    }
+
+    private class SaveData(string mapName = "Tutorial")
+    {
+        public bool PresentLauncher = false;
+        public bool ElfLord = false;
+
+        public string Map = mapName;
     }
 
     public override void OnMatchEnd()
     {
         PresentLauncher.AddedToShop = false;
+        ElfLord.AddedToShop = false;
     }
 
     public override void OnApplicationStart()
@@ -162,7 +182,7 @@ public class ChristmasMod : BloonsTD6Mod
         {
             if (tower.towerModel.baseId == "Mermonkey")
             {
-                Gift.GiftUI.CreatePanel(2000, 50);
+                Gift.GiftUI.CreatePanel(2000, 50, false);
 
                 Values.trivia1 = false;
                 
@@ -289,12 +309,10 @@ public class ChristmasMod : BloonsTD6Mod
     }
 }
 
-public class Santa : ModTower
+public class Santa : ModTower<ChristmasTowers>
 {
     public override string Portrait => "Santa";
     public override string Icon => "Santa";
-
-    public override TowerSet TowerSet => TowerSet.Primary;
     public override string BaseTower => TowerType.DartMonkey;
     public override int Cost => 0;
     public override bool DontAddToShop => false;
@@ -302,7 +320,7 @@ public class Santa : ModTower
     public override int TopPathUpgrades => 0;
     public override int MiddlePathUpgrades => 0;
     public override int BottomPathUpgrades => 0;
-    public override string Description => "Sante has come to help us save christmas! after the grinch stole all the gits";
+    public override string Description => "Santa has come to help us save christmas! after the Grinch stole all the gifts.";
 
     public override int ShopTowerCount => 1;
 
@@ -346,7 +364,6 @@ static class SnowflakePatch
         if (random.Next(75) == 0)
         {
             Values.snowflake++;
-            MelonLogger.Msg("Snowflakes: " + Values.snowflake);
         }
     }
 }
@@ -400,54 +417,63 @@ static class RoundPatch
     {
         if (__instance.GetCurrentRound() == 2)
         {
-            var text = "Help Santa defeat 5 different bosses sent by the Grinch to save Christmas!\nAfter the Grinch stole all the presents, you are the only one who can save Christmas! Each boss you face gets stronger and stronger, but so do you with every victory.\n\nDefeating all 5 bosses and collecting the 5 gifts will reward you with the ultimate prize: 10,000 Monkey Money.\n\nAre you ready for the challenge? The fate of Christmas is in your hands!";
+            SantaMessage[] messages = [
+                new("Help <b>Santa</b> defeat 5 different bosses sent by the <b>Grinch</b> to save Christmas!\nAfter the <b>Grinch</b> stole all the presents, you are the only one who can save Christmas! Each boss you face gets stronger and stronger, but so do you with every victory.\n\nDefeating all 5 bosses and collecting the 5 gifts will reward you with the ultimate prize: 10,000 Monkey Money.\n\nAre you ready for the challenge? The fate of Christmas is in your hands!", SantaEmotion.SantaHappy),
+                new("Hello soldier! We must stop the <b>Grinch</b> from ruining Christmas! If Christmas gets ruined who knows what people might start to think of me...", SantaEmotion.SantaWorry)
+            ];
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+            SantaStory.SantaStoryUI.CreatePanel(messages, new(() => {
+                bool towerPlaced = false;
+                Il2CppSystem.Action<bool> something = (Il2CppSystem.Action<bool>)delegate (bool s)
+                {
+                    towerPlaced = s;
+                };
+                Il2CppSystem.Action<bool> spawn = something;
 
-            bool towerPlaced = false;
-            Il2CppSystem.Action<bool> something = (Il2CppSystem.Action<bool>)delegate (bool s)
-            {
-                towerPlaced = s;
-            };
-            Il2CppSystem.Action<bool> spawn = something;
+                InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), ModContent.GetTowerModel<Santa>(), ObjectId.Create(9999, 0), false, something, true, true, false, 0);
+            }));
+        }
 
-            InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), ModContent.GetTowerModel<Santa>(), ObjectId.Create(9999, 0), false, something, true, true, false, 0);
+        if (__instance.GetCurrentRound() == 9)
+        {
+            //SantaStory.SantaStoryUI.CreatePanel([new SantaMessage("I don't really pay the elves all to much, I'm sure that won't be a problem. W-what is that??!", SantaEmotion.SantaWorry), new("Oh, hi guys. I was told to come here and run through the defenses for some reason, I think it was something to do with me being weaker than the others. Wait... was I supposed to say that?", SantaEmotion.SnowMoab, new(() => InGame.instance.SpawnBloons(ModContent.BloonID<SnowMoab.WeakSnowMoab>(), 1, 0)))]);
         }
 
         if (__instance.GetCurrentRound() == 18)
         {
             var text = "The Poppermint is approaching next round! Prepare yourself for the fight. Here’s $1000 to help your defenses spend it wisely!";
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text);
-            InGame.instance.AddCash(1000);
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text, new(() =>
+            InGame.instance.AddCash(1000)));
         }
 
         if (__instance.GetCurrentRound() == 20)
         {
             SantaMessage[] messages = [new("You truly are the hero Christmas needs. Keep pushing forward only you can save Christmas! I can feel it... I’ve grown stronger, and so have you!", SantaEmotion.SantaSalute), new("I have added the present launcher to the shop! This tower uses snowflakes so be sure to not sell all of them.", SantaEmotion.SantaHappy)];
 
-            SantaStory.SantaStoryUI.CreatePanel(messages);
+            SantaStory.SantaStoryUI.CreatePanel(messages, new(() => {
 
-            if (ChristmasMod.PresentLauncherButton != null)
-            {
-                ChristmasMod.PresentLauncherButton.SetActive(true);
-            }
-
-            Gift.GiftUI.CreatePanel(1000, 10);
-
-            foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
-            {
-                if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
+                if (ChristmasMod.PresentLauncherButton != null)
                 {
-                    var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
-
-                    tm.GetWeapon().rate = 0.5f;
-                    tm.range += 5;
-                    tm.GetAttackModel().range += 5;
-
-                    tower.tower.UpdateRootModel(tm);
+                    ChristmasMod.PresentLauncherButton.SetActive(true);
                 }
-            }
+
+                Gift.GiftUI.CreatePanel(1000, 10);
+
+                foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
+                {
+                    if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
+                    {
+                        var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
+
+                        tm.GetWeapon().rate = 0.5f;
+                        tm.range += 5;
+                        tm.GetAttackModel().range += 5;
+
+                        tower.tower.UpdateRootModel(tm);
+                    }
+                }
+            }));
         }
 
         if (__instance.GetCurrentRound() == 29)
@@ -475,68 +501,89 @@ static class RoundPatch
         {
             var text = "Good job, Soldier! The boss has been defeated, and now there are only 3 more to go! You're making great progress! And by the way, my workers have arrived to help you out things are looking even better now. Keep going, you're almost there!";
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaSalute, text);
-            Gift.GiftUI.CreatePanel(5000, 100);
-
-            foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
-            {
-                if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaSalute, text, new(() => {
+                foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
                 {
-                    var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
+                    if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
+                    {
+                        var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
 
-                    AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
-                    Avatarspawner[0].weapons[0].rate = 5f;
-                    Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
-                    Avatarspawner[0].name = "ElfSpawner";
-                    Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<Elf>(), 0, false, false, false, false, false));
-                    tm.AddBehavior(Avatarspawner[0]);
+                        AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
+                        Avatarspawner[0].weapons[0].rate = 5f;
+                        Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
+                        Avatarspawner[0].name = "ElfSpawner";
+                        Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<Elf>(), 0, false, false, false, false, false));
+                        tm.AddBehavior(Avatarspawner[0]);
 
-                    tower.tower.UpdateRootModel(tm);
+                        tower.tower.UpdateRootModel(tm);
+                    }
                 }
-            }
+            }));
+
+            Gift.GiftUI.CreatePanel(5000, 100);
         }
         
         if (__instance.GetCurrentRound() == 58)
         {
             var text = "I have some bad news... This next boss is SUPER STRONG! It has 5 lives, and with each life, its HP doubles. On top of that, it gets faster every second! This will be your toughest fight yet, soldier.\n\nHere’s 7500 cash to help.";
 
-            InGame.instance.AddCash(7500);
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text);
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text, new(() =>
+            InGame.instance.AddCash(7500)));
         }
         
         if (__instance.GetCurrentRound() == 60)
         {
             var text = "Wow, that boss was insanely tough!  But we’ve come out stronger than ever. I’ve unlocked a new ability check it out!\n\nGet ready, soldier. The next battle is right around the corner, and we’ll need everything we’ve got to win. Let’s keep pushing forward!";
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaSalute, text);
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaSalute, text, new(() => {
+                foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
+                {
+                    if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
+                    {
+                        var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
+
+                        var ability = Game.instance.model.GetTowerFromId("DartlingGunner-040").GetAbility().Duplicate();
+                        ability.RemoveBehavior<ActivateAttackModel>();
+                        ability.cooldown = 60;
+                        ability.Cooldown = 60;
+                        ability.SetName("SantaAbility");
+                        ability.displayName = "SantaAbility";
+                        ability.name = "SantaAbility";
+                        tm.AddBehavior(ability);
+                        AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
+                        Avatarspawner[0].weapons[0].rate = 10f;
+                        Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
+                        Avatarspawner[0].name = "ElfSpawner";
+                        Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<StronkElf>(), 0, false, false, false, false, false));
+                        tm.AddBehavior(Avatarspawner[0]);
+
+                        tower.tower.UpdateRootModel(tm);
+                    }
+                }
+                AbilityMenu.instance.AbilitiesChanged();
+            }));
             
             Gift.GiftUI.CreatePanel(10000, 50);
+        }
+        if (__instance.GetCurrentRound() == 80)
+        {
+            SantaMessage[] messages =
+            [
+                new SantaMessage("Man that boss was really tough! I'm not sure what we're going to do for this last boss! If only there was something else or <b>someone</b> else we could have to help us...", SantaEmotion.SantaWorry),
+                    new SantaMessage("Aha! I know just who to call. He's one of my strongest elves so he'll hopefully help us.", SantaEmotion.SantaHappy),
+                    new SantaMessage("You want my help to stop the <b>Grinch</b> from ruining christmas? Uh... fine I'll help, but you need to pay me <color='#00ff00'>money</color>, if you don't then no help from me! Afterall, <i>you already barely pay me for what I do at the North Pole</i>...", SantaEmotion.ElfLordWant),
+                    new SantaMessage("Seriously?? Fine, but you have to promise to not abandon us and actually help us.", SantaEmotion.SantaDisapointed),
+                    new SantaMessage("OK I'll help you now. After all I suppose a lot of work would be for waste and I'd be out of a job if the <b>Grinch</b> ruined christmas.", SantaEmotion.ElfLordThumbsUp),
+                    new SantaMessage("Soilder, this is great news! Don't expect me to pay the <b>Elf Lord</b> though, I have already payed out too much money today. Ho ho ho... However the <b>Elf Lord</b> shouldn't leave until we win!", SantaEmotion.SantaHappy)
+            ];
 
-            foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
-            {
-                if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
+            SantaStory.SantaStoryUI.CreatePanel(messages, new(() => {
+                if (ElfLord.ShopButton != null)
                 {
-                    var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
-
-                    var ability = Game.instance.model.GetTowerFromId("DartlingGunner-040").GetAbility().Duplicate();
-                    ability.RemoveBehavior<ActivateAttackModel>();
-                    ability.cooldown = 60;
-                    ability.Cooldown = 60;
-                    ability.SetName("SantaAbility"); 
-                    ability.displayName = "SantaAbility";
-                    ability.name = "SantaAbility";
-                    tm.AddBehavior(ability);
-                    AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
-                    Avatarspawner[0].weapons[0].rate = 10f;
-                    Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
-                    Avatarspawner[0].name = "ElfSpawner";
-                    Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<StronkElf>(), 0, false, false, false, false, false));
-                    tm.AddBehavior(Avatarspawner[0]);
-
-                    tower.tower.UpdateRootModel(tm);
+                    ElfLord.AddedToShop = true;
+                    ElfLord.ShopButton.SetActive(true);
                 }
-            }
-            AbilityMenu.instance.AbilitiesChanged();
+            }));
         }
     }
 }

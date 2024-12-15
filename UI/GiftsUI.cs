@@ -24,7 +24,7 @@ public class Gift
             }
         }
 
-        public static void CreatePanel(int Cash, double Lives)
+        public static void CreatePanel(int Cash, double Lives, bool storyGift = true)
         {
             if (InGame.instance != null)
             {
@@ -34,7 +34,10 @@ public class Gift
                 var image = panel.AddImage(new("Image_", 0, 0, 1000), VanillaSprites.GiftRed);
                 var Claim = image.AddButton(new("Button_", 0, -500, 450, 450 / 2), VanillaSprites.GreenBtnLong, new System.Action(() =>
                 {
-                    Values.gift += 1;
+                    if (storyGift)
+                    {
+                        Values.gift += 1;
+                    }
                     InGame.instance.AddCash(Cash);
                     InGame.instance.AddHealth(Lives);
                     instance.Close();

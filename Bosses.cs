@@ -76,7 +76,7 @@ namespace BossHandlerNamespace
                 CandyCaneBoss.AddBehavior(health);
                 CandyCaneBoss.AddBehavior(spawn);
 
-                BloonModel FrostyBoss = CreateBossBase(125000, 1f);
+                BloonModel FrostyBoss = CreateBossBase(90000, 1f);
 
                 //Frosty the Snowbloon
 
@@ -122,7 +122,7 @@ namespace BossHandlerNamespace
             }
         }
 
-        [RegisterTypeInIl2Cpp]
+        [RegisterTypeInIl2Cpp(false)]
         public class MonoBehaviorTemplate : MonoBehaviour
         {
             public Bloon boss;

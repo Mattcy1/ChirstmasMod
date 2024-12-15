@@ -44,6 +44,7 @@ public class Gamemode
         public override void ModifyBaseGameModeModel(ModModel gameModeModel)
         {
             gameModeModel.UseRoundSet<CustomRS>();
+            gameModeModel.SetEndingRound(100);
             gameModeModel.AddMutator(new LockTowerModModel("LockTowerModModel_", ModContent.TowerID<Santa>()));
         }
     } 

@@ -10,12 +10,11 @@ using System.Threading.Tasks;
 
 namespace TemplateMod.Towers.NonGameModeSanta
 {
-    public class RegularSanta : ModTower
+    public class RegularSanta : ModTower<ChristmasTowers>
     {
         public override string Portrait => "Santa";
         public override string Icon => "Santa";
 
-        public override TowerSet TowerSet => TowerSet.Primary;
         public override string BaseTower => TowerType.DartMonkey;
         public override int Cost => 300;
 

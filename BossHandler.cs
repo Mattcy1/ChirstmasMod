@@ -128,7 +128,7 @@ namespace BossHandlerNamespace
             }
         }
 
-        [RegisterTypeInIl2Cpp]
+        [RegisterTypeInIl2Cpp(false)]
         public class BossPanel : MonoBehaviour
         {
             public BossPanel() : base() { }

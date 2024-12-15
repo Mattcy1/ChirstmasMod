@@ -10,6 +10,7 @@ using Il2CppAssets.Scripts.Models.Towers.Behaviors;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Models.TowerSets;
+using Il2CppAssets.Scripts.Simulation.Towers.Projectiles;
 using Il2CppAssets.Scripts.Simulation.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
@@ -17,19 +18,17 @@ using UnityEngine;
 
 namespace TemplateMod.Towers.Elf.R60
 {
-    public class StronkElf : ModTower
+    public class StronkElf : ModTower<ChristmasTowers>
     {
         protected override int Order => 1;
 
-        public override TowerSet TowerSet => TowerSet.Primary;
-
         public override string BaseTower => TowerID<R20.Elf>();
 
-        //public override bool DontAddToShop => true;
+        public override bool DontAddToShop => true;
 
         public override string Icon => Portrait;
 
-        public override string Description => "One of Santa's Minions, throws balls of ice.";
+        public override string Description => "One of Santa's Minions who typically protects the North Pole against weak threats, throws balls of ice.";
 
         public override int Cost => 500;
 
@@ -49,17 +48,17 @@ namespace TemplateMod.Towers.Elf.R60
             iceShard.ApplyDisplay<IceShard>();
             iceShard.pierce = 1;
 
-            var createProjectileOnExhaustPierceModel = new CreateProjectileOnExhaustPierceModel("CreateProjectileOnExhaustPierceModel", iceShard, new ArcEmissionModel("ArcEmissionModel", 1, 0, 90, null, true, false), 4, 1, 0, true, new(""), 0, false, false);
-            proj.AddBehavior(createProjectileOnExhaustPierceModel);
+            var createProjectileOnContactModel = new CreateProjectileOnContactModel("CreateProjectileOnContactModel", iceShard, new ArcEmissionModel("ArcEmissionModel", 1, 0, 90, null, true, false), true, true, true);
+            proj.AddBehavior(createProjectileOnContactModel);
         }
 
-        [HarmonyPatch(typeof(CreateProjectileOnExhaustPierce), nameof(CreateProjectileOnExhaustPierce.Collide))]
-        static class CreateProjectileOnExhaustPierceModel_Exhausted
+        [HarmonyPatch(typeof(Projectile), nameof(Projectile.CollideBloon))]
+        static class Projectile_CollideBloon
         {
             [HarmonyPostfix]
-            public static void Postfix(CreateProjectileOnExhaustPierce __instance)
+            public static void Postfix(Projectile __instance)
             {
-                if (__instance.projectile.projectileModel.id == "StronkElfIceBall")
+                if (__instance.projectileModel.id == "StronkElfIceBall")
                 {
                     System.Random rand = new();
 

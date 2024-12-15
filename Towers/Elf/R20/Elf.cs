@@ -14,13 +14,12 @@ using UnityEngine;
 
 namespace TemplateMod.Towers.Elf.R20
 {
-    public class Elf : ModTower
+    public class Elf : ModTower<ChristmasTowers>
     {
-        public override TowerSet TowerSet => TowerSet.Primary;
 
         public override string BaseTower => TowerType.DartMonkey;
 
-        //public override bool DontAddToShop => true;
+        public override bool DontAddToShop => true;
 
         public override string Icon => Portrait;
 
@@ -38,7 +37,6 @@ namespace TemplateMod.Towers.Elf.R20
             proj.GetBehavior<TravelStraitModel>().speed /= 4;
             proj.pierce = 1;
             proj.id = "Snowball_Elf";
-
             towerModel.AddBehavior(new TowerExpireModel("TowerExpireModel", 40, 3, false, false));
         }
 

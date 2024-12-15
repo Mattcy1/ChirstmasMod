@@ -11,17 +11,22 @@ namespace TemplateMod.UI;
 
 public class SantaStory
 {
-    public struct SantaMessage(string message, SantaEmotion emotion)
+    public struct SantaMessage(string message, SantaEmotion emotion, Action onMessage = null)
     {
         public string Message = message;
         public SantaEmotion Emotion = emotion;
+        public Action OnMessage = onMessage;
     }
 
     public enum SantaEmotion
     {
         SantaHappy,
         SantaWorry,
-        SantaSalute
+        SantaSalute,
+        SantaDisapointed,
+        ElfLordThumbsUp,
+        ElfLordWant,
+        SnowMoab
     }
 
 
@@ -37,19 +42,26 @@ public class SantaStory
             }
         }
 
-        public static void CreatePanel(SantaEmotion emotion, string text)
+        public static Action LastCloseAction;
+
+        public static void CreatePanel(SantaEmotion emotion, string text, Action closeAction = null, bool runLastCloseAction = true)
         {
-            CreatePanel(new SantaMessage(text, emotion));
+            CreatePanel(new SantaMessage(text, emotion), closeAction, runLastCloseAction);
         }
 
-        public static void CreatePanel(SantaMessage msg)
+        public static void CreatePanel(SantaMessage msg, Action closeAction = null, bool runLastCloseAction = true)
         {
             if (InGame.instance != null)
             {
                 if(instance != null)
                 {
                     instance.Close();
+                    if(runLastCloseAction)
+                        LastCloseAction?.Invoke();
                 }
+                LastCloseAction = closeAction;
+
+                msg.OnMessage?.Invoke();
 
                 RectTransform rect = InGame.instance.uiRect;
                 var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
@@ -58,11 +70,11 @@ public class SantaStory
                 var text_ = panel.AddText(new("Title_", 0, 0, 1150, 500), $"{msg.Message}");
                 text_.Text.enableAutoSizing = text_;
 
-                var btn = panel.AddButton(new("CloseBtn", 625, 300, 100), VanillaSprites.CloseBtn, new Action(instance.Close));
+                var btn = panel.AddButton(new("CloseBtn", 625, 300, 100), VanillaSprites.CloseBtn, new Action(() => { instance.Close(); closeAction?.Invoke(); }));
             }
         }
 
-        public static void CreatePanel(SantaEmotion[] emotions, string[] texts)
+        public static void CreatePanel(SantaEmotion[] emotions, string[] texts, Action closeAction = null, bool runLastCloseAction = true)
         {
             SantaMessage[] msgs = new SantaMessage[texts.Length];
 
@@ -76,20 +88,24 @@ public class SantaStory
 
             if (msgs.Length == 1)
             {
-                CreatePanel(msgs[0]);
+                CreatePanel(msgs[0], closeAction, runLastCloseAction);
             }
             else
             {
-                CreatePanel(msgs);
+                CreatePanel(msgs, closeAction, runLastCloseAction);
             }
         }
 
-        public static void CreatePanel(SantaMessage[] msgs)
+        public static void CreatePanel(SantaMessage[] msgs, Action closeAction = null, bool runLastCloseAction = true)
         {
             if (instance != null)
             {
                 instance.Close();
+                if (runLastCloseAction)
+                    LastCloseAction?.Invoke();
             }
+
+            LastCloseAction = closeAction;
 
             RectTransform rect = InGame.instance.uiRect;
             var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
@@ -98,15 +114,17 @@ public class SantaStory
             var text_ = panel.AddText(new("Title_", 0, 0, 1150, 500), $"{msgs[0].Message}");
             text_.Text.enableAutoSizing = text_;
 
+            msgs[0].OnMessage?.Invoke();
+
             var newMsgs = msgs.Skip(1).ToArray();
 
-            if (newMsgs.Length <= 1)
+            if (newMsgs.Length == 1)
             {
-                var btn = panel.AddButton(new("NextBtn", 625, 300, 100), VanillaSprites.ContinueBtn, new Action(() => CreatePanel(newMsgs[0])));
+                var btn = panel.AddButton(new("NextBtn", 625, 300, 100), VanillaSprites.ContinueBtn, new Action(() => { CreatePanel(newMsgs[0], closeAction, false); }));
             }
             else
             {
-                var btn = panel.AddButton(new("NextBtn", 625, 300, 100), VanillaSprites.ContinueBtn, new Action(() => CreatePanel(newMsgs)));
+                var btn = panel.AddButton(new("NextBtn", 625, 300, 100), VanillaSprites.ContinueBtn, new Action(() => { CreatePanel(newMsgs, closeAction, false); }));
             }
         }
     }

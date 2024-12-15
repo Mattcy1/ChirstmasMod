@@ -9,6 +9,9 @@
         <DebugType>embedded</DebugType>
     </PropertyGroup>
     <ItemGroup>
+      <None Remove="Towers\ChristmasTowers-Button - Copy.png" />
+    </ItemGroup>
+    <ItemGroup>
         <Content Include=".github\workflows\build.yml" />
     </ItemGroup>
     <ItemGroup>

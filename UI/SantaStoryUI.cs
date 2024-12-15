@@ -26,7 +26,8 @@ public class SantaStory
         SantaDisapointed,
         ElfLordThumbsUp,
         ElfLordWant,
-        SnowMoab
+        SnowMoab,
+        CrumblyIcon
     }
 
 

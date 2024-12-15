@@ -149,6 +149,13 @@ public class Values
         get { return Tsunami; }
         set { Tsunami = value; }
     }
+    
+    private static bool Disableprojectile = false;
+    public static bool disableprojectile
+    {
+        get { return Disableprojectile; }
+        set { Disableprojectile = value; }
+    }
 
     public static PrefabReference SnowstormPrefab;
 }

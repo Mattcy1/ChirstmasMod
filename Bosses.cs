@@ -315,17 +315,18 @@ namespace BossHandlerNamespace
 
                         fakeHealth = Math.Max(0, fakeHealth);
 
-                        if (fakeHealth <= fakeMaxHealth * 0.5f)
+                        if (fakeHealth <= fakeMaxHealth * 0.5f && Values.tsunami == false)
                         {
+                            Values.disableprojectile = true;
                             Values.tsunami = true;
-                            InGame.instance.bridge.simulation.SpawnEffect(Game.instance.model.GetTowerFromId("Mermonkey-050").GetAbility().GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId, new Vector3(0, 0, 0), 0, 0);
+                            InGame.instance.bridge.simulation.SpawnEffect(Game.instance.model.GetTowerFromId("Mermonkey-050").GetAbility().GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId, new Vector3(0, 0, 0), 0, 1);
                             boss.trackSpeedMultiplier = 2;
                             
                             Task.Run(async () =>
                             {
+                                Values.disableprojectile = false;
                                 await Task.Delay(10000);
                                 boss.trackSpeedMultiplier = 1;
-                                Values.tsunami = false;
                             });
                         }
 
@@ -341,6 +342,7 @@ namespace BossHandlerNamespace
                                     fakeHealth = fakeMaxHealth;
                                     boss.trackSpeedMultiplier *= 5;
                                     Values.DefeatedCounter += 1;
+                                    Values.tsunami = false;
                                     InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
                                 }));
 
@@ -392,7 +394,7 @@ public static class StopProjectile
     [HarmonyPrefix]
     public static bool Prefix()
     {
-        if (Values.tsunami == true)
+        if (Values.disableprojectile == true)
         {
             return false;
         }

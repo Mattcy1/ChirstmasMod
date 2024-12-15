@@ -258,7 +258,7 @@ public class ChristmasMod : BloonsTD6Mod
 
     public override void OnRoundEnd()
     {
-        if (random.Next(10) == 0)
+        if (random.Next(10) == 0 && Values.Snowstorm == false)
         {
             PopupScreen.instance?.ShowOkPopup("Snowstorm started");
             Values.Snowstorm = true;
@@ -315,7 +315,6 @@ public class Santa : ModTower<ChristmasTowers>
     public override string Icon => "Santa";
     public override string BaseTower => TowerType.DartMonkey;
     public override int Cost => 0;
-    public override bool DontAddToShop => false;
 
     public override int TopPathUpgrades => 0;
     public override int MiddlePathUpgrades => 0;

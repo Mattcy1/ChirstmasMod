@@ -318,7 +318,7 @@ namespace BossHandlerNamespace
                         if (fakeHealth <= fakeMaxHealth * 0.5f)
                         {
                             Values.tsunami = true;
-                            InGame.instance.bridge.simulation.SpawnEffect(Game.instance.model.GetTowerFromId("Mermonkey-050").GetAbility().GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId, new Vector3(0, 0, 0), 0, 0);
+                            InGame.instance.bridge.simulation.SpawnEffect(Game.instance.model.GetTowerFromId("Mermonkey-050").GetAbility().GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId, new Vector3(0, 0, 0), 0, 1);
                             boss.trackSpeedMultiplier = 2;
                             
                             Task.Run(async () =>

@@ -141,6 +141,14 @@ public class Values
         get { return Gift; }
         set { Gift = value; }
     }
+    
+    private static bool Tsunami = false;
+
+    public static bool tsunami
+    {
+        get { return Tsunami; }
+        set { Tsunami = value; }
+    }
 
     public static PrefabReference SnowstormPrefab;
 }
@@ -333,6 +341,7 @@ public class Santa : ModTower<ChristmasTowers>
         towerModel.dontDisplayUpgrades = true;
         towerModel.canAlwaysBeSold = false;
         towerModel.blockSelling = true;
+        towerModel.GetWeapon().projectile.ApplyDisplay<Present>();
     }
 }
 
@@ -558,6 +567,9 @@ static class RoundPatch
                     {
                         var tm = tower.tower.rootModel.Cast<TowerModel>().Duplicate();
 
+
+                        tm.GetWeapon().projectile.GetDamageModel().damage = 5;
+                        tm.GetWeapon().rate = 0.6f;
                         var ability = Game.instance.model.GetTowerFromId("DartlingGunner-040").GetAbility().Duplicate();
                         ability.RemoveBehavior<ActivateAttackModel>();
                         ability.cooldown = 60;
@@ -565,6 +577,7 @@ static class RoundPatch
                         ability.SetName("SantaAbility");
                         ability.displayName = "SantaAbility";
                         ability.name = "SantaAbility";
+                        ability.icon = ModContent.GetSpriteReference<ChristmasMod>("GiftsParticle");
                         tm.AddBehavior(ability);
                         AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
                         Avatarspawner[0].weapons[0].rate = 10f;

@@ -1,4 +1,5 @@
 ﻿using BTD_Mod_Helper;
+using BTD_Mod_Helper.Api.Display;
 using BTD_Mod_Helper.Api.Towers;
 using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
@@ -8,6 +9,7 @@ using Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Simulation.Towers.Weapons;
 using Il2CppAssets.Scripts.Unity;
+using Il2CppAssets.Scripts.Unity.Display;
 using TemplateMod.Towers.Elf.R60;
 using TemplateMod.Towers.PresentLauncher;
 using UnityEngine;
@@ -40,6 +42,22 @@ namespace TemplateMod.Towers.Elf.R80
             proj.GetBehavior<CreateProjectileOnContactModel>().emission = new ArcEmissionModel("ArcEmissionModel", 6, 0, 360, null, true, false);
 
             towerModel.RemoveBehavior<TowerExpireModel>();
+        }
+
+        public class ElfLordDisplay : ModTowerDisplay<ElfLord>
+        {
+            public override string BaseDisplay => MonkeyVillageElfPet;
+
+            public override bool UseForTower(params int[] tiers) => true;
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+                foreach (var rend in node.GetMeshRenderers())
+                {
+                    rend.SetMainTexture(GetTexture("ElfLord"));
+                    rend.ApplyOutlineShader();
+                }
+            }
         }
 
         [HarmonyPatch(typeof(Weapon), nameof(Weapon.Emit))]

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\liamw\\Documents\\BTD6 Mod Sources\\Christmas2024\\ChirstmasMod.csproj": {}
+    "C:\\Users\\Mattheo\\OneDrive\\Documents\\BTD6 Mod Sources\\ChirstmasMod\\ChirstmasMod.csproj": {}
   },
   "projects": {
-    "C:\\Users\\liamw\\Documents\\BTD6 Mod Sources\\Christmas2024\\ChirstmasMod.csproj": {
+    "C:\\Users\\Mattheo\\OneDrive\\Documents\\BTD6 Mod Sources\\ChirstmasMod\\ChirstmasMod.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\liamw\\Documents\\BTD6 Mod Sources\\Christmas2024\\ChirstmasMod.csproj",
+        "projectUniqueName": "C:\\Users\\Mattheo\\OneDrive\\Documents\\BTD6 Mod Sources\\ChirstmasMod\\ChirstmasMod.csproj",
         "projectName": "TemplateMod",
-        "projectPath": "C:\\Users\\liamw\\Documents\\BTD6 Mod Sources\\Christmas2024\\ChirstmasMod.csproj",
-        "packagesPath": "C:\\Users\\liamw\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\liamw\\Documents\\BTD6 Mod Sources\\Christmas2024\\obj\\",
+        "projectPath": "C:\\Users\\Mattheo\\OneDrive\\Documents\\BTD6 Mod Sources\\ChirstmasMod\\ChirstmasMod.csproj",
+        "packagesPath": "C:\\Users\\Mattheo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Mattheo\\OneDrive\\Documents\\BTD6 Mod Sources\\ChirstmasMod\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\liamw\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Mattheo\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -58,15 +58,15 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.33, 6.0.33]"
+              "version": "[6.0.32, 6.0.32]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.33, 6.0.33]"
+              "version": "[6.0.32, 6.0.32]"
             },
             {
               "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.33, 6.0.33]"
+              "version": "[6.0.32, 6.0.32]"
             }
           ],
           "frameworkReferences": {
@@ -74,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303\\RuntimeIdentifierGraph.json"
         }
       }
     }

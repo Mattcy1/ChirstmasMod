@@ -23,6 +23,7 @@ namespace TemplateMod.Moabs
             {
                 bloonModel.id = GetId<ChristmasMod.ChristmasMod>(Name);
                 bloonModel.dontShowInSandbox = true;
+                bloonModel.danger -= 1;
                 bloonModel.RemoveAllChildren();
                 bloonModel.AddToChildren<SnowBloon>(2);
                 bloonModel.maxHealth = 20;
@@ -35,6 +36,7 @@ namespace TemplateMod.Moabs
         {
             bloonModel.RemoveAllChildren();
             bloonModel.AddToChildren<SnowBloon>(5);
+            bloonModel.danger -= 1;
             bloonModel.maxHealth = 100;
             bloonModel.speed *= 1.25f;
             bloonModel.isImmuneToSlow = true;

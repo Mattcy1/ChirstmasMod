@@ -435,7 +435,7 @@ static class RoundPatch
 
         if (__instance.GetCurrentRound() == 9)
         {
-            //SantaStory.SantaStoryUI.CreatePanel([new SantaMessage("I don't really pay the elves all to much, I'm sure that won't be a problem. W-what is that??!", SantaEmotion.SantaWorry), new("Oh, hi guys. I was told to come here and run through the defenses for some reason, I think it was something to do with me being weaker than the others. Wait... was I supposed to say that?", SantaEmotion.SnowMoab, new(() => InGame.instance.SpawnBloons(ModContent.BloonID<SnowMoab.WeakSnowMoab>(), 1, 0)))]);
+            SantaStory.SantaStoryUI.CreatePanel([new SantaMessage("I don't really pay the elves all to much, I'm sure that won't be a problem. W-what is that??!", SantaEmotion.SantaWorry), new("Oh, hi guys. I was told to come here and run through the defenses for some reason, I think it was something to do with me being weaker than the others. Wait... was I supposed to say that?", SantaEmotion.SnowMoab, new(() => InGame.instance.SpawnBloons(ModContent.BloonID<SnowMoab.WeakSnowMoab>(), 1, 0)))]);
         }
 
         if (__instance.GetCurrentRound() == 18)

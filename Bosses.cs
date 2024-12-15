@@ -130,6 +130,7 @@ namespace BossHandlerNamespace
             public BossRegisteration registration;
             public int fakeHealth = 50000;
             public int fakeMaxHealth = 50000;
+            private static readonly System.Random random = new System.Random();
             
             public MonoBehaviorTemplate() : base()
             {
@@ -178,9 +179,35 @@ namespace BossHandlerNamespace
 
                         Task.Run(async () => {
                             await Task.Delay(2000); 
-
+                            
                             if (Values.DefeatedCounter <= 6)
                             {
+                                var num = random.Next(0, 4);
+                                if (num == 0)
+                                { 
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "Im not that tasty! Crumbly Stole 10% Of Your Cash");
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
+                                if (num == 1)
+                                { 
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "Ouch Crumbly Stole 10% Of Your Cash");
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
+                                if (num == 2)
+                                { 
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "Im not eatable! Crumbly Stole 10% Of Your Cash");
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
+                                if (num == 3)
+                                { 
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "Stop it! Crumbly Stole 10% Of Your Cash");
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
+                                if (num == 4)
+                                { 
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "That hurt! Crumbly Stole 10% Of Your Cash");
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
                                 fakeMaxHealth *= 2; 
                                 fakeHealth = fakeMaxHealth;
                                 boss.trackSpeedMultiplier = 1;

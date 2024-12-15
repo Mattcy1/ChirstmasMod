@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "sBWl9YntJ3k=",
+  "dgSpecHash": "NeQo7tvrrLQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\liamw\\Documents\\BTD6 Mod Sources\\Christmas2024\\ChirstmasMod.csproj",
+  "projectFilePath": "C:\\Users\\Mattheo\\OneDrive\\Documents\\BTD6 Mod Sources\\ChirstmasMod\\ChirstmasMod.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\liamw\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.33\\microsoft.windowsdesktop.app.ref.6.0.33.nupkg.sha512",
-    "C:\\Users\\liamw\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.33\\microsoft.netcore.app.ref.6.0.33.nupkg.sha512",
-    "C:\\Users\\liamw\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.33\\microsoft.aspnetcore.app.ref.6.0.33.nupkg.sha512"
+    "C:\\Users\\Mattheo\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.32\\microsoft.netcore.app.ref.6.0.32.nupkg.sha512",
+    "C:\\Users\\Mattheo\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.32\\microsoft.windowsdesktop.app.ref.6.0.32.nupkg.sha512",
+    "C:\\Users\\Mattheo\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.32\\microsoft.aspnetcore.app.ref.6.0.32.nupkg.sha512"
   ],
   "logs": []
 }

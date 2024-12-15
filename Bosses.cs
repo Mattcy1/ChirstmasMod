@@ -109,6 +109,14 @@ namespace BossHandlerNamespace
                 crumblyBossRegisteration.fakeMaxHealth = 50000;
                 crumblyBossRegisteration.SpawnOnRound(60);
                 crumblyBossRegisteration.usesHealthOverride = true;
+                
+                // Cookie Monster 
+                
+                BloonModel CookieMonster = CreateBossBase(5000000, 1f);
+                
+                BossRegisteration cookieMonsterBossRegisteration = new BossRegisteration(CookieMonster, "CookieMonster", "Cookie Monster", true, "CookieMonsterIcon", 0, "");
+                
+                cookieMonsterBossRegisteration.SpawnOnRound(80);
             }
         }
         public static void BossInit(Bloon bloon, BloonModel bloonModel, BossRegisteration registration)
@@ -182,38 +190,42 @@ namespace BossHandlerNamespace
                             
                             if (Values.DefeatedCounter <= 6)
                             {
-                                var num = random.Next(0, 4);
-                                if (num == 0)
-                                { 
-                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "Im not that tasty! Crumbly Stole 10% Of Your Cash");
-                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
-                                }
-                                if (num == 1)
-                                { 
-                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "Ouch Crumbly Stole 10% Of Your Cash");
-                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
-                                }
-                                if (num == 2)
-                                { 
-                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "Im not eatable! Crumbly Stole 10% Of Your Cash");
-                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
-                                }
-                                if (num == 3)
-                                { 
-                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "Stop it! Crumbly Stole 10% Of Your Cash");
-                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
-                                }
-                                if (num == 4)
-                                { 
-                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, "That hurt! Crumbly Stole 10% Of Your Cash");
-                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
-                                }
                                 fakeMaxHealth *= 2; 
-                                fakeHealth = fakeMaxHealth;
+                                fakeHealth = fakeMaxHealth; 
                                 boss.trackSpeedMultiplier = 1;
                                 SpeedMultiplier = 1f;
                                 boss.Rotation = boss.prevRot;
                                 Values.DefeatedCounter++;
+                                if (Values.DefeatedCounter == 1)
+                                {
+                                    var text = "Im not that tasty! Crumbly Stole 10% of your cash";
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
+                                if (Values.DefeatedCounter == 2)
+                                { 
+                                    var text = "Ouch! Crumbly Stole 10% of your cash";
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
+                                if (Values.DefeatedCounter == 3)
+                                { 
+                                    var text = "Im not eatable! Crumbly Stole 10% of your cash";
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
+                                if (Values.DefeatedCounter == 4)
+                                { 
+                                    var text = "Stop it! Crumbly Stole 10% of your cash";
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
+                                if (Values.DefeatedCounter == 5)
+                                { 
+                                    var text = "NOOOOO! Crumbly Stole 10% of your cash before dying";
+                                    SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() / 0.1f);
+                                }
                             }
 
                             Values.bossDead = false; 

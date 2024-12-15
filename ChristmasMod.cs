@@ -37,6 +37,8 @@ using MelonLoader.Utils;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using Il2CppAssets.Scripts.Models.Effects;
+using Il2CppAssets.Scripts.Models.Towers.Behaviors;
 using TemplateMod.Moabs;
 using TemplateMod.Towers;
 using TemplateMod.Towers.Elf.R20;
@@ -46,6 +48,7 @@ using TemplateMod.Towers.NonGameModeSanta;
 using TemplateMod.Towers.PresentLauncher;
 using TemplateMod.UI;
 using UnityEngine;
+using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
 
 [assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -197,7 +200,7 @@ public class ChristmasMod : BloonsTD6Mod
         {
             if (tower.towerModel.baseId == "Mermonkey")
             {
-                Gift.GiftUI.CreatePanel(2000, 50, false);
+                Gift.GiftUI.CreatePanel(2000, 50, true);
 
                 Values.trivia1 = false;
                 
@@ -239,17 +242,6 @@ public class ChristmasMod : BloonsTD6Mod
             InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), ModContent.GetTowerModel<Santa>(), ObjectId.Create(9999, 0), false, something, true, true, false, 0);
         }
     }
-
-    //public override void OnUpdate()
-    //{
-    //    if (Values.Snowstorm == true)
-    //    {
-    //        Values.SnowstormPrefab = Game.instance.model.GetTowerFromId("IceMonkey-040").GetDescendant<ActivateAttackModel>().GetDescendant<CreateEffectOnAbilityModel>().effectModel.assetId;
-    //    
-    //        InGame.instance.bridge.Simulation.SpawnEffect(Values.SnowstormPrefab, new Vector3(0, 140, 0), 0, 1, 0.1f);
-    //    }
-    //}
-
     public override void OnTowerUpgraded(Tower tower, string upgradeName, TowerModel newBaseTowerModel)
     {
         if (Values.Snowstorm == true)
@@ -265,10 +257,17 @@ public class ChristmasMod : BloonsTD6Mod
             tower.UpdateRootModel(towerModel);
         }
     }
-
     public override void OnNewGameModel(GameModel result, MapModel map)
     {
         OpenerUI.CreatePanel();
+    }
+
+    public override void OnUpdate()
+    {
+        if (Values.Snowstorm == true)
+        {
+            InGame.instance.bridge.Simulation.SpawnEffect(ModContent.CreatePrefabReference<SnowstormEffect>(), new Vector3(0, 0, 0), 0, 1.1f, isFullscreen: (Fullscreen)1);
+        }
     }
 
     public override void OnRoundEnd()
@@ -403,7 +402,6 @@ static class GiftAbility
                 {
                     InGame.instance.bridge.simulation.SpawnEffect(ModContent.CreatePrefabReference<GiftEffect>(), bloon.Position, 0, 2);
                     bloon.Damage(50, null, true, true,false);
-                    MelonLogger.Msg("Casted");
                 }
             }
         }
@@ -412,7 +410,7 @@ static class GiftAbility
 
 public class GiftEffect : ModDisplay
 {
-    public override string BaseDisplay => "6d84b13b7622d2744b8e8369565bc058";
+    public override string BaseDisplay => "6d84b13b7622d2744b8e8369565bc058"; 
 
     public override void ModifyDisplayNode(UnityDisplayNode node)
     {
@@ -421,6 +419,15 @@ public class GiftEffect : ModDisplay
         RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[2], ModContent.GetTexture<ChristmasMod>("GiftsParticle"));
         RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[1], ModContent.GetTexture<ChristmasMod>("blank"));
         ((Component)((Il2CppArrayBase<Renderer>)node.genericRenderers)[2]).GetComponent<ParticleSystem>().startSpeed *= 0.2f;
+    }
+}
+
+public class SnowstormEffect : ModDisplay
+{
+    public override string BaseDisplay => "06928d3ec6e91854d99859c4f1dac91d";
+
+    public override void ModifyDisplayNode(UnityDisplayNode node)
+    {
     }
 }
 
@@ -553,6 +560,18 @@ static class RoundPatch
             }));
 
             Gift.GiftUI.CreatePanel(5000, 100);
+        }
+        
+        if (__instance.GetCurrentRound() == 54)
+        {
+            var text = "I've sent a massive gift box! Make sure to pop it for a reward and DO NOT let it leak!";
+
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+        }
+
+        if (__instance.GetCurrentRound() == 55)
+        {
+            Gift.GiftUI.CreatePanel(5000, 100, true);
         }
         
         if (__instance.GetCurrentRound() == 58)

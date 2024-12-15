@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TemplateMod.Bloons;
+using UnityEngine;
 
 namespace TemplateMod.Moabs
 {
@@ -20,9 +21,9 @@ namespace TemplateMod.Moabs
         {
             bloonModel.RemoveAllChildren();
             bloonModel.AddToChildren<SnowBloon>(5);
-            bloonModel.maxHealth = 5;
+            bloonModel.maxHealth = 100;
             bloonModel.isImmuneToSlow = true;
-            bloonModel.bloonProperties = Il2Cpp.BloonProperties.Frozen | Il2Cpp.BloonProperties.White;
+            bloonModel.bloonProperties = Il2Cpp.BloonProperties.White;
         }
 
         public class SnowMoabDisplay : ModBloonDisplay<SnowMoab>
@@ -31,7 +32,10 @@ namespace TemplateMod.Moabs
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-                node.DumpTextures("SnowMoab");
+                foreach(var renderer in node.GetMeshRenderers())
+                {
+                    renderer.SetMainTexture(GetTexture(Name));
+                }
             }
         }
 
@@ -43,7 +47,10 @@ namespace TemplateMod.Moabs
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-                node.DumpTextures("SnowMoab1");
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    renderer.SetMainTexture(GetTexture(Name));
+                }
             }
         }
 
@@ -55,7 +62,10 @@ namespace TemplateMod.Moabs
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-                node.DumpTextures("SnowMoab2");
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    renderer.SetMainTexture(GetTexture(Name));
+                }
             }
         }
 
@@ -67,7 +77,10 @@ namespace TemplateMod.Moabs
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-                node.DumpTextures("SnowMoab3");
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    renderer.SetMainTexture(GetTexture(Name));
+                }
             }
         }
 
@@ -79,7 +92,10 @@ namespace TemplateMod.Moabs
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-                node.DumpTextures("SnowMoab4");
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    renderer.SetMainTexture(GetTexture(Name));
+                }
             }
         }
     }

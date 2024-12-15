@@ -28,9 +28,7 @@ namespace TemplateMod.Towers.Elf.R80
 
         public override string BaseTower => TowerID<StronkElf>();
 
-        public override int ShopTowerCount => 2;
-
-        public override int Cost => 5150;
+        public override int Cost => 25000;
 
         public override void ModifyBaseTowerModel(TowerModel towerModel)
         {
@@ -61,30 +59,20 @@ namespace TemplateMod.Towers.Elf.R80
 
                     if (num < 5)
                     {
-                        model.projectile = Game.instance.model.GetTowerFromId("BombShooter-502").GetWeapon().projectile;
-                        ModHelper.Log<ChristmasMod.ChristmasMod>("502");
+                        model.projectile = Game.instance.model.GetTowerFromId("BombShooter-502").GetWeapon().projectile.Duplicate();
                     }
-                    else if (num < 30)
+                    else if (num < 25)
                     {
-                        model.projectile = Game.instance.model.GetTowerFromId("BombShooter-402").GetWeapon().projectile;
-                        ModHelper.Log<ChristmasMod.ChristmasMod>("402");
+                        model.projectile = Game.instance.model.GetTowerFromId("BombShooter-402").GetWeapon().projectile.Duplicate();
                     }
-                    else if (num < 85)
+                    else if (num <= 60)
                     {
-                        model.projectile = Game.instance.model.GetTowerFromId("BombShooter-302").GetWeapon().projectile;
-                        ModHelper.Log<ChristmasMod.ChristmasMod>("302");
+                        model.projectile = Game.instance.model.GetTowerFromId("BombShooter-302").GetWeapon().projectile.Duplicate();
                     }
                     else if (num <= 100)
                     {
-                        model.projectile = Game.instance.model.GetTowerFromId("BombShooter-202").GetWeapon().projectile;
-                        ModHelper.Log<ChristmasMod.ChristmasMod>("202");
+                        model.projectile = Game.instance.model.GetTowerFromId("BombShooter-202").GetWeapon().projectile.Duplicate();
                     }
-                    else
-                    {
-                        ModHelper.Log<ChristmasMod.ChristmasMod>("Nothing??");
-                    }
-
-                    ModHelper.Log<ChristmasMod.ChristmasMod>(num);
                 }
             }
         }

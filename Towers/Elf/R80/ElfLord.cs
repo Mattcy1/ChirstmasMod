@@ -24,7 +24,7 @@ namespace TemplateMod.Towers.Elf.R80
 
         public override string Icon => Portrait;
 
-        public override string Description => "Santa's strongist elf, throws presents full of... <b>BOMBS??</b>";
+        public override string Description => "Santa's strongest elf, throws presents full of... <b>BOMBS??</b>";
 
         public override string BaseTower => TowerID<StronkElf>();
 

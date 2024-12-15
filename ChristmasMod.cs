@@ -474,6 +474,12 @@ static class RoundPatch
                 }
             }));
         }
+        
+        if (__instance.GetCurrentRound() == 24)
+        {
+            var text = "What's your favorite Christmas dish? Mine is cookies and milk!";
+            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+        }
 
         if (__instance.GetCurrentRound() == 29)
         {
@@ -494,6 +500,17 @@ static class RoundPatch
             Values.Snowstorm = true;
             Values.SnowstormRound = 1;
             PopupScreen.instance?.ShowOkPopup("Snowstorm started");
+        }
+        
+        if (__instance.GetCurrentRound() == 34)
+        {
+            SantaMessage[] messages =
+            [
+                new SantaMessage("Did you know that Christmas was officially established in the 4th century?", SantaEmotion.SantaHappy),
+                new SantaMessage("Did you know that the tradition of Christmas trees originated in Germany? The custom of decorating evergreen trees began in the 16th century when devout Christians in Germany brought trees into their homes and adorned them with candles. This tradition later spread across Europe and became popular worldwide", SantaEmotion.SantaHappy),
+            ];
+
+            SantaStory.SantaStoryUI.CreatePanel(messages);
         }
 
         if (__instance.GetCurrentRound() == 40)

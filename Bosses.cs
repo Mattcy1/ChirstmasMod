@@ -33,8 +33,6 @@ namespace BossHandlerNamespace
         class BossDisplay : ModDisplay
         {
             public override string BaseDisplay => Game.instance.model.GetBloon("Bad").display.guidRef;
-
-
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
                 SetMeshTexture(node, "PoppermintDiffuse", 0);
@@ -137,6 +135,27 @@ namespace BossHandlerNamespace
                 cookieMonsterBossRegisteration.fakeMaxHealth = 1500000;
                 
                 cookieMonsterBossRegisteration.SpawnOnRound(80);
+                
+                //R55 Gift Box
+                
+                BloonModel Giftbox = CreateBossBase(225000, 1f);
+
+                BossRegisteration giftboxBossRegisteration = new BossRegisteration(Giftbox, "Giftbox",
+                    "Massive Giftbox", true, "GiftsParticle", 0, "A massive gift box that runs through the map. Beating it will let you open it!");
+                
+                giftboxBossRegisteration.SpawnOnRound(55);
+                
+                Giftbox.disallowCosmetics = true;
+                Giftbox.ApplyDisplay<MassivePresent>();
+            }
+        }
+        
+        public class MassivePresent : ModDisplay
+        {
+            public override string BaseDisplay => Generic2dDisplay;
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+                Set2DTexture(node,"MassiveGiftbox");
             }
         }
 

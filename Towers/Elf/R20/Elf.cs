@@ -1,4 +1,4 @@
-﻿using BTD_Mod_Helper.Api.Display;
+using BTD_Mod_Helper.Api.Display;
 using BTD_Mod_Helper.Api.Towers;
 using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
@@ -33,6 +33,8 @@ namespace TemplateMod.Towers.Elf.R20
             towerModel.range = 20;
 
             var proj = towerModel.GetWeapon().projectile;
+            proj.GetDamageModel().damage = 2;
+            towerModel.GetWeapon().rate = 0.5f;
             proj.ApplyDisplay<Snowball>();
             proj.GetBehavior<TravelStraitModel>().speed /= 4;
             proj.pierce = 1;

@@ -22,6 +22,7 @@ namespace TemplateMod.Moabs
             public override void ModifyBaseBloonModel(BloonModel bloonModel)
             {
                 bloonModel.id = GetId<ChristmasMod.ChristmasMod>(Name);
+                bloonModel.dontShowInSandbox = true;
                 bloonModel.RemoveAllChildren();
                 bloonModel.AddToChildren<SnowBloon>(2);
                 bloonModel.maxHealth = 20;

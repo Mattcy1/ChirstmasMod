@@ -13,6 +13,7 @@ using Il2CppAssets.Scripts.Simulation;
 using Il2CppAssets.Scripts.Simulation.Bloons;
 using Il2CppAssets.Scripts.Simulation.Bloons.Behaviors;
 using Il2CppAssets.Scripts.Simulation.SMath;
+using Il2CppAssets.Scripts.Simulation.Towers;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using Il2CppAssets.Scripts.Unity.Scenes;
@@ -24,6 +25,7 @@ using UnityEngine;
 using static BossHandlerNamespace.BossHandler;
 using Color = UnityEngine.Color;
 using Math = Il2CppAssets.Scripts.Simulation.SMath.Math;
+using Vector2 = Il2CppAssets.Scripts.Simulation.SMath.Vector2;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
 
 namespace BossHandlerNamespace
@@ -33,6 +35,7 @@ namespace BossHandlerNamespace
         class BossDisplay : ModDisplay
         {
             public override string BaseDisplay => Game.instance.model.GetBloon("Bad").display.guidRef;
+
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
                 SetMeshTexture(node, "PoppermintDiffuse", 0);
@@ -140,34 +143,169 @@ namespace BossHandlerNamespace
                 cookieMonsterBossRegisteration.usesHealthOverride = true;
                 cookieMonsterBossRegisteration.fakeHealth = 1500000;
                 cookieMonsterBossRegisteration.fakeMaxHealth = 1500000;
-                
+
                 cookieMonsterBossRegisteration.SpawnOnRound(80);
+
+                // Grinch (Oh boy)
+
+                BloonModel Grinch = CreateBossBase(20000000, 1f);
+
+                BossRegisteration grinchRegisteration = new BossRegisteration(Grinch, "GrinchBoss",
+                    "The Grinch", true, "GrinchIcon", 0, "");
                 
+                HealthPercentTriggerModel healthGrinch = Game.instance.model.GetBloon("Bloonarius1")
+                    .GetBehavior<HealthPercentTriggerModel>().Duplicate();
+                health.percentageValues = new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1f };
+                health.actionIds = new string[] { "SpawnBloons" };
+
+                SpawnBloonsActionModel spawnGrinch = Game.instance.model.GetBloon("Bloonarius1")
+                    .GetBehavior<SpawnBloonsActionModel>().Duplicate();
+                spawnGrinch.bloonType = "Zomg";
+                spawnGrinch.actionId = "SpawnBloons";
+                spawnGrinch.spawnCount = 10;
+                spawnGrinch.spawnTrackMin = 0.5f;
+                spawnGrinch.spawnTrackMax = 0.5f;
+                spawnGrinch.bossName = "Phayze";
+                
+                TimeTriggerModel time = new TimeTriggerModel("time", 20, false, new string[] { "Freeze" } );
+
+                
+                StunTowersInRadiusActionModel stunGrinch = Game.instance.model.GetBloon("Vortex1").GetBehavior<StunTowersInRadiusActionModel>();
+                stunGrinch.stunDuration = 5;
+                stunGrinch.actionId = "Freeze";
+                stunGrinch.radius = 999f;
+                
+                
+                Grinch.AddBehavior(time);
+                Grinch.AddBehavior(stunGrinch);
+                Grinch.AddBehavior(healthGrinch);
+                Grinch.AddBehavior(spawnGrinch);
+                
+                grinchRegisteration.usesHealthOverride = true;
+                grinchRegisteration.fakeHealth = 20000000;
+                grinchRegisteration.fakeMaxHealth = 20000000;
+                
+                
+
+                grinchRegisteration.SpawnOnRound(100);
+
                 //R55 Gift Box
-                
+
                 BloonModel Giftbox = CreateBossBase(225000, 1f);
 
                 BossRegisteration giftboxBossRegisteration = new BossRegisteration(Giftbox, "Giftbox",
-                    "Massive Giftbox", true, "GiftsParticle", 0, "A massive gift box that runs through the map. Beating it will let you open it!");
-                
+                    "Massive Giftbox", true, "GiftsParticle", 0,
+                    "A massive gift box that runs through the map. Beating it will let you open it!");
+
                 giftboxBossRegisteration.SpawnOnRound(55);
-                
+
                 Giftbox.disallowCosmetics = true;
                 Giftbox.ApplyDisplay<MassivePresent>();
+
+                CandyCaneBoss.disallowCosmetics = true;
+                FrostyBoss.disallowCosmetics = true;
+                Crumbly.disallowCosmetics = true;
+                CookieMonster.disallowCosmetics = true;
+                Grinch.disallowCosmetics = true;
+                
+                // NONE HEALTH BAR BOSSES
+                
+                BloonModel CandyCaneBossNHB = CreateBossBase(35000, 1f);
+
+                //Poppermint
+
+                CandyCaneBossNHB.ApplyDisplay<BossDisplay>();
+
+
+                BossRegisteration candyCaneRegisterationNHB = new BossRegisteration(CandyCaneBossNHB, "CandyCaneBossNHB",
+                    "Poppermint", false, "PoppermintIcon", 0,
+                    "The Poppermint: For every 10% of its health lost, it spawns 5 Candy Cane Bloons to swarm the battlefield. Defeating this boss will grant Santa a powerful upgrade, making him stronger for the battles ahead.");
+
+                HealthPercentTriggerModel healthNHB = Game.instance.model.GetBloon("Bloonarius1")
+                    .GetBehavior<HealthPercentTriggerModel>().Duplicate();
+                healthNHB.percentageValues = new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1f };
+                healthNHB.actionIds = new string[] { "SpawnBloons" };
+
+                SpawnBloonsActionModel spawnNHB = Game.instance.model.GetBloon("Bloonarius1")
+                    .GetBehavior<SpawnBloonsActionModel>().Duplicate();
+                spawnNHB.bloonType = "Rainbow";
+                spawnNHB.actionId = "SpawnBloons";
+                spawnNHB.spawnCount = 5;
+                spawnNHB.spawnTrackMin = 0.3f;
+                spawnNHB.spawnTrackMax = 0.5f;
+                spawnNHB.bossName = "Phayze";
+
+                CandyCaneBossNHB.AddBehavior(healthNHB);
+                CandyCaneBossNHB.AddBehavior(spawnNHB);
+
+                //Frosty the Snowbloon
+
+                BloonModel FrostyBossNHB = CreateBossBase(90000, 1f);
+                FrostyBossNHB.ApplyDisplay<FrostyDisplay>();
+
+                BossRegisteration frostyBossRegisterationNHB = new BossRegisteration(FrostyBossNHB, "FrostyNHB",
+                    "Frosty The Snowbloon", false, "FrostyIcon", 0,
+                    "Frosty the Snowbloon is a chilling force. Immune to ice attacks, As it progresses, every time it loses a skull, it stuns all towers, freezing them in place. While Frosty is alive, a relentless snowstorm will rage across the battlefield, Defeating Frosty will bring you one step closer to saving Christmas!");
+
+                HealthPercentTriggerModel health1NHB = Game.instance.model.GetBloon("Bloonarius1")
+                    .GetBehavior<HealthPercentTriggerModel>().Duplicate();
+                health1NHB.percentageValues = new float[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1f };
+                health1NHB.actionIds = new string[] { "Freeze" };
+
+                StunTowersInRadiusActionModel stunNHB = Game.instance.model.GetBloon("Vortex1")
+                    .GetBehavior<StunTowersInRadiusActionModel>();
+                stunNHB.stunDuration = 5f;
+                stunNHB.actionId = "Freeze";
+                stunNHB.radius = 999f;
+
+                FrostyBossNHB.AddBehavior(health1NHB);
+                FrostyBossNHB.AddBehavior(stunNHB);
+
+                // Crumbly 
+
+                BloonModel CrumblyNHB = CreateBossBase(50000, 1f);
+
+                BossRegisteration crumblyBossRegisterationNHB = new BossRegisteration(CrumblyNHB, "CrumblyNHB", "Crumbly", false,
+                    "CrumblyIcon", 0,
+                    "I’m Crumbly, the Gingerbread Boss! I’ve got 5 lives, and with each one, my HP doubles. To make things even sweeter, my speed increases every second—I’ve gotta go fast! Catch me if you can!");
+
+                crumblyBossRegisterationNHB.usesExtraInfo = true;
+                crumblyBossRegisterationNHB.extraInfoText = "Test";
+                crumblyBossRegisterationNHB.extraInfoIcon = "descriptionButton";
+                crumblyBossRegisterationNHB.fakeHealth = 50000;
+                crumblyBossRegisterationNHB.fakeMaxHealth = 50000;
+                crumblyBossRegisterationNHB.usesHealthOverride = true;
+
+                // Cookie Monster 
+
+                BloonModel CookieMonsterNHB = CreateBossBase(1500000, 1f);
+
+                BossRegisteration cookieMonsterBossRegisterationNHB = new BossRegisteration(CookieMonsterNHB, "CookieMonsterNHB",
+                    "Cookie Monster", false, "CookieMonsterIcon", 0, "");
+
+                cookieMonsterBossRegisterationNHB.usesHealthOverride = true;
+                cookieMonsterBossRegisterationNHB.fakeHealth = 1500000;
+                cookieMonsterBossRegisterationNHB.fakeMaxHealth = 1500000;
             }
         }
-        
+
         public class MassivePresent : ModDisplay
         {
             public override string BaseDisplay => Generic2dDisplay;
+
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-                Set2DTexture(node,"MassiveGiftbox");
+                Set2DTexture(node, "MassiveGiftbox");
             }
         }
 
         public static void BossInit(Bloon bloon, BloonModel bloonModel, BossRegisteration registration)
         {
+            if (Values.GrinchAngry == true)
+            {
+                registration.isMainBoss = false;
+            }
+            
             if (bloonModel.id == "Crumbly")
             {
                 MonoBehaviorTemplate mono = StartMonobehavior<MonoBehaviorTemplate>();
@@ -175,10 +313,20 @@ namespace BossHandlerNamespace
                 mono.boss = bloon;
                 mono.registration = registration;
             }
-            
+
             if (bloonModel.id == "CookieMonster")
             {
-                MonoBehaviorTemplate.MonoBehaviorCookieMonster mono = StartMonobehavior<MonoBehaviorTemplate.MonoBehaviorCookieMonster>();
+                MonoBehaviorTemplate.MonoBehaviorCookieMonster mono =
+                    StartMonobehavior<MonoBehaviorTemplate.MonoBehaviorCookieMonster>();
+
+                mono.boss = bloon;
+                mono.registration = registration;
+            }
+            
+            if (bloonModel.id == "GrinchBoss")
+            {
+                MonoBehaviorTemplate.MonoBehaviorCookieMonster.MonoBehaviorGrinch mono =
+                    StartMonobehavior<MonoBehaviorTemplate.MonoBehaviorCookieMonster.MonoBehaviorGrinch>();
 
                 mono.boss = bloon;
                 mono.registration = registration;
@@ -260,35 +408,35 @@ namespace BossHandlerNamespace
                             Values.bossDead = false;
                         });
 
-                        if (Values.DefeatedCounter == 0)
+                        if (Values.DefeatedCounter == 0 && Values.GrinchAngry == false)
                         {
                             var text = "Im not that tasty! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
 
-                        if (Values.DefeatedCounter == 1)
+                        if (Values.DefeatedCounter == 1 && Values.GrinchAngry == false)
                         {
                             var text = "Ouch! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
 
-                        if (Values.DefeatedCounter == 2)
+                        if (Values.DefeatedCounter == 2 && Values.GrinchAngry == false)
                         {
                             var text = "Im not eatable! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
 
-                        if (Values.DefeatedCounter == 3)
+                        if (Values.DefeatedCounter == 3 && Values.GrinchAngry == false)
                         {
                             var text = "Stop it! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
 
-                        if (Values.DefeatedCounter == 4)
+                        if (Values.DefeatedCounter == 4 && Values.GrinchAngry == false)
                         {
                             var text = "NOOOOO! Crumbly Stole 10% of your cash before dying";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
@@ -341,13 +489,16 @@ namespace BossHandlerNamespace
 
                         fakeHealth = Math.Max(0, fakeHealth);
 
-                        if (fakeHealth <= fakeMaxHealth * 0.5f && Values.tsunami == false)
+                        if (fakeHealth <= fakeMaxHealth * 0.5f && Values.tsunami == false && Values.GrinchAngry == false)
                         {
                             Values.disableprojectile = true;
                             Values.tsunami = true;
-                            InGame.instance.bridge.simulation.SpawnEffect(Game.instance.model.GetTowerFromId("Mermonkey-050").GetAbility().GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId, new Vector3(0, 0, 0), 0, 1);
+                            InGame.instance.bridge.simulation.SpawnEffect(
+                                Game.instance.model.GetTowerFromId("Mermonkey-050").GetAbility()
+                                    .GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId,
+                                new Vector3(0, 0, 0), 0, 1);
                             boss.trackSpeedMultiplier = 2;
-                            
+
                             Task.Run(async () =>
                             {
                                 Values.disableprojectile = false;
@@ -359,41 +510,71 @@ namespace BossHandlerNamespace
                         if (fakeHealth == 0 && Values.bossDead == false)
                         {
                             Values.bossDead = true;
-                            
-                            if (Values.DefeatedCounter == 0)
-                            {
-                                StoryMessage messages = new StoryMessage("NO! IMPOSSIBLE!I'M THE STRONGEST BOSS YET, I WON'T LET THIS SLIDE!, IT'S TIME TO SHOW YOU MY TRUE POWER!", StoryPortrait.CookieMonsterIcon, new(() =>
-                                {
-                                    fakeMaxHealth *= 3;
-                                    fakeHealth = fakeMaxHealth;
-                                    boss.trackSpeedMultiplier *= 5;
-                                    Values.DefeatedCounter += 1;
-                                    Values.tsunami = false;
-                                    InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
-                                }));
 
-                                Story.StoryUI.CreatePanel(messages); 
-                                
+                            if (Values.DefeatedCounterCookie == 0  && Values.GrinchAngry == false)
+                            {
+                                StoryMessage messages = new StoryMessage(
+                                    "NO! IMPOSSIBLE! I'M THE STRONGEST BOSS YET, I WON'T LET THIS SLIDE!, IT'S TIME TO SHOW YOU MY TRUE POWER!",
+                                    StoryPortrait.CookieMonsterIcon, new(() =>
+                                    {
+                                        fakeMaxHealth *= 3;
+                                        fakeHealth = fakeMaxHealth;
+                                        boss.trackSpeedMultiplier *= 5;
+                                        Values.DefeatedCounterCookie += 1;
+                                        Values.tsunami = false;
+                                        InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
+                                    }));
+
+                                Story.StoryUI.CreatePanel(messages);
+
                                 Values.bossDead = false;
                             }
-                            else if (Values.DefeatedCounter == 1)
+                            else if (Values.DefeatedCounterCookie == 0  && Values.GrinchAngry == true)
                             {
-                                StoryMessage messages = new StoryMessage("I guess I'm not strong enough, But I've got one last trick up my sleeve, Cookie Monster proceeded to steal half your money... and then died.", StoryPortrait.CookieMonsterIcon, new(() =>
-                                {
-                                    boss.trackSpeedMultiplier = -40;
-                                    boss.Rotation = boss.PercThroughMap() * 20000;
-                                    boss.prevRot = boss.Rotation; 
-                                    
-                                    Task.Run(async () =>
-                                    {
-                                        await Task.Delay(4000);
+                                fakeMaxHealth *= 3;
+                                fakeHealth = fakeMaxHealth;
+                                boss.trackSpeedMultiplier *= 5;
+                                Values.DefeatedCounterCookie += 1;
+                                Values.tsunami = false;
+                                InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
 
-                                        boss.Destroy();
-                                    });
-                                    InGame.instance.AddCash(-InGame.instance.GetCash() * 0.5f);
-                                }));
-                                
+                                Values.bossDead = false;
+                            }
+                            else if (Values.DefeatedCounterCookie == 1 && Values.GrinchAngry == false)
+                            {
+                                StoryMessage messages = new StoryMessage(
+                                    "I guess I'm not strong enough, But I've got one last trick up my sleeve, Cookie Monster proceeded to steal half your money... and then died.",
+                                    StoryPortrait.CookieMonsterIcon, new(() =>
+                                    {
+                                        boss.trackSpeedMultiplier = -40;
+                                        boss.Rotation = boss.PercThroughMap() * 20000;
+                                        boss.prevRot = boss.Rotation;
+
+                                        Task.Run(async () =>
+                                        {
+                                            await Task.Delay(4000);
+
+                                            boss.Destroy();
+                                        });
+                                        InGame.instance.AddCash(-InGame.instance.GetCash() * 0.5f);
+                                    }));
+
                                 Story.StoryUI.CreatePanel(messages);
+
+                                Values.bossDead = false;
+                            }
+                            else if (Values.DefeatedCounterCookie == 1 && Values.GrinchAngry == true)
+                            {
+                                boss.trackSpeedMultiplier = -40;
+                                boss.Rotation = boss.PercThroughMap() * 20000;
+                                boss.prevRot = boss.Rotation;
+
+                                Task.Run(async () =>
+                                {
+                                    await Task.Delay(4000);
+
+                                    boss.Destroy();
+                                });
                                 
                                 Values.bossDead = false;
                             }
@@ -404,27 +585,197 @@ namespace BossHandlerNamespace
                         this.Destroy();
                     }
                 }
+
+                [RegisterTypeInIl2Cpp(false)]
+                public class MonoBehaviorGrinch : MonoBehaviour
+                {
+                    public Bloon boss;
+                    public BossRegisteration registration;
+                    public int fakeHealth = 20000000;
+                    public int fakeMaxHealth = 20000000;
+
+                    public MonoBehaviorGrinch() : base()
+                    {
+
+                    }
+
+                    public void Start()
+                    {
+                        Values.DefeatedCounter = 0;
+                        Values.DefeatedCounterCookie = 0;
+                        Values.Snowstorm = true;
+                        Values.SnowstormRound = 5;
+                    }
+
+                    public void Update()
+                    {
+                        if (boss != null)
+                        {
+                            registration.fakeHealth = fakeHealth;
+                            registration.fakeMaxHealth = fakeMaxHealth;
+
+                            if (boss.health < boss.bloonModel.maxHealth)
+                            {
+                                fakeHealth -= (boss.bloonModel.maxHealth - boss.health);
+                            }
+
+                            boss.health = boss.bloonModel.maxHealth;
+
+                            fakeHealth = Math.Max(0, fakeHealth);
+
+                            if (fakeHealth <= fakeMaxHealth * 0.5f && Values.tsunami == false && Values.GrinchAngry == true)
+                            {
+                                foreach (var tower in InGame.instance.GetTowers())
+                                {
+                                    CalculateNewSpot(tower, 114, 145, false);
+                                }
+                                
+                                Values.disableprojectile = true;
+                                Values.tsunami = true;
+                                InGame.instance.bridge.simulation.SpawnEffect(
+                                    Game.instance.model.GetTowerFromId("Mermonkey-050").GetAbility()
+                                        .GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId,
+                                    new Vector3(0, 0, 0), 0, 1);
+                                boss.trackSpeedMultiplier = 5;
+
+                                Task.Run(async () =>
+                                {
+                                    Values.disableprojectile = false;
+                                    await Task.Delay(10000);
+                                    boss.trackSpeedMultiplier = 3;
+                                });
+                            }
+
+                            if (fakeHealth == 0 && Values.bossDead == false)
+                            {
+                                Values.bossDead = true;
+
+                                if (Values.GrinchAngry == false)
+                                {
+                                    StoryMessage messages = new StoryMessage(
+                                        "YOU FOOL! YOU CAN'T STOP ME! I AM THE GRINCH, THE ULTIMATE BOSS! HOW ABOUT WE EVEN THE BATTLEFIELD? MUAHAHA! GRINCHVENGERS ASSEMBLE LET THE FUN BEGIN SANTA!!",
+                                        StoryPortrait.GrinchAngryIcon, new(() =>
+                                        {
+                                            Values.GrinchAngry = true;
+                                            fakeMaxHealth = 60000000;
+                                            fakeHealth = fakeMaxHealth;
+                                            boss.trackSpeedMultiplier = 3;
+                                            Values.tsunami = false;
+                                            Task.Run(async () =>
+                                            {
+                                                await Task.Delay(2000);
+
+                                                InGame.instance.SpawnBloons("CandyCaneBossNHB", 1, 0);
+                                            });
+                                            Task.Run(async () =>
+                                            {
+                                                await Task.Delay(4000);
+                                                
+                                                Values.storyExecuted = true;
+
+                                                InGame.instance.SpawnBloons("FrostyNHB", 1, 0);
+                                            });
+                                            Task.Run(async () =>
+                                            {
+                                                await Task.Delay(6000);
+
+                                                InGame.instance.SpawnBloons("CrumblyNHB", 1, 0);
+                                            });
+                                            Task.Run(async () =>
+                                            {
+                                                await Task.Delay(8000);
+
+                                                InGame.instance.SpawnBloons("CookieMonsterNHB", 1, 0);
+
+                                                //BossHandler.BossPanel mono = StartMonobehavior<BossHandler.BossPanel>();
+
+                                                //mono.registeration = registration;
+                                                //mono.bloon = boss.Id;
+                                            });
+                                        }));
+
+                                    Story.StoryUI.CreatePanel(messages);
+
+                                    Values.bossDead = false;
+                                }
+                                else if (Values.GrinchAngry == true)
+                                {
+                                    StoryMessage messages = new StoryMessage(
+                                        "At long last, I was defeated... sigh. Don’t close the game yet! There’s a secret cutscene waiting for you once all the bosses are defeated.",
+                                        StoryPortrait.GrinchAngryIcon, new(() =>
+                                        {
+                                            boss.trackSpeedMultiplier = -80;
+                                            boss.Rotation = boss.PercThroughMap() * 200000;
+                                            boss.prevRot = boss.Rotation;
+
+                                            Task.Run(async () =>
+                                            {
+                                                await Task.Delay(4000);
+
+                                                boss.Destroy();
+                                            });
+                                        }));
+
+                                    Story.StoryUI.CreatePanel(messages);
+
+                                    Values.bossDead = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            this.Destroy();
+                        }
+                    }
+                }
             }
         }
-    }
-}
-
-[HarmonyPatch(typeof(Il2CppAssets.Scripts.Simulation.Towers.Weapons.Weapon), nameof(Il2CppAssets.Scripts.Simulation.Towers.Weapons.Weapon.SpawnDart))]
-public static class StopProjectile
-{
-    [HarmonyPostfix]
-    public static void Postfix(Weapon __instance)
-    {
-    }
-
-    [HarmonyPrefix]
-    public static bool Prefix()
-    {
-        if (Values.disableprojectile == true)
+        public static int RandomInt(int min, int max)
         {
-            return false;
+            System.Random rand = new();
+            return rand.Next(min, max);
         }
-        return true;
+        public static void CalculateNewSpot(Tower tower, int maxDistance, int minDistance, bool limitDistance)
+        {
+            Vector2 oldPos = tower.Position.ToVector2();
+
+            Vector2 newPos = new(RandomInt(-145, 145), RandomInt(-114 + 5, 114));
+
+            if (limitDistance)
+            {
+                float travelledDistance = newPos.Distance(oldPos);
+
+                while(travelledDistance > maxDistance || travelledDistance < minDistance)
+                {
+                    newPos = new(RandomInt(-145, 145), RandomInt(-114 + 5, 114));
+                    travelledDistance = newPos.Distance(oldPos);
+                }
+            }
+
+            tower.PositionTower(newPos);
+            tower.Position.Z = 100;
+        }
+
+
+        [HarmonyPatch(typeof(Il2CppAssets.Scripts.Simulation.Towers.Weapons.Weapon), nameof(Il2CppAssets.Scripts.Simulation.Towers.Weapons.Weapon.SpawnDart))]
+        public static class StopProjectile
+        {
+            [HarmonyPostfix]
+            public static void Postfix(Weapon __instance)
+            {
+            }
+
+            [HarmonyPrefix]
+            public static bool Prefix()
+            {
+                if (Values.disableprojectile == true)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
     }
 }
 

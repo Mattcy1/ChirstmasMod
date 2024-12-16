@@ -1,6 +1,6 @@
 global using StoryPortrait = TemplateMod.UI.Story.StoryPortrait;
 global using StoryMessage = TemplateMod.UI.Story.StoryMessage;
-
+using System;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Display;
@@ -37,6 +37,8 @@ using MelonLoader.Utils;
 using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using BTD_Mod_Helper.Api.ModOptions;
 using Il2CppAssets.Scripts.Models.Effects;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors;
 using TemplateMod.Moabs;
@@ -48,6 +50,9 @@ using TemplateMod.Towers.NonGameModeSanta;
 using TemplateMod.Towers.PresentLauncher;
 using TemplateMod.UI;
 using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEngine.Video;
+using Input = UnityEngine.Windows.Input;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
 
 [assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
@@ -121,6 +126,14 @@ public class Values
         set { defeated = value; }
     }
 
+    
+    private static int Cookiedefeated = 0;
+
+    public static int DefeatedCounterCookie
+    {
+        get { return Cookiedefeated; }
+        set { Cookiedefeated = value; }
+    }
     private static bool BossDead = false;
 
     public static bool bossDead
@@ -145,6 +158,14 @@ public class Values
         set { Gift = value; }
     }
     
+    private static bool StoryExecuted = false;
+
+    public static bool storyExecuted
+    {
+        get { return StoryExecuted; }
+        set { StoryExecuted = value; }
+    }
+    
     private static bool Tsunami = false;
 
     public static bool tsunami
@@ -159,6 +180,13 @@ public class Values
         get { return Disableprojectile; }
         set { Disableprojectile = value; }
     }
+    
+    private static bool grinchAngry = false;
+    public static bool GrinchAngry
+    {
+        get { return grinchAngry; }
+        set { grinchAngry = value; }
+    }
 
     public static PrefabReference SnowstormPrefab;
 }
@@ -168,11 +196,22 @@ public class ChristmasMod : BloonsTD6Mod
     private static readonly System.Random random = new System.Random();
 
     internal static GameObject PresentLauncherButton = null;
+    
+    private VideoPlayer player;
 
     public override void OnRestart()
     {
         PresentLauncher.AddedToShop = false;
         ElfLord.AddedToShop = false;
+        Values.Snowstorm = false;
+        Values.DefeatedCounter = 0;
+        Values.disableprojectile = false;
+        Values.trivia1 = false;
+        Values.gift = 0;
+        Values.bossDead = false;
+        Values.tsunami = false; 
+        Values.snowflake = 0;
+        Values.DefeatedCounterCookie = 0;
     }
 
     private class SaveData(string mapName = "Tutorial")
@@ -260,8 +299,30 @@ public class ChristmasMod : BloonsTD6Mod
     public override void OnNewGameModel(GameModel result, MapModel map)
     {
         OpenerUI.CreatePanel();
+        
+        //GameObject camera = GameObject.Find("Cameras");
+        
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        cube.transform.rotation = Quaternion.Euler(90f, 0f, 0f); 
+        cube.transform.localScale *= 200f;
+        
+        var videoPlayer = cube.AddComponent<UnityEngine.Video.VideoPlayer>();
+        
+        RenderTexture renderTexture = new RenderTexture(1920, 1080, 0);
+        renderTexture.Create();
+        
+        videoPlayer.renderMode = VideoRenderMode.RenderTexture;
+        videoPlayer.targetTexture = renderTexture;
+        
+        Renderer renderer = cube.GetComponent<Renderer>();
+        renderer.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+        renderer.material.mainTexture = renderTexture;
+        
+        string videoPath = @"C:\Users\Mattheo\OneDrive\Documents\BTD6 Mod Sources\ChirstmasMod\Video.mp4";
+        videoPlayer.url = videoPath;
+        
+        videoPlayer.Play();
     }
-
     public override void OnUpdate()
     {
         if (Values.Snowstorm == true)
@@ -269,7 +330,6 @@ public class ChristmasMod : BloonsTD6Mod
             InGame.instance.bridge.Simulation.SpawnEffect(ModContent.CreatePrefabReference<SnowstormEffect>(), new Vector3(0, 0, 0), 0, 1.1f, isFullscreen: (Fullscreen)1);
         }
     }
-
     public override void OnRoundEnd()
     {
         if (random.Next(10) == 0 && Values.Snowstorm == false)
@@ -325,6 +385,7 @@ public class ChristmasMod : BloonsTD6Mod
 
 public class Santa : ModTower<ChristmasTowers>
 {
+    internal static GameObject ShopButton;
     public override string Portrait => "Santa";
     public override string Icon => "Santa";
     public override string BaseTower => TowerType.DartMonkey;
@@ -338,9 +399,9 @@ public class Santa : ModTower<ChristmasTowers>
     public override int ShopTowerCount => 1;
 
     public override string DisplayName => "Santa";
-
     public override void ModifyBaseTowerModel(TowerModel towerModel)
     {
+        towerModel.ApplyDisplay<SantaDisplay>();
         towerModel.range += 30;
         towerModel.GetAttackModel().range += 30;
         towerModel.GetWeapon().projectile.GetDamageModel().damage += 1;
@@ -348,6 +409,17 @@ public class Santa : ModTower<ChristmasTowers>
         towerModel.canAlwaysBeSold = false;
         towerModel.blockSelling = true;
         towerModel.GetWeapon().projectile.ApplyDisplay<Present>();
+    }
+}
+
+public class SantaDisplay : ModDisplay
+{
+    public override string BaseDisplay => Generic2dDisplay; 
+    
+    public override Il2CppAssets.Scripts.Simulation.SMath.Vector3 PositionOffset => new(0, 0, 100);
+    public override void ModifyDisplayNode(UnityDisplayNode node)
+    {
+        Set2DTexture(node,"SantaDisplay");
     }
 }
 
@@ -363,6 +435,24 @@ static class SnowstormPatch
             buff.speedBoost = 1.5f;
             var mutator = buff.Mutator;
             __instance.AddMutator(mutator, 99999);
+        }
+
+        if (Values.storyExecuted == true)
+        {
+            Values.storyExecuted = false;
+            
+            if (Story.StoryUI.instance != null)
+            {
+                Story.StoryUI.instance.Close();
+            }
+                
+            StoryMessage[] messages = [
+                new("This is really bad—all the bosses are here! But my power is stronger than ever. Take $1,000,000 to help you defend!", StoryPortrait.SantaWorry),
+                new("I'm sorry, Santa, but this battle is over! Your little player can't save you!", StoryPortrait.GrinchAngryIcon)
+            ];
+
+            Story.StoryUI.CreatePanel(messages);
+            InGame.instance.AddCash(1000000);
         }
     }
 }
@@ -453,6 +543,8 @@ static class RoundPatch
                 Il2CppSystem.Action<bool> spawn = something;
 
                 InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), ModContent.GetTowerModel<Santa>(), ObjectId.Create(9999, 0), false, something, true, true, false, 0);
+                
+                //Santa.ShopButton.SetActive(false);
             }));
         }
 

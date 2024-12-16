@@ -195,7 +195,7 @@ namespace BossHandlerNamespace
                 extraPanel.Hide();
 
 
-                bossIcon = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", -550, 0, 150), ModContent.GetTextureGUID<BossHandler>("blank"));
+                bossIcon = mainBossPanel.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", -550, 0, 0), ModContent.GetTextureGUID<BossHandler>("blank"));
 
                 mainBossPanel.transform.localPosition = new Vector3(1000, 1080, 0);
                 mainBossPanel.Show();
@@ -314,6 +314,10 @@ namespace BossHandlerNamespace
                 InGame.instance.bridge.GetBloonFromId(bloon).spawnRound += registeration.continueRounds;
 
                 nameText.SetText(registeration.displayName);
+                if (bossIcon.Image != null)
+                {
+                    bossIcon.Image.Destroy();
+                }
                 bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetTextureGUID<BossHandler>(registeration.icon));
                 mainBossPanel.Show();
 

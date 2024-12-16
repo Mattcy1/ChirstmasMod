@@ -54,7 +54,7 @@ namespace TemplateMod.Bloons
 
                     if ((towerModel.baseId == "BombShooter" || towerModel.baseId == "MortarMonkey") && __instance.bloonModel.name == BloonID<SnowBloon>())
                     {
-                        __instance.SetHealth((int)Mathf.Round(totalAmount));
+                        __instance.Damage((float)Mathf.Round(totalAmount), projectile, false, true, true);
                     }
                 }
 

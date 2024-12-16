@@ -37,10 +37,10 @@ namespace TemplateMod.Towers.Elf.R60
             var wpn = towerModel.GetWeapon();
             var proj = wpn.projectile;
 
-            wpn.rate *= 0.8f;
+            wpn.rate = 0.5f;
 
-            proj.GetDamageModel().damage += 2;
-            proj.pierce = 1;
+            proj.GetDamageModel().damage += 3;
+            proj.pierce = 2;
             proj.ApplyDisplay<IceBall>();
             proj.id = "StronkElfIceBall";
 

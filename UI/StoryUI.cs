@@ -30,6 +30,7 @@ public class Story
         SnowMoab,
         CrumblyIcon,
         CookieMonsterIcon,
+        GrinchAngryIcon,
     }
 
 

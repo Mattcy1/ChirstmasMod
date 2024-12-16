@@ -458,7 +458,7 @@ static class RoundPatch
 
         if (__instance.GetCurrentRound() == 9)
         {
-            Story.StoryUI.CreatePanel([new SantaMessage("I don't really pay the elves all to much, I'm sure that won't be a problem. W-what is that??!", StoryPortrait.SantaWorry), new("Oh, hi guys. I was told to come here and run through the defenses for some reason, I think it was something to do with me being weaker than the others. Wait... was I supposed to say that?", StoryPortrait.SnowMoab, new(() => InGame.instance.SpawnBloons(ModContent.BloonID<SnowMoab.WeakSnowMoab>(), 1, 0)))]);
+            Story.StoryUI.CreatePanel([new StoryMessage("I don't really pay the elves all to much, I'm sure that won't be a problem. W-what is that??!", StoryPortrait.SantaWorry), new("Oh, hi guys. I was told to come here and run through the defenses for some reason, I think it was something to do with me being weaker than the others. Wait... was I supposed to say that?", StoryPortrait.SnowMoab, new(() => InGame.instance.SpawnBloons(ModContent.BloonID<SnowMoab.WeakSnowMoab>(), 1, 0)))]);
         }
 
         if (__instance.GetCurrentRound() == 18)
@@ -529,8 +529,8 @@ static class RoundPatch
         {
             StoryMessage[] messages =
             [
-                new SantaMessage("Did you know that Christmas was officially established in the 4th century?", StoryPortrait.SantaHappy),
-                new SantaMessage("Did you know that the tradition of Christmas trees originated in Germany? The custom of decorating evergreen trees began in the 16th century when devout Christians in Germany brought trees into their homes and adorned them with candles. This tradition later spread across Europe and became popular worldwide", StoryPortrait.SantaHappy),
+                new StoryMessage("Did you know that Christmas was officially established in the 4th century?", StoryPortrait.SantaHappy),
+                new StoryMessage("Did you know that the tradition of Christmas trees originated in Germany? The custom of decorating evergreen trees began in the 16th century when devout Christians in Germany brought trees into their homes and adorned them with candles. This tradition later spread across Europe and became popular worldwide", StoryPortrait.SantaHappy),
             ];
 
             Story.StoryUI.CreatePanel(messages);
@@ -624,12 +624,12 @@ static class RoundPatch
         {
             StoryMessage[] messages =
             [
-                new SantaMessage("Man that boss was really tough! I'm not sure what we're going to do for this last boss! If only there was something else or <b>someone</b> else we could have to help us...", StoryPortrait.SantaWorry),
-                    new SantaMessage("Aha! I know just who to call. He's one of my strongest elves so he'll hopefully help us.", StoryPortrait.SantaHappy),
-                    new SantaMessage("You want my help to stop the <b>Grinch</b> from ruining christmas? Uh... fine I'll help, but you need to pay me <color='#00ff00'>money</color>, if you don't then no help from me! Afterall, <i>you already barely pay me for what I do at the North Pole</i>...", StoryPortrait.ElfLordWant),
-                    new SantaMessage("Seriously?? Fine, but you have to promise to not abandon us and actually help us.", StoryPortrait.SantaDisapointed),
-                    new SantaMessage("OK I'll help you now. After all I suppose a lot of work would be for waste and I'd be out of a job if the <b>Grinch</b> ruined christmas.", StoryPortrait.ElfLordThumbsUp),
-                    new SantaMessage("Soilder, this is great news! Don't expect me to pay the <b>Elf Lord</b> though, I have already payed out too much money today. Ho ho ho... However the <b>Elf Lord</b> shouldn't leave until we win!", StoryPortrait.SantaHappy)
+                new StoryMessage("Man that boss was really tough! I'm not sure what we're going to do for this last boss! If only there was something else or <b>someone</b> else we could have to help us...", StoryPortrait.SantaWorry),
+                    new StoryMessage("Aha! I know just who to call. He's one of my strongest elves so he'll hopefully help us.", StoryPortrait.SantaHappy),
+                    new StoryMessage("You want my help to stop the <b>Grinch</b> from ruining christmas? Uh... fine I'll help, but you need to pay me <color='#00ff00'>money</color>, if you don't then no help from me! Afterall, <i>you already barely pay me for what I do at the North Pole</i>...", StoryPortrait.ElfLordWant),
+                    new StoryMessage("Seriously?? Fine, but you have to promise to not abandon us and actually help us.", StoryPortrait.SantaDisapointed),
+                    new StoryMessage("OK I'll help you now. After all I suppose a lot of work would be for waste and I'd be out of a job if the <b>Grinch</b> ruined christmas.", StoryPortrait.ElfLordThumbsUp),
+                    new StoryMessage("Soilder, this is great news! Don't expect me to pay the <b>Elf Lord</b> though, I have already payed out too much money today. Ho ho ho... However the <b>Elf Lord</b> shouldn't leave until we win!", StoryPortrait.SantaHappy)
             ];
 
             Story.StoryUI.CreatePanel(messages, new(() => {

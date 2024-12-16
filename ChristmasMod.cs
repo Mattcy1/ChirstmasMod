@@ -1,5 +1,5 @@
-global using SantaEmotion = TemplateMod.UI.SantaStory.SantaEmotion;
-global using SantaMessage = TemplateMod.UI.SantaStory.SantaMessage;
+global using StoryPortrait = TemplateMod.UI.Story.StoryPortrait;
+global using StoryMessage = TemplateMod.UI.Story.StoryMessage;
 
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
@@ -204,13 +204,13 @@ public class ChristmasMod : BloonsTD6Mod
 
                 Values.trivia1 = false;
                 
-                if (SantaStory.SantaStoryUI.instance != null)
+                if (Story.StoryUI.instance != null)
                 {
-                    SantaStory.SantaStoryUI.instance.Close();
+                    Story.StoryUI.instance.Close();
                 }
                 
                 var text = "The correct answer was Mermonkey! Enjoy your gift!";
-                SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+                Story.StoryUI.CreatePanel(StoryPortrait.SantaHappy, text);
             }
         }
         
@@ -439,12 +439,12 @@ static class RoundPatch
     {
         if (__instance.GetCurrentRound() == 2)
         {
-            SantaMessage[] messages = [
-                new("Help <b>Santa</b> defeat 5 different bosses sent by the <b>Grinch</b> to save Christmas!\nAfter the <b>Grinch</b> stole all the presents, you are the only one who can save Christmas! Each boss you face gets stronger and stronger, but so do you with every victory.\n\nDefeating all 5 bosses and collecting the 5 gifts will reward you with the ultimate prize: 10,000 Monkey Money.\n\nAre you ready for the challenge? The fate of Christmas is in your hands!", SantaEmotion.SantaHappy),
-                new("Hello soldier! We must stop the <b>Grinch</b> from ruining Christmas! If Christmas gets ruined who knows what people might start to think of me...", SantaEmotion.SantaWorry)
+            StoryMessage[] messages = [
+                new("Help <b>Santa</b> defeat 5 different bosses sent by the <b>Grinch</b> to save Christmas!\nAfter the <b>Grinch</b> stole all the presents, you are the only one who can save Christmas! Each boss you face gets stronger and stronger, but so do you with every victory.\n\nDefeating all 5 bosses and collecting the 5 gifts will reward you with the ultimate prize: 10,000 Monkey Money.\n\nAre you ready for the challenge? The fate of Christmas is in your hands!", StoryPortrait.SantaHappy),
+                new("Hello soldier! We must stop the <b>Grinch</b> from ruining Christmas! If Christmas gets ruined who knows what people might start to think of me...", StoryPortrait.SantaWorry)
             ];
 
-            SantaStory.SantaStoryUI.CreatePanel(messages, new(() => {
+            Story.StoryUI.CreatePanel(messages, new(() => {
                 bool towerPlaced = false;
                 Il2CppSystem.Action<bool> something = (Il2CppSystem.Action<bool>)delegate (bool s)
                 {
@@ -458,22 +458,22 @@ static class RoundPatch
 
         if (__instance.GetCurrentRound() == 9)
         {
-            SantaStory.SantaStoryUI.CreatePanel([new SantaMessage("I don't really pay the elves all to much, I'm sure that won't be a problem. W-what is that??!", SantaEmotion.SantaWorry), new("Oh, hi guys. I was told to come here and run through the defenses for some reason, I think it was something to do with me being weaker than the others. Wait... was I supposed to say that?", SantaEmotion.SnowMoab, new(() => InGame.instance.SpawnBloons(ModContent.BloonID<SnowMoab.WeakSnowMoab>(), 1, 0)))]);
+            Story.StoryUI.CreatePanel([new SantaMessage("I don't really pay the elves all to much, I'm sure that won't be a problem. W-what is that??!", StoryPortrait.SantaWorry), new("Oh, hi guys. I was told to come here and run through the defenses for some reason, I think it was something to do with me being weaker than the others. Wait... was I supposed to say that?", StoryPortrait.SnowMoab, new(() => InGame.instance.SpawnBloons(ModContent.BloonID<SnowMoab.WeakSnowMoab>(), 1, 0)))]);
         }
 
         if (__instance.GetCurrentRound() == 18)
         {
             var text = "The Poppermint is approaching next round! Prepare yourself for the fight. Here’s $1000 to help your defenses spend it wisely!";
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text, new(() =>
+            Story.StoryUI.CreatePanel(StoryPortrait.SantaWorry, text, new(() =>
             InGame.instance.AddCash(1000)));
         }
 
         if (__instance.GetCurrentRound() == 20)
         {
-            SantaMessage[] messages = [new("You truly are the hero Christmas needs. Keep pushing forward only you can save Christmas! I can feel it... I’ve grown stronger, and so have you!", SantaEmotion.SantaSalute), new("I have added the present launcher to the shop! This tower uses snowflakes so be sure to not sell all of them.", SantaEmotion.SantaHappy)];
+            StoryMessage[] messages = [new("You truly are the hero Christmas needs. Keep pushing forward only you can save Christmas! I can feel it... I’ve grown stronger, and so have you!", StoryPortrait.SantaSalute), new("I have added the present launcher to the shop! This tower uses snowflakes so be sure to not sell all of them.", StoryPortrait.SantaHappy)];
 
-            SantaStory.SantaStoryUI.CreatePanel(messages, new(() => {
+            Story.StoryUI.CreatePanel(messages, new(() => {
 
                 if (ChristmasMod.PresentLauncherButton != null)
                 {
@@ -501,21 +501,21 @@ static class RoundPatch
         if (__instance.GetCurrentRound() == 24)
         {
             var text = "What's your favorite Christmas dish? Mine is cookies and milk!";
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+            Story.StoryUI.CreatePanel(StoryPortrait.SantaHappy, text);
         }
 
         if (__instance.GetCurrentRound() == 29)
         {
             var text = "Can you guess the tower? Which tower becomes less effective when placed in specific map locations, despite not having any direct penalties or debuffs listed?";
             Values.trivia1 = true;
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+            Story.StoryUI.CreatePanel(StoryPortrait.SantaHappy, text);
         }
 
         if (__instance.GetCurrentRound() == 38)
         {
             var text = "Watch out! I’ve heard the next boss is incredibly tough. Not only is he immune to ice attacks, but he also creates a devastating snowstorm while he’s on the battlefield!";
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text);
+            Story.StoryUI.CreatePanel(StoryPortrait.SantaWorry, text);
         }
 
         if (__instance.GetCurrentRound() == 39)
@@ -527,20 +527,20 @@ static class RoundPatch
         
         if (__instance.GetCurrentRound() == 34)
         {
-            SantaMessage[] messages =
+            StoryMessage[] messages =
             [
-                new SantaMessage("Did you know that Christmas was officially established in the 4th century?", SantaEmotion.SantaHappy),
-                new SantaMessage("Did you know that the tradition of Christmas trees originated in Germany? The custom of decorating evergreen trees began in the 16th century when devout Christians in Germany brought trees into their homes and adorned them with candles. This tradition later spread across Europe and became popular worldwide", SantaEmotion.SantaHappy),
+                new SantaMessage("Did you know that Christmas was officially established in the 4th century?", StoryPortrait.SantaHappy),
+                new SantaMessage("Did you know that the tradition of Christmas trees originated in Germany? The custom of decorating evergreen trees began in the 16th century when devout Christians in Germany brought trees into their homes and adorned them with candles. This tradition later spread across Europe and became popular worldwide", StoryPortrait.SantaHappy),
             ];
 
-            SantaStory.SantaStoryUI.CreatePanel(messages);
+            Story.StoryUI.CreatePanel(messages);
         }
 
         if (__instance.GetCurrentRound() == 40)
         {
             var text = "Good job, Soldier! The boss has been defeated, and now there are only 3 more to go! You're making great progress! And by the way, my workers have arrived to help you out things are looking even better now. Keep going, you're almost there!";
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaSalute, text, new(() => {
+            Story.StoryUI.CreatePanel(StoryPortrait.SantaSalute, text, new(() => {
                 foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
                 {
                     if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
@@ -566,7 +566,7 @@ static class RoundPatch
         {
             var text = "I've sent a massive gift box! Make sure to pop it for a reward and DO NOT let it leak!";
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaHappy, text);
+            Story.StoryUI.CreatePanel(StoryPortrait.SantaHappy, text);
         }
 
         if (__instance.GetCurrentRound() == 55)
@@ -578,7 +578,7 @@ static class RoundPatch
         {
             var text = "I have some bad news... This next boss is SUPER STRONG! It has 5 lives, and with each life, its HP doubles. On top of that, it gets faster every second! This will be your toughest fight yet, soldier.\n\nHere’s 7500 cash to help.";
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaWorry, text, new(() =>
+            Story.StoryUI.CreatePanel(StoryPortrait.SantaWorry, text, new(() =>
             InGame.instance.AddCash(7500)));
         }
         
@@ -586,7 +586,7 @@ static class RoundPatch
         {
             var text = "Wow, that boss was insanely tough!  But we’ve come out stronger than ever. I’ve unlocked a new ability check it out!\n\nGet ready, soldier. The next battle is right around the corner, and we’ll need everything we’ve got to win. Let’s keep pushing forward!";
 
-            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.SantaSalute, text, new(() => {
+            Story.StoryUI.CreatePanel(StoryPortrait.SantaSalute, text, new(() => {
                 foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())
                 {
                     if (tower.tower.towerModel.baseId == ModContent.TowerID<Santa>())
@@ -622,17 +622,17 @@ static class RoundPatch
         }
         if (__instance.GetCurrentRound() == 80)
         {
-            SantaMessage[] messages =
+            StoryMessage[] messages =
             [
-                new SantaMessage("Man that boss was really tough! I'm not sure what we're going to do for this last boss! If only there was something else or <b>someone</b> else we could have to help us...", SantaEmotion.SantaWorry),
-                    new SantaMessage("Aha! I know just who to call. He's one of my strongest elves so he'll hopefully help us.", SantaEmotion.SantaHappy),
-                    new SantaMessage("You want my help to stop the <b>Grinch</b> from ruining christmas? Uh... fine I'll help, but you need to pay me <color='#00ff00'>money</color>, if you don't then no help from me! Afterall, <i>you already barely pay me for what I do at the North Pole</i>...", SantaEmotion.ElfLordWant),
-                    new SantaMessage("Seriously?? Fine, but you have to promise to not abandon us and actually help us.", SantaEmotion.SantaDisapointed),
-                    new SantaMessage("OK I'll help you now. After all I suppose a lot of work would be for waste and I'd be out of a job if the <b>Grinch</b> ruined christmas.", SantaEmotion.ElfLordThumbsUp),
-                    new SantaMessage("Soilder, this is great news! Don't expect me to pay the <b>Elf Lord</b> though, I have already payed out too much money today. Ho ho ho... However the <b>Elf Lord</b> shouldn't leave until we win!", SantaEmotion.SantaHappy)
+                new SantaMessage("Man that boss was really tough! I'm not sure what we're going to do for this last boss! If only there was something else or <b>someone</b> else we could have to help us...", StoryPortrait.SantaWorry),
+                    new SantaMessage("Aha! I know just who to call. He's one of my strongest elves so he'll hopefully help us.", StoryPortrait.SantaHappy),
+                    new SantaMessage("You want my help to stop the <b>Grinch</b> from ruining christmas? Uh... fine I'll help, but you need to pay me <color='#00ff00'>money</color>, if you don't then no help from me! Afterall, <i>you already barely pay me for what I do at the North Pole</i>...", StoryPortrait.ElfLordWant),
+                    new SantaMessage("Seriously?? Fine, but you have to promise to not abandon us and actually help us.", StoryPortrait.SantaDisapointed),
+                    new SantaMessage("OK I'll help you now. After all I suppose a lot of work would be for waste and I'd be out of a job if the <b>Grinch</b> ruined christmas.", StoryPortrait.ElfLordThumbsUp),
+                    new SantaMessage("Soilder, this is great news! Don't expect me to pay the <b>Elf Lord</b> though, I have already payed out too much money today. Ho ho ho... However the <b>Elf Lord</b> shouldn't leave until we win!", StoryPortrait.SantaHappy)
             ];
 
-            SantaStory.SantaStoryUI.CreatePanel(messages, new(() => {
+            Story.StoryUI.CreatePanel(messages, new(() => {
                 if (ElfLord.ShopButton != null)
                 {
                     ElfLord.AddedToShop = true;

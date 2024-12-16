@@ -23,7 +23,79 @@ namespace TemplateMod.Moabs
             bloonModel.AddToChildren<MilkBloon>(5);
             bloonModel.maxHealth = 1000;
             bloonModel.speed *= 1.25f;
-            bloonModel.bloonProperties = Il2Cpp.BloonProperties.White;
+        }
+    }
+
+    public class MilkMoabDisplay : ModBloonDisplay<MilkMoab>
+    {
+        public override string BaseDisplay => GetBloonDisplay(BloonType.sMoab);
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            foreach (var renderer in node.GetMeshRenderers())
+            {
+                renderer.SetMainTexture(GetTexture(Name));
+            }
+        }
+    }
+
+    public class MilkMoabDamage1Display : ModBloonDisplay<MilkMoab>
+    {
+        public override string BaseDisplay => GetBloonDisplay(BloonType.sMoab);
+
+        public override int Damage => 1;
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            foreach (var renderer in node.GetMeshRenderers())
+            {
+                renderer.SetMainTexture(GetTexture(Name));
+            }
+        }
+    }
+
+    public class MilkMoabDamage2Display : ModBloonDisplay<MilkMoab>
+    {
+        public override string BaseDisplay => GetBloonDisplay(BloonType.sMoab);
+
+        public override int Damage => 2;
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            foreach (var renderer in node.GetMeshRenderers())
+            {
+                renderer.SetMainTexture(GetTexture(Name));
+            }
+        }
+    }
+
+    public class MilkMoabDamage3Display : ModBloonDisplay<MilkMoab>
+    {
+        public override string BaseDisplay => GetBloonDisplay(BloonType.sMoab);
+
+        public override int Damage => 3;
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            foreach (var renderer in node.GetMeshRenderers())
+            {
+                renderer.SetMainTexture(GetTexture(Name));
+            }
+        }
+    }
+
+    public class MilkMoabDamage4Display : ModBloonDisplay<MilkMoab>
+    {
+        public override string BaseDisplay => GetBloonDisplay(BloonType.sMoab);
+
+        public override int Damage => 4;
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            foreach (var renderer in node.GetMeshRenderers())
+            {
+                renderer.SetMainTexture(GetTexture(Name));
+            }
         }
     }
 }

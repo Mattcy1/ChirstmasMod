@@ -28,14 +28,14 @@ namespace TemplateMod.Bloons
         }
 
 
-        //public class SnowBloonDisplay : ModBloonDisplay<SnowBloon>
-        //{
-        //    public override string BaseDisplay => GetBloonDisplay("Red");
-        //
-        //    public override void ModifyDisplayNode(UnityDisplayNode node)
-        //    {
-        //        Set2DTexture(node, "SnowBloon");
-        //    }
-        //}
+        public class MilkBloonDisplay : ModBloonDisplay<MilkBloon>
+        {
+            public override string BaseDisplay => GetBloonDisplay("Red");
+        
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+               Set2DTexture(node, "MilkBloon");
+            }
+        }
     }
 }

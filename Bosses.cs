@@ -44,6 +44,12 @@ namespace BossHandlerNamespace
 
         }
 
+        class FrostyDisplay : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "FrostyBoss";
+        }
 
         [HarmonyPatch(typeof(TitleScreen), nameof(TitleScreen.Start))]
         public class TitleScreenInit
@@ -83,9 +89,10 @@ namespace BossHandlerNamespace
                 CandyCaneBoss.AddBehavior(health);
                 CandyCaneBoss.AddBehavior(spawn);
 
-                BloonModel FrostyBoss = CreateBossBase(90000, 1f);
-
                 //Frosty the Snowbloon
+
+                BloonModel FrostyBoss = CreateBossBase(90000, 1f);
+                FrostyBoss.ApplyDisplay<FrostyDisplay>();
 
                 BossRegisteration frostyBossRegisteration = new BossRegisteration(FrostyBoss, "Frosty",
                     "Frosty The Snowbloon", true, "FrostyIcon", 0,
@@ -256,35 +263,35 @@ namespace BossHandlerNamespace
                         if (Values.DefeatedCounter == 0)
                         {
                             var text = "Im not that tasty! Crumbly Stole 10% of your cash";
-                            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, text);
+                            Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
 
                         if (Values.DefeatedCounter == 1)
                         {
                             var text = "Ouch! Crumbly Stole 10% of your cash";
-                            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, text);
+                            Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
 
                         if (Values.DefeatedCounter == 2)
                         {
                             var text = "Im not eatable! Crumbly Stole 10% of your cash";
-                            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, text);
+                            Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
 
                         if (Values.DefeatedCounter == 3)
                         {
                             var text = "Stop it! Crumbly Stole 10% of your cash";
-                            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, text);
+                            Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
 
                         if (Values.DefeatedCounter == 4)
                         {
                             var text = "NOOOOO! Crumbly Stole 10% of your cash before dying";
-                            SantaStory.SantaStoryUI.CreatePanel(SantaEmotion.CrumblyIcon, text);
+                            Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
                     }
@@ -355,7 +362,7 @@ namespace BossHandlerNamespace
                             
                             if (Values.DefeatedCounter == 0)
                             {
-                                SantaMessage messages = new SantaMessage("NO! IMPOSSIBLE!I'M THE STRONGEST BOSS YET, I WON'T LET THIS SLIDE!, IT'S TIME TO SHOW YOU MY TRUE POWER!", SantaEmotion.CookieMonsterIcon, new(() =>
+                                StoryMessage messages = new StoryMessage("NO! IMPOSSIBLE!I'M THE STRONGEST BOSS YET, I WON'T LET THIS SLIDE!, IT'S TIME TO SHOW YOU MY TRUE POWER!", StoryPortrait.CookieMonsterIcon, new(() =>
                                 {
                                     fakeMaxHealth *= 3;
                                     fakeHealth = fakeMaxHealth;
@@ -365,13 +372,13 @@ namespace BossHandlerNamespace
                                     InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
                                 }));
 
-                                SantaStory.SantaStoryUI.CreatePanel(messages); 
+                                Story.StoryUI.CreatePanel(messages); 
                                 
                                 Values.bossDead = false;
                             }
                             else if (Values.DefeatedCounter == 1)
                             {
-                                SantaMessage messages = new SantaMessage("I guess I'm not strong enough, But I've got one last trick up my sleeve, Cookie Monster proceeded to steal half your money... and then died.", SantaEmotion.CookieMonsterIcon, new(() =>
+                                StoryMessage messages = new StoryMessage("I guess I'm not strong enough, But I've got one last trick up my sleeve, Cookie Monster proceeded to steal half your money... and then died.", StoryPortrait.CookieMonsterIcon, new(() =>
                                 {
                                     boss.trackSpeedMultiplier = -40;
                                     boss.Rotation = boss.PercThroughMap() * 20000;
@@ -386,7 +393,7 @@ namespace BossHandlerNamespace
                                     InGame.instance.AddCash(-InGame.instance.GetCash() * 0.5f);
                                 }));
                                 
-                                SantaStory.SantaStoryUI.CreatePanel(messages);
+                                Story.StoryUI.CreatePanel(messages);
                                 
                                 Values.bossDead = false;
                             }

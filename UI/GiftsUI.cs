@@ -24,7 +24,7 @@ public class Gift
             }
         }
 
-        public static void CreatePanel(int Cash, double Lives, bool storyGift = true)
+        public static void CreatePanel(int Cash, double Lives, bool storyGift = false)
         {
             if (InGame.instance != null)
             {
@@ -36,8 +36,10 @@ public class Gift
                 {
                     if (storyGift)
                     {
-                        Values.gift += 1;
+                        InGame.instance.SetRound(101); //Start the cutscene
                     }
+                    
+                    Values.gift += 1;
                     InGame.instance.AddCash(Cash);
                     InGame.instance.AddHealth(Lives);
                     instance.Close();

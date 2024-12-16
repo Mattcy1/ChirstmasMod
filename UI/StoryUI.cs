@@ -31,6 +31,9 @@ public class Story
         CrumblyIcon,
         CookieMonsterIcon,
         GrinchAngryIcon,
+        Player,
+        PlayerNoWay,
+        SantaGojo,
     }
 
 

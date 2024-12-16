@@ -16,6 +16,7 @@ using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.Display;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using NAudio.Utils;
+using UnityEngine;
 
 namespace TemplateMod.Towers.PresentLauncher
 {

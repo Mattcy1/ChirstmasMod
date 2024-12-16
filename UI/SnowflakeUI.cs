@@ -35,7 +35,7 @@ public class Snowflake
                 image.AddText(new("Title_", 0, -200, 400, 100), "Snowflakes:", 60);
                 image.AddText(new("Snowflakes", 0, -300, 400, 100), Values.snowflake.ToString(), 80);
                 var image1 = panel.AddImage(new("Image_", 450, 150, 275), VanillaSprites.GiftRed);
-                image1.AddText(new("Title_", 0, -200, 350, 200), "Gift: " + Values.gift + " / 6", 60);
+                image1.AddText(new("Title_", 0, -200, 350, 200), "Gift: " + Values.gift + " / 7", 60);
                 var Sell = panel.AddButton(new("Button_", 0, 0, 300, 150), VanillaSprites.GreenBtnLong, new System.Action(() =>
                 {
                     InGame.instance.AddCash(25 * Values.snowflake);

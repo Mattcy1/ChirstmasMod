@@ -4,8 +4,10 @@ using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2CppAssets.Scripts.Models.Bloons;
 using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
+using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Simulation.Bloons;
 using Il2CppAssets.Scripts.Simulation.Towers;
+using Il2CppAssets.Scripts.Simulation.Towers.Projectiles;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using UnityEngine;
@@ -41,8 +43,10 @@ namespace TemplateMod.Bloons
         [HarmonyPatch(typeof(Bloon), nameof(Bloon.Damage))]
         static class Bloon_Damage
         {
+            static bool willKill = false;
+
             [HarmonyPrefix]
-            public static void Prefix(Bloon __instance, ref float totalAmount, Tower tower)
+            public static void Prefix(Bloon __instance, ref float totalAmount, Projectile projectile, Tower tower)
             {
                 if (tower != null)
                 {
@@ -53,16 +57,30 @@ namespace TemplateMod.Bloons
                         __instance.SetHealth((int)Mathf.Round(totalAmount));
                     }
                 }
+
+                willKill = __instance.WillPopBloon(projectile.model.GetDescendant<DamageModel>());
             }
 
             [HarmonyPostfix]
             public static void Postfix(Bloon __instance)
             {
-                if(__instance.health > 0 && __instance.bloonModel.baseId == BloonID<SnowBloon>())
+                System.Random rand = new();
+
+                if (!willKill && __instance.bloonModel.baseId == BloonID<SnowBloon>())
                 {
-                    System.Random rand = new();
 
                     GetAudioClip<ChristmasMod.ChristmasMod>("SnowBloon_" + rand.Next(4)).Play();
+                }
+                else if (__instance.bloonModel.baseId == BloonID<IceBloon>())
+                {
+                    if(willKill)
+                    {
+                        GetAudioClip<ChristmasMod.ChristmasMod>("IceShatter" + rand.Next(4)).Play();
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
         }

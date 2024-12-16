@@ -37,7 +37,7 @@ namespace TemplateMod.Bloons
 
     public class IceBloonDisplay : ModBloonDisplay<IceBloon>
     {
-        public override string BaseDisplay => GetDisplay("Red");
+        public override string BaseDisplay => GetBloonDisplay("Red");
 
         public override void ModifyDisplayNode(UnityDisplayNode node)
         {
@@ -47,7 +47,7 @@ namespace TemplateMod.Bloons
 
     public class IceBloonDamage1 : ModBloonDisplay<IceBloon>
     {
-        public override string BaseDisplay => GetDisplay("Red");
+        public override string BaseDisplay => GetBloonDisplay("Red");
 
         public override int Damage => 1;
 
@@ -59,7 +59,7 @@ namespace TemplateMod.Bloons
 
     public class IceBloonDamage2 : ModBloonDisplay<IceBloon>
     {
-        public override string BaseDisplay => GetDisplay("Red");
+        public override string BaseDisplay => GetBloonDisplay("Red");
 
         public override int Damage => 2;
 
@@ -71,7 +71,7 @@ namespace TemplateMod.Bloons
 
     public class IceBloonDamage3 : ModBloonDisplay<IceBloon>
     {
-        public override string BaseDisplay => GetDisplay("Red");
+        public override string BaseDisplay => GetBloonDisplay("Red");
 
         public override int Damage => 3;
 
@@ -83,7 +83,7 @@ namespace TemplateMod.Bloons
 
     public class IceBloonDamage4 : ModBloonDisplay<IceBloon>
     {
-        public override string BaseDisplay => GetDisplay("Red");
+        public override string BaseDisplay => GetBloonDisplay("Red");
 
         public override int Damage => 4;
 

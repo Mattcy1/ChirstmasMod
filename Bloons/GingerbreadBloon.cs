@@ -19,7 +19,7 @@ namespace TemplateMod.Bloons
     {
         public override string BaseBloon => BloonType.sRainbow;
 
-        public override string Icon => Name + "-Icon";
+        public override string Icon => "GingerbredBloon-Icon"; // i skilled issued
 
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
@@ -36,7 +36,7 @@ namespace TemplateMod.Bloons
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-                Set2DTexture(node, "GingerbreadBloon");
+                Set2DTexture(node, "GingerbredBloon");
             }
         }
     }

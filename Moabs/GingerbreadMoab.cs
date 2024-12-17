@@ -16,7 +16,7 @@ namespace TemplateMod.Moabs
     public class GingerbreadMoab : ModBloon
     {
         public override string BaseBloon => BloonType.sMoab;
-
+        public override string Icon => "GingerbreadMoab-Icon";
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
             bloonModel.RemoveAllChildren();

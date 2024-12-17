@@ -34,6 +34,7 @@ public class Story
         Player,
         PlayerNoWay,
         SantaGojo,
+        GroupOfBloon,
     }
 
 

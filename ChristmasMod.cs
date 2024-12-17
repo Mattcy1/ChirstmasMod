@@ -489,7 +489,6 @@ public class GiftEffect : ModDisplay
         ((Component)((Il2CppArrayBase<Renderer>)node.genericRenderers)[2]).GetComponent<ParticleSystem>().startSpeed *= 0.2f;
     }
 }
-
 public class SnowstormEffect : ModDisplay
 {
     public override string BaseDisplay => "06928d3ec6e91854d99859c4f1dac91d";

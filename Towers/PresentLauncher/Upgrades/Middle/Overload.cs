@@ -11,20 +11,21 @@ using System.Threading.Tasks;
 
 namespace TemplateMod.Towers.PresentLauncher.Upgrades.Middle
 {
-    internal class PackedPresents : ModUpgrade<PresentLauncher>
+    public class Overload : ModUpgrade<PresentLauncher>
     {
         public override int Path => Middle;
 
-        public override int Tier => 1;
+        public override int Tier => 2;
 
-        public override string Description => "Presents now contain 6 items instead of one.";
+        public override string Description =>"Presents contain 8 projectiles and can now have projectiles from a wider variaty of projectiles. (Most T3 Primary)";
 
-        public override int Cost => 10;
+        public override int Cost => 12;
 
         public override void ApplyUpgrade(TowerModel towerModel)
         {
-            var proj = towerModel.GetWeapon().projectile;
-            proj.GetBehavior<CreateProjectileOnContactModel>().emission = new ArcEmissionModel("ArcEmissionModel", 6, 0, 360, null, true, false);
+            towerModel.GetDescendant<CreateProjectileOnContactModel>().emission.Cast<ArcEmissionModel>().count = 8;
+
+            towerModel.GetWeapon().projectile.id = "PresentT1";
         }
     }
 }

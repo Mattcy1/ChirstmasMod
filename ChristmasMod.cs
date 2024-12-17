@@ -389,8 +389,10 @@ public class Santa : ModTower<ChristmasTowers>
 
 public class SantaDisplay : ModDisplay
 {
-    public override string BaseDisplay => Generic2dDisplay; 
-    
+    public override string BaseDisplay => Generic2dDisplay;
+
+    public override float Scale => 0.5f;
+
     public override Il2CppAssets.Scripts.Simulation.SMath.Vector3 PositionOffset => new(0, 0, 100);
     public override void ModifyDisplayNode(UnityDisplayNode node)
     {
@@ -472,7 +474,29 @@ static class GiftAbility
                 InGame.instance.bridge.simulation.SpawnEffect(ModContent.CreatePrefabReference<GiftEffect>(), bloon.Position, 0, 2);
                 bloon.Damage(10000, null, true, true,false);
             }
+
+            if(__instance.abilityModel.name == "giftsForAll")
+            {
+                InGame.instance.bridge.simulation.SpawnEffect(ModContent.CreatePrefabReference<GiftEffect>(), bloon.Position, 0, 2);
+                InGame.instance.bridge.simulation.SpawnEffect(ModContent.CreatePrefabReference<ExplodeEffect>(), bloon.Position, 0, 2);
+                bloon.Damage(5000, null, true, true, false);
+            }
         }
+    }
+}
+
+public class ExplodeEffect : ModDisplay
+{
+    public override string BaseDisplay => "6d84b13b7622d2744b8e8369565bc058";
+    public override void ModifyDisplayNode(UnityDisplayNode node)
+    {
+        string explosionGuid = Game.instance.model.GetTowerFromId("BombShooter-500").GetDescendant<CreateEffectOnContactModel>().effectModel.assetId.AssetGUID;
+
+        RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[0], ModContent.GetTexture<ChristmasMod>("blank"));
+        RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[3], GetTexture<ChristmasMod>("Explode"));
+        RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[2], GetTexture<ChristmasMod>("Explode"));
+        RendererExt.SetMainTexture(((Il2CppArrayBase<Renderer>)node.genericRenderers)[1], ModContent.GetTexture<ChristmasMod>("blank"));
+        ((Component)((Il2CppArrayBase<Renderer>)node.genericRenderers)[2]).GetComponent<ParticleSystem>().startSpeed *= 0.1f;
     }
 }
 
@@ -583,7 +607,7 @@ static class RoundPatch
         {
             StoryMessage[] messages = [
                 new("Can you guess the tower? Which tower becomes less effective when placed in specific map locations, despite not having any direct penalties or debuffs listed", StoryPortrait.SantaWorry),
-                new("Sure!", StoryPortrait.Player),
+                new("Sure! (Place down the tower)", StoryPortrait.Player),
             ];
             Values.trivia1 = true;
             Story.StoryUI.CreatePanel(messages);

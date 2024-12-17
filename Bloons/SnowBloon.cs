@@ -10,6 +10,7 @@ using Il2CppAssets.Scripts.Simulation.Towers;
 using Il2CppAssets.Scripts.Simulation.Towers.Projectiles;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
+using MelonLoader;
 using UnityEngine;
 namespace TemplateMod.Bloons
 {
@@ -43,9 +44,9 @@ namespace TemplateMod.Bloons
         [HarmonyPatch(typeof(Bloon), nameof(Bloon.Damage))]
         static class Bloon_Damage
         {
-            static bool willKill = false;
-
-            [HarmonyPrefix]
+            public static System.Random rand = new();
+            
+            [HarmonyPostfix]
             public static void Prefix(Bloon __instance, ref float totalAmount, Projectile projectile, Tower tower)
             {
                 if (tower != null)
@@ -54,32 +55,23 @@ namespace TemplateMod.Bloons
 
                     if ((towerModel.baseId == "BombShooter" || towerModel.baseId == "MortarMonkey") && __instance.bloonModel.name == BloonID<SnowBloon>())
                     {
-                        __instance.Damage((float)Mathf.Round(totalAmount), projectile, false, true, true);
+                        __instance.Destroy();
                     }
-                }
-
-                willKill = __instance.WillPopBloon(projectile.model.GetDescendant<DamageModel>());
-            }
-
-            [HarmonyPostfix]
-            public static void Postfix(Bloon __instance)
-            {
-                System.Random rand = new();
-
-                if (!willKill && __instance.bloonModel.baseId == BloonID<SnowBloon>())
-                {
-
-                    GetAudioClip<ChristmasMod.ChristmasMod>("SnowBloon_" + rand.Next(4)).Play();
-                }
-                else if (__instance.bloonModel.baseId == BloonID<IceBloon>())
-                {
-                    if(willKill)
+                    
+                    if (__instance.bloonModel.baseId == BloonID<SnowBloon>())
                     {
-                        GetAudioClip<ChristmasMod.ChristmasMod>("IceShatter" + rand.Next(4)).Play();
+                        GetAudioClip<ChristmasMod.ChristmasMod>("SnowBloon_" + rand.Next(4)).Play();
+                        MelonLogger.Msg("Playing SnowBloon_");
                     }
-                    else
+                    
+                    if (__instance.health <= 0)
                     {
-
+                        if (__instance.bloonModel.baseId == BloonID<IceBloon>())
+                        {
+                            GetAudioClip<ChristmasMod.ChristmasMod>("IceShatter" + rand.Next(4)).Play();
+                            
+                            MelonLogger.Msg("Playing IceShatter_");
+                        }
                     }
                 }
             }

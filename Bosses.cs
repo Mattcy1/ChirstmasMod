@@ -141,8 +141,8 @@ namespace BossHandlerNamespace
                     "Cookie Monster", true, "CookieMonsterIcon", 0, "");
 
                 cookieMonsterBossRegisteration.usesHealthOverride = true;
-                cookieMonsterBossRegisteration.fakeHealth = 1500000;
-                cookieMonsterBossRegisteration.fakeMaxHealth = 1500000;
+                cookieMonsterBossRegisteration.fakeHealth = 2500000;
+                cookieMonsterBossRegisteration.fakeMaxHealth = 2500000;
 
                 cookieMonsterBossRegisteration.SpawnOnRound(80);
 
@@ -151,7 +151,7 @@ namespace BossHandlerNamespace
                 BloonModel Grinch = CreateBossBase(20000000, 1f);
 
                 BossRegisteration grinchRegisteration = new BossRegisteration(Grinch, "GrinchBoss",
-                    "The Grinch", true, "GrinchIcon", 0, "");
+                    "The Grinch", true, "GrinchIcon", 0, "The Grinch, the strongest boss yet, contains abilities from all bosses like snowstorm, stun towers, and more. Prepare for the craziest battle.");
                 
                 HealthPercentTriggerModel healthGrinch = Game.instance.model.GetBloon("Bloonarius1")
                     .GetBehavior<HealthPercentTriggerModel>().Duplicate();
@@ -700,23 +700,16 @@ namespace BossHandlerNamespace
                                 }
                                 else if (Values.GrinchAngry == true)
                                 {
-                                    StoryMessage messages = new StoryMessage(
-                                        "At long last, I was defeated... sigh. Don’t close the game yet! There’s a secret cutscene waiting for you once all the bosses are defeated.",
-                                        StoryPortrait.GrinchAngryIcon, new(() =>
-                                        {
-                                            boss.trackSpeedMultiplier = -80;
-                                            boss.Rotation = boss.PercThroughMap() * 200000;
-                                            boss.prevRot = boss.Rotation;
+                                    boss.trackSpeedMultiplier = -80;
+                                    boss.Rotation = boss.PercThroughMap() * 200000;
+                                    boss.prevRot = boss.Rotation;
+                                    
+                                    Task.Run(async () =>
+                                    {
+                                        await Task.Delay(4000);
 
-                                            Task.Run(async () =>
-                                            {
-                                                await Task.Delay(4000);
-
-                                                boss.Destroy();
-                                            });
-                                        }));
-
-                                    Story.StoryUI.CreatePanel(messages);
+                                        boss.Destroy();
+                                    });
 
                                     Values.bossDead = false;
                                 }

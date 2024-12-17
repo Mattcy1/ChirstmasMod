@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TemplateMod")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+65a0c5f7b4bc7134ffe4838ad1d59ec8d2e8f61c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7877e3da5b417196d1e01d9ecfd4e4603f9c66e7")]
 [assembly: System.Reflection.AssemblyProductAttribute("TemplateMod")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TemplateMod")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

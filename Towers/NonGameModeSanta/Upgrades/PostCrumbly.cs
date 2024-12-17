@@ -41,12 +41,12 @@ namespace TemplateMod.Towers.NonGameModeSanta.Upgrades
             ability.name = "SantaAbility";
             ability.icon = ModContent.GetSpriteReference<ChristmasMod.ChristmasMod>("GiftsParticle");
             towerModel.AddBehavior(ability);
-            AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
-            Avatarspawner[0].weapons[0].rate = 10f;
-            Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
-            Avatarspawner[0].name = "ElfSpawner";
-            Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<StronkElf>(), 0, false, false, false, false, false));
-            towerModel.AddBehavior(Avatarspawner[0]);
+            //AttackModel[] Avatarspawner = { Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetAttackModels().First(a => a.name == "AttackModel_Spawner_").Duplicate() };
+            //Avatarspawner[0].weapons[0].rate = 10f;
+            //Avatarspawner[0].weapons[0].projectile.RemoveBehavior<CreateTowerModel>();
+            //Avatarspawner[0].name = "ElfSpawner";
+            //Avatarspawner[0].weapons[0].projectile.AddBehavior(new CreateTowerModel("CreateTower", ModContent.GetTowerModel<StronkElf>(), 0, false, false, false, false, false));
+            //towerModel.AddBehavior(Avatarspawner[0]);
         }
     }
 }

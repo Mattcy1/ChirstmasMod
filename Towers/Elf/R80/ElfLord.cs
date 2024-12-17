@@ -5,6 +5,7 @@ using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2CppAssets.Scripts.Models.Towers;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors;
+using Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Simulation.Towers.Weapons;
@@ -42,6 +43,9 @@ namespace TemplateMod.Towers.Elf.R80
             proj.GetBehavior<CreateProjectileOnContactModel>().emission = new ArcEmissionModel("ArcEmissionModel", 6, 0, 360, null, true, false);
 
             towerModel.RemoveBehavior<TowerExpireModel>();
+
+            var ability = new AbilityModel("giftsForAll", "Gifts For All", "Gifts For All: Explodes every bloon for 5000 damage.", 1, 0, GetSpriteReference("GiftsForAll"), 120, null, true, false, "", 1, 0, -1, false, false);
+            towerModel.AddBehavior(ability);
         }
 
         public class ElfLordDisplay : ModTowerDisplay<ElfLord>

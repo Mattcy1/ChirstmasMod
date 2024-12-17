@@ -27,12 +27,22 @@ namespace TemplateMod.Moabs
             bloonModel.RemoveAllChildren();
             bloonModel.AddToChildren<IceBloon>(4);
 
-            StunTowersInRadiusActionModel stunTowersInRadiusActionModel = new("StunTowersInRadiusActionModel", "freeze", 50, 1, 1, new(GetTextureGUID("IceCube")), true);
+            StunTowersInRadiusActionModel stunTowersInRadiusActionModel = new("StunTowersInRadiusActionModel", "freeze", 50, 1, 1, CreatePrefabReference<IceCubeOverlay>(), true);
 
             HealthPercentTriggerModel healthPercentTriggerModel = new("HealthPercentTriggerModel", false, new([0.8f, 0.6f, 0.4f, 0.2f, 0]), new(["freeze"]), false);
 
             bloonModel.AddBehavior(healthPercentTriggerModel);
             bloonModel.AddBehavior(stunTowersInRadiusActionModel);
+        }
+    }
+
+    public class IceCubeOverlay : ModDisplay
+    {
+        public override string BaseDisplay => Generic2dDisplay;
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            Set2DTexture(node, "IceCube");
         }
     }
 

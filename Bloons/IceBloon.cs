@@ -16,6 +16,8 @@ namespace TemplateMod.Bloons
     {
         public override string BaseBloon => BloonType.sPink;
 
+        public override string Icon => base.Icon + "-Icon";
+
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
             bloonModel.speed /= 4;

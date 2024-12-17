@@ -25,9 +25,11 @@ namespace TemplateMod.Towers.PresentLauncher
 
         public static bool AddedToShop = false;
 
+        public override ParagonMode ParagonMode => ParagonMode.Base000;
+
         public override string BaseTower => TowerType.BombShooter;
 
-        public override int Cost => 5;
+        public override int Cost => 10;
 
         public override string Portrait => Icon;
 
@@ -137,6 +139,65 @@ namespace TemplateMod.Towers.PresentLauncher
                 var num = random.Next(3);
 
                 string[] ids = ["DartMonkey", "BoomerangMonkey", "BombShooter"];
+
+                model.projectile = Game.instance.model.GetTowerFromId(ids[num]).GetWeapon().projectile.Duplicate();
+            }
+            else if (proj.id == "PresentT1")
+            {
+                CreateProjectileOnContactModel model = proj.GetBehavior<CreateProjectileOnContactModel>();
+
+                System.Random random = new();
+                var num = random.Next(3);
+
+                string[] ids = ["DartMonkey-003", "DartMonkey-302", "BoomerangMonkey-300", "BombShooter-003", "BombShooter-300", "BombShooter-030", "GlueGunner-003", "GlueGunner-300", "TackShooter-030"];
+
+
+                num = random.Next(ids.Length);
+
+                model.projectile = Game.instance.model.GetTowerFromId(ids[num]).GetWeapon().projectile.Duplicate();
+            }
+            else if (proj.id == "PresentT2")
+            {
+                CreateProjectileOnContactModel model = proj.GetBehavior<CreateProjectileOnContactModel>();
+
+                System.Random random = new();
+                var num = random.Next(3);
+
+                string[] ids = ["DartMonkey-004,0", "DartMonkey-402,0", "BoomerangMonkey-402,0", "BombShooter-204,0", "BombShooter-402,0", "BombShooter-240,0", "GlueGunner-024,0", "GlueGunner-420,0", "TackShooter-040,0", "TackShooter-400,0", "IceMonkey-004,0", "BoomerangMonkey-004,0",
+                    "SniperMonkey-300,0", "SniperMonkey-030,0", "DartlingGunner-030,0", "MonkeySub-003,0", "MonkeyAce-300,0", "SuperMonkey-300,0", "SuperMonkey-003,0", "NinjaMonkey-003,0", "WizardMonkey-300,0", "WizardMonkey-030,0", "WizardMonkey-030,1", "Alchemist-030,0", "Alchemist-003,1", "Druid-300,1", "Druid-300,2", "BananaFarm-320", "EngineerMonkey-300,1"];
+
+
+                num = random.Next(ids.Length);
+
+                model.projectile = Game.instance.model.GetTowerFromId(ids[num]).GetWeapon().projectile.Duplicate();
+            }
+            else if (proj.id == "PresentT3")
+            {
+                CreateProjectileOnContactModel model = proj.GetBehavior<CreateProjectileOnContactModel>();
+
+                System.Random random = new();
+                var num = random.Next(3);
+
+                string[] ids = ["DartMonkey-004,0", "DartMonkey-502,0", "BoomerangMonkey-502,0", "BombShooter-204,0", "BombShooter-502,0", "BombShooter-240,0", "GlueGunner-025,0", "GlueGunner-420,0", "TackShooter-040,0", "TackShooter-500,1", "IceMonkey-004,0", "BoomerangMonkey-004,0",
+                    "SniperMonkey-400,0", "SniperMonkey-030,0", "DartlingGunner-040,0", "MonkeySub-004,0", "MonkeyAce-300,0", "SuperMonkey-400,0", "SuperMonkey-004,0", "NinjaMonkey-003,0", "WizardMonkey-300,0", "WizardMonkey-040,0", "WizardMonkey-030,1", "Alchemist-030,0", "Alchemist-003,1", "Druid-300,1", "Druid-300,2", "BananaFarm-420", "EngineerMonkey-400,1", "EngineerMonkey-004,1"];
+
+
+                num = random.Next(ids.Length);
+
+                model.projectile = Game.instance.model.GetTowerFromId(ids[num]).GetWeapon().projectile.Duplicate();
+            }
+            else if (proj.id == "PresentT4")
+            {
+                CreateProjectileOnContactModel model = proj.GetBehavior<CreateProjectileOnContactModel>();
+
+                System.Random random = new();
+                var num = random.Next(3);
+
+                string[] ids = ["DartMonkey-205,0", "DartMonkey-502,0", "BoomerangMonkey-502,0", "BombShooter-205,0", "BombShooter-502,0", "BombShooter-250,0", "GlueGunner-025,0", "GlueGunner-520,0", "TackShooter-050,0", "TackShooter-500,1", "IceMonkey-005,0", "BoomerangMonkey-005,0",
+                    "SniperMonkey-500,0", "SniperMonkey-050,0", "DartlingGunner-050,0", "MonkeySub-005,0", "MonkeyAce-500,0", "SuperMonkey-502,0", "SuperMonkey-205,0", "NinjaMonkey-005,2", "WizardMonkey-500,0", "WizardMonkey-050,0", "WizardMonkey-050,1", "Alchemist-050,0", "Alchemist-005,1", "Druid-500,1", "Druid-500,2", "BananaFarm-520", "EngineerMonkey-500,1", "EngineerMonkey-005,1"];
+
+
+                num = random.Next(ids.Length);
 
                 model.projectile = Game.instance.model.GetTowerFromId(ids[num]).GetWeapon().projectile.Duplicate();
             }

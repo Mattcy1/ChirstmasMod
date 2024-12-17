@@ -14,9 +14,6 @@
     <ItemGroup>
         <Content Include=".github\workflows\build.yml" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Towers\PresentLauncher\" />
-    </ItemGroup>
 
     <Import Project="..\btd6.targets" />
 </Project>

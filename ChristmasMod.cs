@@ -513,7 +513,6 @@ public class GiftEffect : ModDisplay
         ((Component)((Il2CppArrayBase<Renderer>)node.genericRenderers)[2]).GetComponent<ParticleSystem>().startSpeed *= 0.2f;
     }
 }
-
 public class SnowstormEffect : ModDisplay
 {
     public override string BaseDisplay => "06928d3ec6e91854d99859c4f1dac91d";
@@ -599,8 +598,13 @@ static class RoundPatch
         
         if (__instance.GetCurrentRound() == 24)
         {
-            var text = "What's your favorite Christmas dish? Mine is cookies and milk!";
-            Story.StoryUI.CreatePanel(StoryPortrait.SantaHappy, text);
+            StoryMessage[] messages = [
+                new("Oh hi, guys! We were all sent by the Grinch to destroy YOU.", StoryPortrait.GroupOfBloon),
+                new("GO AWAY BLOONS!", StoryPortrait.SantaWorry),
+                new("Oh, Christmas, what did I do?", StoryPortrait.Player),
+            ];
+            
+            Story.StoryUI.CreatePanel(messages);
         }
 
         if (__instance.GetCurrentRound() == 29)

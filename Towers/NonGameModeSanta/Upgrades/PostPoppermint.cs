@@ -15,10 +15,10 @@ namespace TemplateMod.Towers.NonGameModeSanta.Upgrades
     public class PostPoppermint : ModUpgrade<RegularSanta>
     {
         public override int Path => Middle;
-
+        public override string Icon => "PoppermintIcon";
         public override int Tier => 1;
 
-        public override int Cost => 515;
+        public override int Cost => 500;
 
         public override void ApplyUpgrade(TowerModel towerModel)
         {

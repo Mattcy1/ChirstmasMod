@@ -16,7 +16,6 @@ namespace TemplateMod.Towers.Elf.R20
 {
     public class Elf : ModTower<ChristmasTowers>
     {
-
         public override string BaseTower => TowerType.DartMonkey;
 
         public override bool DontAddToShop => true;

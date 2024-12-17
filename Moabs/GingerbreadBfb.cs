@@ -26,7 +26,7 @@ namespace TemplateMod.Moabs
         }
     }
 
-    public class GingerbreadBfb0 : ModBloonDisplay<GingerbreadMoab>
+    public class GingerbreadBfb0 : ModBloonDisplay<GingerbreadBfb>
     {
         public override string BaseDisplay => GetBloonDisplay(BloonType.sBfb);
 

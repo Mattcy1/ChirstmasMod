@@ -47,7 +47,6 @@ using TemplateMod.Towers;
 using TemplateMod.Towers.Elf.R20;
 using TemplateMod.Towers.Elf.R60;
 using TemplateMod.Towers.Elf.R80;
-using TemplateMod.Towers.NonGameModeSanta;
 using TemplateMod.Towers.PresentLauncher;
 using TemplateMod.UI;
 using UnityEngine;
@@ -67,7 +66,7 @@ static class ShopMenu_CreateTowerButton
     [HarmonyPostfix]
     public static void Postfix(ITowerPurchaseButton __result)
     {
-        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<RegularSanta>(), ModContent.TowerID<ElfLord>(), ModContent.TowerID<PresentTower>()];
+        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<ElfLord>(), ModContent.TowerID<PresentTower>()];
 
         if (InGame.instance.GetGameModel().gameMode == ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
         {

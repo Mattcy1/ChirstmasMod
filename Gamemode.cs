@@ -10,7 +10,7 @@ using Il2CppAssets.Scripts.Models.Rounds;
 using Il2CppAssets.Scripts.Simulation;
 using TemplateMod.Bloons;
 using TemplateMod.Moabs;
-using TemplateMod.Towers.NonGameModeSanta;
+using TemplateMod.Towers;
 
 namespace ChristmasMod;
 
@@ -82,7 +82,6 @@ public class Gamemode
         {
             gameModeModel.UseRoundSet<CustomRS>();
             gameModeModel.SetEndingRound(102);
-            gameModeModel.AddMutator(new LockTowerModModel("LockTowerModModel_", ModContent.TowerID<RegularSanta>()));
         }
     } 
 }

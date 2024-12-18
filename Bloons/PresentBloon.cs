@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Il2CppAssets.Scripts.Unity.UI_New.InGame;
+using MelonLoader;
 
 namespace TemplateMod.Bloons
 {
@@ -27,27 +29,29 @@ namespace TemplateMod.Bloons
             bloonModel.RemoveAllChildren();
         }
     }
-
-    [HarmonyPatch(typeof(Bloon), nameof(Bloon.OnSpawn))]
-    static class Bloon_OnSpawn
+    
+    [HarmonyPatch(typeof(Bloon), nameof(Bloon.OnDestroy))]
+    static class Bloon_OnDamage
     {
+        private static int Count = 1;
         public static void Postfix(Bloon __instance)
         {
             var bm = __instance.bloonModel;
             if(bm.baseId == ModContent.BloonID<PresentBloon>())
             {
-                var bloons = Game.instance.model.bloons.ToList().FindAll(bloon => !bloon.isMoab);
+                var bloons = Game.instance.model.bloons.ToList().FindAll(bloon => !bloon.isMoab && !bloon.isBoss);
                 Random rand = new();
-
+                
                 var bloon = bloons[rand.Next(bloons.Count)];
-                var count = rand.Next(60) / 6;
+                var countRand = rand.Next(1, 6);
+                Count = countRand;
 
-                if(count < 1)
+
+                if (!bloon.baseId.Contains("Rock") && !bloon.baseId.Contains("TestBloon") && !bloon.baseId.Contains(ModContent.BloonID<PresentBloon>()))
                 {
-                    count = 1;
+                    InGame.instance.SpawnBloons(bloon.id, Count, 10);
+                    MelonLogger.Msg($"Added {Count} bloon to {bloon.id}");
                 }
-
-                bm.AddToChildren(bloon.id, count);
             }
         }
     }

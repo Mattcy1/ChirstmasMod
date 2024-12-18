@@ -19,7 +19,6 @@ using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using MelonLoader;
 using System.Collections.Generic;
 using System.Linq;
-using ChristmasMod;
 using UnityEngine;
 using UnityEngine.UI;
 using static BossHandlerNamespace.Bosses;
@@ -249,13 +248,6 @@ namespace BossHandlerNamespace
 
                     if (boss != null)
                     {
-                        if (Values.cookieAngry == true)
-                        {
-                            Values.cookieAngry = false;
-                    
-                            bossIcon.Image.Destroy();
-                            bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetTextureGUID<BossHandler>("AngryCookieMonsterIcon"));
-                        }
                         // Uses the default boss health bar, but you can add custom ones by setting bossPanels healthBar property
                         // to the name of the health bar image you'd like to use.
                         // Image is only updated when the property is altered.
@@ -322,16 +314,11 @@ namespace BossHandlerNamespace
                 InGame.instance.bridge.GetBloonFromId(bloon).spawnRound += registeration.continueRounds;
 
                 nameText.SetText(registeration.displayName);
-                if (bossIcon.Image != null && Values.iconAdded == false)
+                if (bossIcon.Image != null)
                 {
                     bossIcon.Image.Destroy();
                 }
-
-                if (Values.iconAdded == false)
-                {
-                    Values.iconAdded = true;
-                    bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetTextureGUID<BossHandler>(registeration.icon));
-                }
+                bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetTextureGUID<BossHandler>(registeration.icon));
                 mainBossPanel.Show();
 
                 showDescription = false;

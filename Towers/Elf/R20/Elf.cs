@@ -29,7 +29,7 @@ namespace TemplateMod.Towers.Elf.R20
         public override void ModifyBaseTowerModel(TowerModel towerModel)
         {
             towerModel.isSubTower = true;
-            towerModel.range = 20;
+            towerModel.range = 40;
 
             var proj = towerModel.GetWeapon().projectile;
             proj.GetDamageModel().damage = 2;

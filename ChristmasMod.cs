@@ -67,7 +67,7 @@ static class ShopMenu_CreateTowerButton
     [HarmonyPostfix]
     public static void Postfix(ITowerPurchaseButton __result)
     {
-        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<RegularSanta>(), ModContent.TowerID<ElfLord>()];
+        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<RegularSanta>(), ModContent.TowerID<ElfLord>(), ModContent.TowerID<PresentTower>()];
 
         if (InGame.instance.GetGameModel().gameMode == ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
         {
@@ -82,6 +82,10 @@ static class ShopMenu_CreateTowerButton
                 else if (__result.TowerModel.baseId == ModContent.TowerID<ElfLord>() && !ElfLord.AddedToShop)
                 {
                     ElfLord.ShopButton = __result.GameObject.transform.parent.gameObject;
+                }
+                else if (__result.TowerModel.baseId == ModContent.TowerID<PresentTower>())
+                {
+                    PresentTower.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
             }
         }

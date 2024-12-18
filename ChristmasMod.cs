@@ -761,6 +761,8 @@ static class RoundPatch
         
         if (__instance.GetCurrentRound() == 80)
         {
+            Story.StoryUI.instance.Close();
+            
             StoryMessage[] messages =
             [
                 new StoryMessage("Man that boss was really tough! I'm not sure what we're going to do for this last boss! If only there was something else or <b>someone</b> else we could have to help us...", StoryPortrait.SantaWorry),
@@ -816,7 +818,7 @@ static class RoundPatch
                 new StoryMessage("Didn't I already give you enough for all the Christmases before?", StoryPortrait.SantaHappy),
                 new StoryMessage("Really...", StoryPortrait.Player),
             ];
-
+            
             Story.StoryUI.CreatePanel(messages, new(() =>
             {
                 foreach (TowerToSimulation tower in InGame.instance.bridge.GetAllTowers().ToList())

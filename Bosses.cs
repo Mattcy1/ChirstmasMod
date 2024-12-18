@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BTD_Mod_Helper.Api;
@@ -24,6 +25,7 @@ using MelonLoader;
 using TemplateMod.Moabs;
 using TemplateMod.UI;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 using static BossHandlerNamespace.BossHandler;
 using AddBerserkerBrewToProjectile = Il2CppAssets.Scripts.Data.Behaviors.Projectiles.AddBerserkerBrewToProjectile;
 using Color = UnityEngine.Color;
@@ -309,7 +311,7 @@ namespace BossHandlerNamespace
                 registration.isMainBoss = false;
             }
             
-            if (bloonModel.id == "Crumbly")
+            if (bloonModel.id.Contains("Crumbly"))
             {
                 MonoBehaviorCrumbly mono = StartMonobehavior<MonoBehaviorCrumbly>();
 
@@ -317,7 +319,7 @@ namespace BossHandlerNamespace
                 mono.registration = registration;
             }
 
-            if (bloonModel.id == "CookieMonster")
+            if (bloonModel.id.Contains("CookieMonster"))
             {
                 MonoBehaviorCookieMonster mono =
                     StartMonobehavior<MonoBehaviorCookieMonster>();
@@ -326,7 +328,7 @@ namespace BossHandlerNamespace
                 mono.registration = registration;
             }
             
-            if (bloonModel.id == "GrinchBoss")
+            if (bloonModel.id.Contains("GrinchBoss"))
             {
                 MonoBehaviorGrinch mono =
                     StartMonobehavior<MonoBehaviorGrinch>();
@@ -499,26 +501,24 @@ namespace BossHandlerNamespace
                                 .GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId,
                             new Vector3(0, 0, 0), 0, 1);
                         boss.trackSpeedMultiplier = 2;
-
-                        if (fakeHealth == 0 && Values.bossDead == false)
+                        Task.Run(async () =>
                         {
-                            Values.bossDead = true;
+                            await Task.Delay(10000);
+                            
+                            Values.disableprojectile = false;
+                            boss.trackSpeedMultiplier = 1;
+                        });
+                    }
 
-                            if (Values.DefeatedCounter == 0)
-                            {
-                                StoryMessage messages = new StoryMessage(
-                                    "NO! IMPOSSIBLE!I'M THE STRONGEST BOSS YET, I WON'T LET THIS SLIDE!, IT'S TIME TO SHOW YOU MY TRUE POWER!",
-                                    StoryPortrait.CookieMonsterIcon, new(() =>
-                                    {
-                                        fakeMaxHealth *= 3;
-                                        fakeHealth = fakeMaxHealth;
-                                        boss.trackSpeedMultiplier *= 5;
-                                        Values.DefeatedCounter += 1;
-                                        Values.tsunami = false;
-                                        InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
-                                    }));
+                    if (fakeHealth == 0 && Values.bossDead == false)
+                    {
+                        Values.bossDead = true;
 
-                                if (Values.GrinchAngry == true)
+                        if (Values.DefeatedCounter == 0)
+                        {
+                            StoryMessage messages = new StoryMessage(
+                                "NO! IMPOSSIBLE!I'M THE STRONGEST BOSS YET, I WON'T LET THIS SLIDE!, IT'S TIME TO SHOW YOU MY TRUE POWER!",
+                                StoryPortrait.CookieMonsterIcon, new(() =>
                                 {
                                     fakeMaxHealth *= 3;
                                     fakeHealth = fakeMaxHealth;
@@ -526,33 +526,29 @@ namespace BossHandlerNamespace
                                     Values.DefeatedCounter += 1;
                                     Values.tsunami = false;
                                     InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
-                                }
-                                else
-                                {
-                                    Story.StoryUI.CreatePanel(messages);
-                                }
-                                Values.bossDead = false;
-                            }
-                            else if (Values.DefeatedCounter == 1)
+                                }));
+
+                            if (Values.GrinchAngry == true)
                             {
-                                StoryMessage messages = new StoryMessage(
-                                    "I guess I'm not strong enough, But I've got one last trick up my sleeve, Cookie Monster proceeded to steal half your money... and then died.",
-                                    StoryPortrait.CookieMonsterIcon, new(() =>
-                                    {
-                                        boss.trackSpeedMultiplier = -40;
-                                        boss.Rotation = boss.PercThroughMap() * 20000;
-                                        boss.prevRot = boss.Rotation;
+                                fakeMaxHealth *= 3;
+                                fakeHealth = fakeMaxHealth;
+                                boss.trackSpeedMultiplier *= 5;
+                                Values.DefeatedCounter += 1;
+                                Values.tsunami = false;
+                                InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
+                            }
+                            else
+                            {
+                                Story.StoryUI.CreatePanel(messages);
+                            }
 
-                                        Task.Run(async () =>
-                                        {
-                                            await Task.Delay(4000);
-
-                                            boss.Destroy();
-                                        });
-                                        InGame.instance.AddCash(-InGame.instance.GetCash() * 0.5f);
-                                    }));
-
-                                if (Values.GrinchAngry == true)
+                            Values.bossDead = false;
+                        }
+                        else if (Values.DefeatedCounter == 1)
+                        {
+                            StoryMessage messages = new StoryMessage(
+                                "I guess I'm not strong enough, But I've got one last trick up my sleeve, Cookie Monster proceeded to steal half your money... and then died.",
+                                StoryPortrait.CookieMonsterIcon, new(() =>
                                 {
                                     boss.trackSpeedMultiplier = -40;
                                     boss.Rotation = boss.PercThroughMap() * 20000;
@@ -564,13 +560,28 @@ namespace BossHandlerNamespace
 
                                         boss.Destroy();
                                     });
-                                }
-                                else
+                                    InGame.instance.AddCash(-InGame.instance.GetCash() * 0.5f);
+                                }));
+
+                            if (Values.GrinchAngry == true)
+                            {
+                                boss.trackSpeedMultiplier = -40;
+                                boss.Rotation = boss.PercThroughMap() * 20000;
+                                boss.prevRot = boss.Rotation;
+
+                                Task.Run(async () =>
                                 {
-                                    Story.StoryUI.CreatePanel(messages);
-                                }
-                                Values.bossDead = false;
+                                    await Task.Delay(4000);
+
+                                    boss.Destroy();
+                                });
                             }
+                            else
+                            {
+                                Story.StoryUI.CreatePanel(messages);
+                            }
+
+                            Values.bossDead = false;
                         }
                     }
                 }
@@ -635,8 +646,9 @@ namespace BossHandlerNamespace
 
                         Task.Run(async () =>
                         {
-                            Values.disableprojectile = false;
                             await Task.Delay(10000);
+                                
+                            Values.disableprojectile = false;
                             boss.trackSpeedMultiplier = 3;
                         });
                     }

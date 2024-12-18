@@ -29,7 +29,7 @@ public class Story
         ElfLordWant,
         SnowMoab,
         CrumblyIcon,
-        CookieMonsterIcon,
+        AngryCookieMonsterIcon,
         GrinchAngryIcon,
         Player,
         PlayerNoWay,

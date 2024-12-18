@@ -853,29 +853,5 @@ static class RoundPatch
 
             Story.StoryUI.CreatePanel(messages);
         }
-
-        if (__instance.GetCurrentRound() == 101)
-        {
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            cube.transform.rotation = Quaternion.Euler(90f, 0f, 0f); 
-            cube.transform.localScale *= 200f;
-        
-            var videoPlayer = cube.AddComponent<UnityEngine.Video.VideoPlayer>();
-        
-            RenderTexture renderTexture = new RenderTexture(1920, 1080, 0);
-            renderTexture.Create();
-        
-            videoPlayer.renderMode = VideoRenderMode.RenderTexture;
-            videoPlayer.targetTexture = renderTexture;
-        
-            Renderer renderer = cube.GetComponent<Renderer>();
-            renderer.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-            renderer.material.mainTexture = renderTexture;
-        
-            string videoPath = @"C:\Users\Mattheo\OneDrive\Documents\BTD6 Mod Sources\ChirstmasMod\Video.mp4";
-            videoPlayer.url = videoPath;
-        
-            videoPlayer.Play();
-        }
     }
 }

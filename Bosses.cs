@@ -345,11 +345,6 @@ namespace BossHandlerNamespace
             public int fakeHealth = 50000;
             public int fakeMaxHealth = 50000;
             private static readonly System.Random random = new System.Random();
-
-            const float cooldownIncrement = 2;
-            float cooldown = 0;
-            bool cooldownApplied = false;
-
             public MonoBehaviorCrumbly() : base()
             {
 
@@ -397,14 +392,11 @@ namespace BossHandlerNamespace
                         boss.trackSpeedMultiplier = -10;
                         boss.Rotation = boss.PercThroughMap() * 20000;
                         boss.prevRot = boss.Rotation;
+                        
+                        Task.Run(async () =>
+                        {
+                            await Task.Delay(2000);
 
-                        if (!cooldownApplied)
-                        {
-                            cooldownApplied = true;
-                            cooldown = Time.time + cooldownIncrement;
-                        }
-                        if (Time.time >= cooldown)
-                        {
                             if (Values.DefeatedCounter <= 6)
                             {
                                 fakeMaxHealth *= 2;
@@ -416,8 +408,7 @@ namespace BossHandlerNamespace
                             }
 
                             Values.bossDead = false;
-                            cooldownApplied = false;
-                        }
+                        });
 
                         if (Values.DefeatedCounter == 0 && Values.GrinchAngry == false)
                         {
@@ -473,16 +464,6 @@ namespace BossHandlerNamespace
             public BossRegisteration registration;
             public int fakeHealth = 1500000;
             public int fakeMaxHealth = 1500000;
-
-            const float cooldownIncrement = 10;
-            const float cooldownIncrement2 = 5;
-            const float cooldownIncrement3 = 4;
-            float cooldown3 = 0;
-            float cooldown2 = 0;
-            float cooldown = 0;
-            bool cooldownApplied = false;
-            bool cooldown2Applied = false;
-            bool cooldown3Applied = false;
             public MonoBehaviorCookieMonster() : base()
             {
 
@@ -497,13 +478,6 @@ namespace BossHandlerNamespace
             {
                 if (boss != null)
                 {
-                    if((cooldown2Applied && cooldown2 < Time.time) || (cooldown3Applied && cooldown3 < Time.time))
-                    {
-                        boss.Destroy();
-                        cooldown3Applied = false;
-                        cooldown2Applied = false;
-                    }
-
                     registration.fakeHealth = fakeHealth;
                     registration.fakeMaxHealth = fakeMaxHealth;
 
@@ -526,79 +500,77 @@ namespace BossHandlerNamespace
                             new Vector3(0, 0, 0), 0, 1);
                         boss.trackSpeedMultiplier = 2;
 
-                        if (!cooldownApplied)
+                        if (fakeHealth == 0 && Values.bossDead == false)
                         {
-                            cooldownApplied = true;
-                            cooldown = Time.time + cooldownIncrement;
-                        }
+                            Values.bossDead = true;
 
-                        if(Time.time >= cooldown) 
-                            Values.disableprojectile = false;
-                            boss.trackSpeedMultiplier = 1;
-                            cooldownApplied = false;
-                        };
+                            if (Values.DefeatedCounter == 0)
+                            {
+                                StoryMessage messages = new StoryMessage(
+                                    "NO! IMPOSSIBLE!I'M THE STRONGEST BOSS YET, I WON'T LET THIS SLIDE!, IT'S TIME TO SHOW YOU MY TRUE POWER!",
+                                    StoryPortrait.CookieMonsterIcon, new(() =>
+                                    {
+                                        fakeMaxHealth *= 3;
+                                        fakeHealth = fakeMaxHealth;
+                                        boss.trackSpeedMultiplier *= 5;
+                                        Values.DefeatedCounter += 1;
+                                        Values.tsunami = false;
+                                        InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
+                                    }));
 
-                    if (fakeHealth == 0 && Values.bossDead == false)
-                    {
-                        Values.bossDead = true;
-
-                        if (Values.DefeatedCounterCookie == 0 && Values.GrinchAngry == false)
-                        {
-                            StoryMessage messages = new StoryMessage(
-                                "NO! IMPOSSIBLE! I'M THE STRONGEST BOSS YET, I WON'T LET THIS SLIDE!, IT'S TIME TO SHOW YOU MY TRUE POWER!",
-                                StoryPortrait.CookieMonsterIcon, new(() =>
+                                if (Values.GrinchAngry == true)
                                 {
                                     fakeMaxHealth *= 3;
                                     fakeHealth = fakeMaxHealth;
                                     boss.trackSpeedMultiplier *= 5;
-                                    Values.DefeatedCounterCookie += 1;
+                                    Values.DefeatedCounter += 1;
                                     Values.tsunami = false;
                                     InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
-                                }));
+                                }
+                                else
+                                {
+                                    Story.StoryUI.CreatePanel(messages);
+                                }
+                                Values.bossDead = false;
+                            }
+                            else if (Values.DefeatedCounter == 1)
+                            {
+                                StoryMessage messages = new StoryMessage(
+                                    "I guess I'm not strong enough, But I've got one last trick up my sleeve, Cookie Monster proceeded to steal half your money... and then died.",
+                                    StoryPortrait.CookieMonsterIcon, new(() =>
+                                    {
+                                        boss.trackSpeedMultiplier = -40;
+                                        boss.Rotation = boss.PercThroughMap() * 20000;
+                                        boss.prevRot = boss.Rotation;
 
-                            Story.StoryUI.CreatePanel(messages);
+                                        Task.Run(async () =>
+                                        {
+                                            await Task.Delay(4000);
 
-                            Values.bossDead = false;
-                        }
-                        else if (Values.DefeatedCounterCookie == 0 && Values.GrinchAngry == true)
-                        {
-                            fakeMaxHealth *= 3;
-                            fakeHealth = fakeMaxHealth;
-                            boss.trackSpeedMultiplier *= 5;
-                            Values.DefeatedCounterCookie += 1;
-                            Values.tsunami = false;
-                            InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
+                                            boss.Destroy();
+                                        });
+                                        InGame.instance.AddCash(-InGame.instance.GetCash() * 0.5f);
+                                    }));
 
-                            Values.bossDead = false;
-                        }
-                        else if (Values.DefeatedCounterCookie == 1 && Values.GrinchAngry == false)
-                        {
-                            StoryMessage messages = new StoryMessage(
-                                "I guess I'm not strong enough, But I've got one last trick up my sleeve, Cookie Monster proceeded to steal half your money... and then died.",
-                                StoryPortrait.CookieMonsterIcon, new(() =>
+                                if (Values.GrinchAngry == true)
                                 {
                                     boss.trackSpeedMultiplier = -40;
                                     boss.Rotation = boss.PercThroughMap() * 20000;
                                     boss.prevRot = boss.Rotation;
-                                    cooldown2 = Time.time + cooldownIncrement2;
-                                    cooldown2Applied = transform;
-                                    InGame.instance.AddCash(-InGame.instance.GetCash() * 0.5f);
-                                }));
 
-                            Story.StoryUI.CreatePanel(messages);
+                                    Task.Run(async () =>
+                                    {
+                                        await Task.Delay(4000);
 
-                            Values.bossDead = false;
-                        }
-                        else if (Values.DefeatedCounterCookie == 1 && Values.GrinchAngry == true)
-                        {
-                            boss.trackSpeedMultiplier = -40;
-                            boss.Rotation = boss.PercThroughMap() * 20000;
-                            boss.prevRot = boss.Rotation;
-
-                            cooldown3 = Time.time + cooldownIncrement3;
-                            cooldown3Applied = true;
-
-                            Values.bossDead = false;
+                                        boss.Destroy();
+                                    });
+                                }
+                                else
+                                {
+                                    Story.StoryUI.CreatePanel(messages);
+                                }
+                                Values.bossDead = false;
+                            }
                         }
                     }
                 }
@@ -608,6 +580,7 @@ namespace BossHandlerNamespace
                 }
             }
         }
+
         [RegisterTypeInIl2Cpp(false)]
         public class MonoBehaviorGrinch : MonoBehaviour
         {
@@ -616,25 +589,6 @@ namespace BossHandlerNamespace
             public int fakeHealth = 20000000;
             public int fakeMaxHealth = 20000000;
 
-
-            const float cooldownIncrement = 10;
-            const float cooldownIncrement2 = 2;
-            const float cooldownIncrement3 = 4;
-            const float cooldownIncrement4 = 6;
-            const float cooldownIncrement5 = 8;
-            const float cooldownIncrement6 = 4;
-            float cooldown3 = 0;
-            float cooldown2 = 0;
-            float cooldown = 0;
-            float cooldown4 = 0;
-            float cooldown5 = 0;
-            float cooldown6 = 0;
-            bool cooldownApplied = false;
-            bool cooldown2Applied = false;
-            bool cooldown3Applied = false;
-            bool cooldown4Applied = false;
-            bool cooldown5Applied = false;
-            bool cooldown6Applied = false;
             public MonoBehaviorGrinch() : base()
             {
 
@@ -652,45 +606,6 @@ namespace BossHandlerNamespace
             {
                 if (boss != null)
                 {
-                    if(cooldown < Time.time && cooldownApplied)
-                    {
-                        boss.trackSpeedMultiplier = 3;
-                        cooldownApplied = false;
-                    }
-                    if(cooldown2 < Time.time && cooldown2Applied)
-                    {
-                        InGame.instance.SpawnBloons("CandyCaneBossNHB", 1, 0);
-                        cooldown2Applied = false;
-                    }
-                    if (cooldown3 < Time.time && cooldown3Applied)
-                    {
-                        Values.storyExecuted = true;
-
-                        InGame.instance.SpawnBloons("FrostyNHB", 1, 0);
-                        cooldown3Applied = false;
-                    }
-                    if (cooldown4 < Time.time && cooldown4Applied)
-                    {
-                        InGame.instance.SpawnBloons("CrumblyNHB", 1, 0);
-                        cooldown4Applied = false;
-                    }
-                    if (cooldown5 < Time.time && cooldown5Applied)
-                    {
-                        InGame.instance.SpawnBloons("CookieMonsterNHB", 1, 0);
-
-                        //BossHandler.BossPanel mono = StartMonobehavior<BossHandler.BossPanel>();
-
-                        //mono.registeration = registration;
-                        //mono.bloon = boss.Id;
-                        cooldown5Applied = false;
-                    }
-                    if (cooldown6 < Time.time && cooldown6Applied)
-                    {
-                        boss.Destroy();
-
-                        cooldown6Applied = false;
-                    }
-
                     registration.fakeHealth = fakeHealth;
                     registration.fakeMaxHealth = fakeMaxHealth;
 
@@ -717,9 +632,13 @@ namespace BossHandlerNamespace
                                 .GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId,
                             new Vector3(0, 0, 0), 0, 1);
                         boss.trackSpeedMultiplier = 5;
-                           Values.disableprojectile = false;
-                        cooldown = cooldownIncrement;
-                        cooldownApplied = true;
+
+                        Task.Run(async () =>
+                        {
+                            Values.disableprojectile = false;
+                            await Task.Delay(10000);
+                            boss.trackSpeedMultiplier = 3;
+                        });
                     }
 
                     if (fakeHealth == 0 && Values.bossDead == false)
@@ -737,14 +656,32 @@ namespace BossHandlerNamespace
                                     fakeHealth = fakeMaxHealth;
                                     boss.trackSpeedMultiplier = 3;
                                     Values.tsunami = false;
-                                    cooldown2 = Time.time + cooldownIncrement2;
-                                    cooldown2Applied = true;
-                                    cooldown3 = Time.time + cooldownIncrement3;
-                                    cooldown3Applied = true;
-                                    cooldown4 = Time.time + cooldownIncrement4;
-                                    cooldown4Applied = true;
-                                    cooldown5 = Time.time + cooldownIncrement5;
-                                    cooldown5Applied = true;
+                                    Task.Run(async () =>
+                                    {
+                                        await Task.Delay(2000);
+
+                                        InGame.instance.SpawnBloons("CandyCaneBossNHB", 1, 0);
+                                    });
+                                    Task.Run(async () =>
+                                    {
+                                        await Task.Delay(4000);
+
+                                        Values.storyExecuted = true;
+
+                                        InGame.instance.SpawnBloons("FrostyNHB", 1, 0);
+                                    });
+                                    Task.Run(async () =>
+                                    {
+                                        await Task.Delay(6000);
+
+                                        InGame.instance.SpawnBloons("CrumblyNHB", 1, 0);
+                                    });
+                                    Task.Run(async () =>
+                                    {
+                                        await Task.Delay(8000);
+
+                                        InGame.instance.SpawnBloons("CookieMonsterNHB", 1, 0);
+                                    });
                                 }));
 
                             Story.StoryUI.CreatePanel(messages);
@@ -757,8 +694,12 @@ namespace BossHandlerNamespace
                             boss.Rotation = boss.PercThroughMap() * 200000;
                             boss.prevRot = boss.Rotation;
 
-                            cooldown6 = Time.time + cooldownIncrement6;
-                            cooldown6Applied = true;
+                            Task.Run(async () =>
+                            {
+                                await Task.Delay(4000);
+
+                                boss.Destroy();
+                            });
 
                             Values.bossDead = false;
                         }
@@ -770,6 +711,7 @@ namespace BossHandlerNamespace
                 }
             }
         }
+
         public static int RandomInt(int min, int max)
         {
             System.Random rand = new();

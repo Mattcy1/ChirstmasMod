@@ -24,7 +24,6 @@ public class Gamemode
         public override string DisplayName => "Christmas Gamemode";
 
         public override void ModifyEasyRoundModels(RoundModel roundModel, int round)
-
         {
             switch (round)
             {
@@ -65,6 +64,14 @@ public class Gamemode
                 case 38:
                     roundModel.AddBloonGroup(ModContent.BloonID<SnowMoab>(), 2, 0, 10);
                     break; 
+            }
+        }
+        
+       public override void ModifyMediumRoundModels(RoundModel roundModel, int round)
+        {
+            switch (round)
+            {
+                //Lerp you make mediums stuffs
             }
         }
     }

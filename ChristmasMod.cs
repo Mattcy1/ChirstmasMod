@@ -185,6 +185,20 @@ public class Values
         set { Disableprojectile = value; }
     }
     
+    private static bool CookieAngry = false;
+    public static bool cookieAngry
+    {
+        get { return CookieAngry; }
+        set { CookieAngry = value; }
+    }
+    
+    private static bool IconAdded = false;
+    public static bool iconAdded
+    {
+        get { return IconAdded; }
+        set { IconAdded = value; }
+    }
+    
     private static bool grinchAngry = false;
     public static bool GrinchAngry
     {
@@ -748,7 +762,7 @@ static class RoundPatch
             StoryMessage[] messages =
             [
                 new("I'm kind of worried about this next boss. So far, they were all pretty easy, but I was told this one is way stronger than the others.", StoryPortrait.SantaWorry),
-                new("As you should be! I am the Grinch's strongest worker Employee of the Month for three years straight.", StoryPortrait.CookieMonsterIcon),
+                new("As you should be! I am the Grinch's strongest worker Employee of the Month for three years straight.", StoryPortrait.AngryCookieMonsterIcon),
                 new("That is not reassuring. take 50k$ to help defend", StoryPortrait.SantaWorry),
                 new("Where do you get all this money?", StoryPortrait.Player),
                 new("It's Christmas magic.", StoryPortrait.SantaHappy)
@@ -765,6 +779,10 @@ static class RoundPatch
             
             StoryMessage[] messages =
             [
+                new StoryMessage("I guess I'm not strong enough, But I've got one last trick up my sleeve, Cookie Monster proceeded to steal half your money... and then died.", StoryPortrait.AngryCookieMonsterIcon),
+                new StoryMessage("Ez", StoryPortrait.Player),
+                new StoryMessage("Rude!", StoryPortrait.AngryCookieMonsterIcon),
+                new StoryMessage("Krill issue", StoryPortrait.Player),
                 new StoryMessage("Man that boss was really tough! I'm not sure what we're going to do for this last boss! If only there was something else or <b>someone</b> else we could have to help us...", StoryPortrait.SantaWorry),
                 new StoryMessage("Aha! I know just who to call. He's one of my strongest elves so he'll hopefully help us.", StoryPortrait.SantaHappy),
                 new StoryMessage("You want my help to stop the <b>Grinch</b> from ruining christmas? Uh... fine I'll help, but you need to pay me <color='#00ff00'>money</color>, if you don't then no help from me! Afterall, <i>you already barely pay me for what I do at the North Pole</i>...", StoryPortrait.ElfLordWant),

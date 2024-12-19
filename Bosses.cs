@@ -106,7 +106,7 @@ namespace BossHandlerNamespace
 
                 //Frosty the Snowbloon
 
-                BloonModel FrostyBoss = CreateBossBase(90000, 1f);
+                BloonModel FrostyBoss = CreateBossBase(80000, 1f);
                 FrostyBoss.ApplyDisplay<FrostyDisplay>();
 
                 BossRegisteration frostyBossRegisteration = new BossRegisteration(FrostyBoss, "Frosty",

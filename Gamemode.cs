@@ -159,6 +159,12 @@ public class Gamemode
                     roundModel.AddBloonGroup<GingerbreadZomg>(5, 100, 500);
                     //Add more
                     break;
+                case 84: 
+                    roundModel.AddBloonGroup<GingerbreadZomg>(5, 100, 500);
+                    roundModel.AddBloonGroup<IceZomg>(5, 500, 1000);
+                    roundModel.AddBloonGroup<SnowZomg>(5, 1000, 2000);
+                    roundModel.AddBloonGroup<PresentMoab>(10, 0, 100);
+                    break;
             }
         }
     }

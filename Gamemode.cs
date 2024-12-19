@@ -65,6 +65,13 @@ public class Gamemode
                     roundModel.AddBloonGroup(ModContent.BloonID<SnowMoab>(), 2, 0, 10);
                     roundModel.AddBloonGroup<PresentBloon>(3, 0, 50);
                     break;
+            }
+        }
+        
+       public override void ModifyMediumRoundModels(RoundModel roundModel, int round)
+        {
+            switch (round)
+            {
                 case 42:
                     roundModel.AddBloonGroup<PresentMoab>(1, 100, 1000);
                     break;
@@ -90,14 +97,6 @@ public class Gamemode
                     roundModel.AddBloonGroup<IceMoab>(15, 0, 3000);
                     roundModel.AddBloonGroup<PresentMoab>(10, 0, 1000);
                     break;
-            }
-        }
-        
-       public override void ModifyMediumRoundModels(RoundModel roundModel, int round)
-        {
-            switch (round)
-            {
-                //Lerp you make mediums stuffs
             }
         }
     }

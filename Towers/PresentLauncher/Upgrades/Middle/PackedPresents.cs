@@ -16,6 +16,8 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Middle
         public override int Path => Middle;
 
         public override int Tier => 1;
+        
+        public override string Icon => "GiftsForAll";
 
         public override string Description => "Presents now contain 6 items instead of one.";
 

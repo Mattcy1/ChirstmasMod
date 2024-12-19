@@ -99,6 +99,53 @@ public class Gamemode
                     break;
             }
         }
+       
+        public override void ModifyHardRoundModels(RoundModel roundModel, int round)
+        {
+            switch (round)
+            {
+                case 61:
+                    roundModel.AddBloonGroup<GingerbreadBfb>(1, 25, 1000);
+                    roundModel.AddBloonGroup<SnowBfb>(1, 50, 1000);
+                    roundModel.AddBloonGroup<IceBfb>(1, 75, 1000);
+                    break;
+                case 62: //Modded R63 = fun
+                    roundModel.AddBloonGroup<CandyCaneBloon>(25, 25, 1000);
+                    roundModel.AddBloonGroup<SnowBloon>(25, 50, 1000);
+                    roundModel.AddBloonGroup<IceBloon>(10, 75, 1000);
+                    roundModel.AddBloonGroup<GingerbreadBloon>(10, 100, 1000);
+                    break;
+                case 64:  // R63 On Cracks
+                    roundModel.ClearBloonGroups();
+                    roundModel.AddBloonGroup<PresentBloon>(100, 25, 1000);
+                    roundModel.AddBloonGroup<PresentMoab>(5, 0, 100);
+                    break;
+                case 69:  // MOAB / BFB MADNESS
+                    roundModel.ClearBloonGroups();
+                    roundModel.AddBloonGroup<GingerbreadMoab>(5, 25, 1000);
+                    roundModel.AddBloonGroup<IceMoab>(3, 0, 100);
+                    roundModel.AddBloonGroup<SnowMoab>(3, 100, 500);
+                    roundModel.AddBloonGroup<GingerbreadBfb>(2, 1000, 1500);
+                    roundModel.AddBloonGroup<IceBfb>(2, 100, 500);
+                    roundModel.AddBloonGroup<SnowBfb>(2, 500, 1000);
+                    break;
+                case 72:
+                    roundModel.AddBloonGroup<PresentMoab>(5, 25, 500);
+                    break;
+                case 75: // Every Bloon Moab And Bfb at once seems like fun
+                    roundModel.AddBloonGroup<CandyCaneBloon>(1, 0, 0);
+                    roundModel.AddBloonGroup<SnowBloon>(1, 0, 0);
+                    roundModel.AddBloonGroup<GingerbreadBloon>(1, 0, 0);
+                    roundModel.AddBloonGroup<PresentBloon>(1, 0, 0);
+                    roundModel.AddBloonGroup<PresentMoab>(1, 0, 0);
+                    roundModel.AddBloonGroup<GingerbreadMoab>(1, 0, 0);
+                    roundModel.AddBloonGroup<IceMoab>(1, 0, 0);
+                    roundModel.AddBloonGroup<GingerbreadBfb>(1, 0, 0);
+                    roundModel.AddBloonGroup<IceBfb>(1, 0, 0);
+                    roundModel.AddBloonGroup<SnowBfb>(1, 0, 0);
+                    break;
+            }
+        }
     }
     
     public class ChristmasGamemode : ModGameMode

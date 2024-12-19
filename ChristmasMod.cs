@@ -319,6 +319,7 @@ public class ChristmasMod : BloonsTD6Mod
     public override void OnNewGameModel(GameModel result, MapModel map)
     {
         OpenerUI.CreatePanel();
+        Values.snowflake += 100;
     }
     public override void OnUpdate()
     {

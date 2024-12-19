@@ -15,6 +15,7 @@ using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.Display;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
+using MelonLoader;
 using NAudio.Utils;
 using UnityEngine;
 
@@ -73,6 +74,8 @@ namespace TemplateMod.Towers.PresentLauncher
         [HarmonyPatch(typeof(TowerToSimulation), nameof(TowerToSimulation.Upgrade))]
         static class TowerToSimulation_Upgrade
         {
+            private static float upgradeCost;
+            
             [HarmonyPrefix]
             public static bool Prefix(TowerToSimulation __instance, int pathIndex, bool isParagon)
             {
@@ -83,19 +86,61 @@ namespace TemplateMod.Towers.PresentLauncher
 
                 var t = __instance.tower;
                 var tm = t.towerModel;
-                int tier = tm.tiers[pathIndex];
+                int tiers = tm.tiers[pathIndex];
+                int tier = tiers + 1;
 
-                float upgradeCost = __instance.GetUpgradeCost(pathIndex, tier + 1, 0, isParagon);
+                if (pathIndex == 0 && tier == 1)
+                {
+                    upgradeCost = 5;
+                }
+                else if (pathIndex == 0 && tier == 2)
+                {
+                    upgradeCost = 8;
+                }
+                
+                if (pathIndex == 1 && tier == 1)
+                {
+                    upgradeCost = 10;
+                }
+                else if (pathIndex == 1 && tier == 2)
+                {
+                    upgradeCost = 12;
+                }
+                else if (pathIndex == 1 && tier == 3)
+                {
+                    upgradeCost = 30;
+                }
+                else if (pathIndex == 1 && tier == 4)
+                {
+                    upgradeCost = 105;
+                }
+                else if (pathIndex == 1 && tier == 5)
+                {
+                    upgradeCost = 467;
+                }
+                
+                if (pathIndex == 2 && tier == 1)
+                {
+                    upgradeCost = 5;
+                }
+                else if (pathIndex == 2 && tier == 2)
+                {
+                    upgradeCost = 10;
+                }
+                
+                MelonLogger.Msg(upgradeCost);
 
-                if (upgradeCost < Values.snowflake)
+                if (Values.snowflake >= upgradeCost)
+                {
+                    t.worth = tm.cost + upgradeCost;
+                    InGame.instance.AddCash(upgradeCost);
+                    Values.snowflake -= (int)upgradeCost;
+                    return true;
+                }
+                else
                 {
                     return false;
                 }
-
-                InGame.instance.AddCash(upgradeCost);
-                Values.snowflake -= (int)upgradeCost;
-
-                return true;
             }
         }
 
@@ -115,8 +160,10 @@ namespace TemplateMod.Towers.PresentLauncher
                 {
                     return;
                 }
+                
+                MelonLogger.Msg(t.SaleValue);
 
-                __instance.AddCash(-t.SaleValue);
+                __instance.AddCash(t.SaleValue);
 
                 Values.snowflake += (int)t.SaleValue;
             }

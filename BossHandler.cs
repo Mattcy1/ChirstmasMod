@@ -302,7 +302,7 @@ namespace BossHandlerNamespace
                     {
 
                         // If the Bloon was destroyed, hides the UI
-
+                        Values.iconAdded = false;
                         mainBossPanel.Hide();
 
 

@@ -63,7 +63,33 @@ public class Gamemode
                 
                 case 38:
                     roundModel.AddBloonGroup(ModContent.BloonID<SnowMoab>(), 2, 0, 10);
-                    break; 
+                    roundModel.AddBloonGroup<PresentBloon>(3, 0, 50);
+                    break;
+                case 42:
+                    roundModel.AddBloonGroup<PresentMoab>(1, 100, 1000);
+                    break;
+                case 43:
+                    roundModel.AddBloonGroup<SnowMoab>(4, 500, 900);
+                    roundModel.AddBloonGroup<PresentBloon>(10, 0, 1000);
+                    break;
+                case 45:
+                    roundModel.AddBloonGroup<IceMoab>(1, 100, 101);
+                    roundModel.AddBloonGroup<IceBloon>(10, 0, 100);
+                    roundModel.AddBloonGroup<SnowMoab>(10, 100, 200);
+                    roundModel.AddBloonGroup<PresentBloon>(20, 0, 1000);
+                    roundModel.AddBloonGroup<PresentMoab>(2, 0, 1000);
+                    break;
+                case 54:
+                    roundModel.AddBloonGroup<SnowBfb>();
+                    roundModel.AddBloonGroup<PresentBloon>(30, 0, 1000);
+                    roundModel.AddBloonGroup<PresentMoab>(3, 0, 1000);
+                    break;
+                case 60:
+                    roundModel.AddBloonGroup<GingerbreadBfb>();
+                    roundModel.AddBloonGroup<SnowBfb>(1, 100, 100);
+                    roundModel.AddBloonGroup<IceMoab>(15, 0, 3000);
+                    roundModel.AddBloonGroup<PresentMoab>(10, 0, 1000);
+                    break;
             }
         }
         

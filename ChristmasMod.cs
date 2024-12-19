@@ -54,6 +54,7 @@ using UnityEngine.UIElements;
 using UnityEngine.Video;
 using Input = UnityEngine.Windows.Input;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
+using TemplateMod.Bloons;
 
 [assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -299,6 +300,7 @@ public class ChristmasMod : BloonsTD6Mod
             InGame.instance.bridge.CreateTowerAt(new Vector2(0, 0), ModContent.GetTowerModel<Santa>(), ObjectId.Create(9999, 0), false, something, true, true, false, 0);
         }
     }
+
     public override void OnTowerUpgraded(Tower tower, string upgradeName, TowerModel newBaseTowerModel)
     {
         if (Values.Snowstorm == true)
@@ -573,6 +575,11 @@ static class RoundPatch
             Story.StoryUI.CreatePanel([new StoryMessage("I don't really pay the elves all to much, I'm sure that won't be a problem. W-what is that??!", StoryPortrait.SantaWorry), new("Oh, hi guys. I was told to come here and run through the defenses for some reason, I think it was something to do with me being weaker than the others. Wait... was I supposed to say that?", StoryPortrait.SnowMoab, new(() => InGame.instance.SpawnBloons(ModContent.BloonID<SnowMoab.WeakSnowMoab>(), 1, 0)))]);
         }
 
+        if(__instance.GetCurrentRound() == 14)
+        {
+            Story.StoryUI.CreatePanel([new StoryMessage("Hehehehe! Have a gift! It's not bad at all!", StoryPortrait.PresentBloonIcon), new("A present? For me? Oh golly goo! I haven't been gifted a present in years!", StoryPortrait.PlayerNoWay, new(() => InGame.instance.SpawnBloons(ModContent.BloonID<PresentBloon>(), 1, 0))), new("Yeah, that's right, just pop me open. Nothing bad will happen...", StoryPortrait.PresentBloonTroll)]);
+        }
+
         if (__instance.GetCurrentRound() == 18)
         {
             StoryMessage[] messages = [
@@ -616,7 +623,7 @@ static class RoundPatch
         if (__instance.GetCurrentRound() == 24)
         {
             StoryMessage[] messages = [
-                new("Oh hi, guys! We were all sent by the Grinch to destroy YOU.", StoryPortrait.GroupOfBloon),
+                new("Oh... hey... Uhm, we were all sent by the Grinch to destroy YOU.", StoryPortrait.GroupOfBloon),
                 new("GO AWAY BLOONS!", StoryPortrait.SantaWorry),
                 new("Oh, Christmas, what did I do?", StoryPortrait.Player),
             ];
@@ -783,12 +790,12 @@ static class RoundPatch
                 new StoryMessage("Ez", StoryPortrait.Player),
                 new StoryMessage("Rude!", StoryPortrait.AngryCookieMonsterIcon),
                 new StoryMessage("Krill issue", StoryPortrait.Player),
-                new StoryMessage("Man that boss was really tough! I'm not sure what we're going to do for this last boss! If only there was something else or <b>someone</b> else we could have to help us...", StoryPortrait.SantaWorry),
+                new StoryMessage("Man that boss was really tough! I'm not sure what we're going to do for this last boss! If only there was something else or rather <b>someone</b> else who could help us...", StoryPortrait.SantaWorry),
                 new StoryMessage("Aha! I know just who to call. He's one of my strongest elves so he'll hopefully help us.", StoryPortrait.SantaHappy),
-                new StoryMessage("You want my help to stop the <b>Grinch</b> from ruining christmas? Uh... fine I'll help, but you need to pay me <color='#00ff00'>money</color>, if you don't then no help from me! Afterall, <i>you already barely pay me for what I do at the North Pole</i>...", StoryPortrait.ElfLordWant),
+                new StoryMessage("You want my help to stop the <b>Grinch</b> from ruining christmas? Uh... fine I'll help, but you need to pay me lots of <color=#00ff00ff>money</color>, if you don't then no help from me! Afterall, <i><b>you already barely pay me for what I do at the North Pole</b></i>...", StoryPortrait.ElfLordWant),
                 new StoryMessage("Seriously?? Fine, but you have to promise to not abandon us and actually help us.", StoryPortrait.SantaDisapointed),
                 new StoryMessage("OK I'll help you now. After all I suppose a lot of work would be for waste and I'd be out of a job if the <b>Grinch</b> ruined christmas.", StoryPortrait.ElfLordThumbsUp),
-                new StoryMessage("Soilder, this is great news! Don't expect me to pay the <b>Elf Lord</b> though, I have already payed out too much money today. Ho ho ho... However the <b>Elf Lord</b> shouldn't leave until we win!", StoryPortrait.SantaHappy)
+                new StoryMessage("Soldier, this is great news! Don't expect me to pay the <b>Elf Lord</b> though, I have already payed out too much money today, ho ho ho. However the <b>Elf Lord</b> shouldn't leave until we win! Unlike those other elves.", StoryPortrait.SantaHappy)
             ];
 
             Story.StoryUI.CreatePanel(messages, new(() => {
@@ -831,7 +838,7 @@ static class RoundPatch
             StoryMessage[] messages =
             [
                 new StoryMessage("I'm really, really scared about the Grinch. He alone has more HP than all the bosses combined.", StoryPortrait.SantaWorry),
-                new StoryMessage("But not to worry, I just stole 100k from you to upgrade my damage and range!", StoryPortrait.SantaHappy),
+                new StoryMessage("But not to worry, I just stole 100k from you to upgrade my damage and range!", StoryPortrait.SantaHappy, new(() => InGame.instance.AddCash(-100000))),
                 new StoryMessage("That's kinda rude, Santa.", StoryPortrait.Player),
                 new StoryMessage("Didn't I already give you enough for all the Christmases before?", StoryPortrait.SantaHappy),
                 new StoryMessage("Really...", StoryPortrait.Player),
@@ -856,6 +863,21 @@ static class RoundPatch
                     }
                 }
             }));
+        }
+
+        if (__instance.GetCurrentRound() == 85)
+        {
+
+            StoryMessage[] messages =
+            [
+                new StoryMessage("Okay, I feel bad about taking your monkey...", StoryPortrait.SantaWorry),
+                new StoryMessage("I'll give it back to you.", StoryPortrait.SantaDisapointed, new(() => InGame.instance.AddCash(100000))),
+                new StoryMessage("<i>Phew</i> I thought you weren't going to pay me back...", StoryPortrait.Player),
+                new StoryMessage("Oooh! Gimme some! (x200)", StoryPortrait.GroupOfPresentBloons, new(() => {
+                    InGame.instance.SpawnBloons(ModContent.BloonID<PresentBloon>(), 200, 1);
+                })),
+                new StoryMessage("Uhh... I believe it's in your best intrest to kill those 200 present bloons!", StoryPortrait.SantaWorry)
+            ];
         }
 
         if (__instance.GetCurrentRound() == 100)

@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using MelonLoader;
+using BTD_Mod_Helper.Api.Display;
+using Il2CppAssets.Scripts.Unity.Display;
 
 namespace TemplateMod.Bloons
 {
@@ -22,18 +24,64 @@ namespace TemplateMod.Bloons
     {
         public override string BaseBloon => BloonType.sPink;
 
+        public override string Icon => Name + "Icon";
+
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
             bloonModel.bloonProperties = Il2Cpp.BloonProperties.None;
-            bloonModel.maxHealth = 3;
+            bloonModel.maxHealth = 10;
             bloonModel.RemoveAllChildren();
         }
     }
-    
-    [HarmonyPatch(typeof(Bloon), nameof(Bloon.OnDestroy))]
-    static class Bloon_OnDamage
+
+    public class PresentBloonDisplay : ModBloonDisplay<PresentBloon>
     {
-        private static int Count = 1;
+        public override string BaseDisplay => GetBloonDisplay("Pink");
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            Set2DTexture(node, "PresentBloon");
+        }
+    }
+
+    public class PresentBloonDamage1 : ModBloonDisplay<PresentBloon>
+    {
+        public override string BaseDisplay => GetBloonDisplay("Pink");
+
+        public override int Damage => 1;
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            Set2DTexture(node, Name);
+        }
+    }
+
+    public class PresentBloonDamage2 : ModBloonDisplay<PresentBloon>
+    {
+        public override string BaseDisplay => GetBloonDisplay("Pink");
+
+        public override int Damage => 2;
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            Set2DTexture(node, Name);
+        }
+    }
+    public class PresentBloonDamage3 : ModBloonDisplay<PresentBloon>
+    {
+        public override string BaseDisplay => GetBloonDisplay("Pink");
+
+        public override int Damage => 3;
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            Set2DTexture(node, Name);
+        }
+    }
+
+    [HarmonyPatch(typeof(Bloon), nameof(Bloon.OnDestroy))]
+    static class Bloon_OnDestroy
+    {
         public static void Postfix(Bloon __instance)
         {
             var bm = __instance.bloonModel;
@@ -43,14 +91,12 @@ namespace TemplateMod.Bloons
                 Random rand = new();
                 
                 var bloon = bloons[rand.Next(bloons.Count)];
-                var countRand = rand.Next(1, 6);
-                Count = countRand;
+                var countRand = rand.Next(1, 5);
 
 
-                if (!bloon.baseId.Contains("Rock") && !bloon.baseId.Contains("TestBloon") && !bloon.baseId.Contains(ModContent.BloonID<PresentBloon>()))
+                if (!bloon.baseId.Contains("Rock") && !bloon.baseId.Contains("TestBloon") && !bloon.baseId.Contains("Gold"))
                 {
-                    InGame.instance.SpawnBloons(bloon.id, Count, 10);
-                    MelonLogger.Msg($"Added {Count} bloon to {bloon.id}");
+                    InGame.instance.SpawnBloons(bloon.id, countRand, 10);
                 }
             }
         }

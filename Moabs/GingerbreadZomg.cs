@@ -22,7 +22,7 @@ namespace TemplateMod.Moabs
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
             bloonModel.RemoveAllChildren();
-            bloonModel.AddToChildren<GingerbreadZomg>(4);
+            bloonModel.AddToChildren<GingerbreadBfb>(4);
             bloonModel.maxHealth = 3600;
         }
 

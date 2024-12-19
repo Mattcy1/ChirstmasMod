@@ -59,6 +59,13 @@ namespace BossHandlerNamespace
             public override string PrefabName => "FrostyBoss";
         }
 
+        class CrumblyDisplay : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "CrumblyAnimated";
+        }
+
         [HarmonyPatch(typeof(TitleScreen), nameof(TitleScreen.Start))]
         public class TitleScreenInit
         {
@@ -125,6 +132,8 @@ namespace BossHandlerNamespace
                 // Crumbly 
 
                 BloonModel Crumbly = CreateBossBase(50000, 1f);
+
+                Crumbly.ApplyDisplay<CrumblyDisplay>();
 
                 BossRegisteration crumblyBossRegisteration = new BossRegisteration(Crumbly, "Crumbly", "Crumbly", true,
                     "CrumblyIcon", 0,

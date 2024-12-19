@@ -4,6 +4,7 @@ using BTD_Mod_Helper.Extensions;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using MelonLoader;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -35,6 +36,9 @@ public class Story
         PlayerNoWay,
         SantaGojo,
         GroupOfBloon,
+        PresentBloonIcon,
+        PresentBloonTroll,
+        GroupOfPresentBloons
     }
 
 
@@ -50,7 +54,7 @@ public class Story
             }
         }
 
-        public static Action LastCloseAction;
+        public static List<Action> LastMessageActions;
 
         public static void CreatePanel(StoryPortrait portrait, string text, Action closeAction = null, bool runLastCloseAction = true)
         {
@@ -65,9 +69,16 @@ public class Story
                 {
                     instance.Close();
                     if(runLastCloseAction)
-                        LastCloseAction?.Invoke();
+                        foreach(Action action in LastMessageActions)
+                        {
+                            action.Invoke();
+                        }
                 }
-                LastCloseAction = closeAction;
+                LastMessageActions = [closeAction];
+                if (msg.OnMessage != null)
+                {
+                    LastMessageActions.Add(msg.OnMessage);
+                }
 
                 msg.OnMessage?.Invoke();
 
@@ -110,10 +121,19 @@ public class Story
             {
                 instance.Close();
                 if (runLastCloseAction)
-                    LastCloseAction?.Invoke();
+                    foreach (Action action in LastMessageActions)
+                    {
+                        action.Invoke();
+                    }
             }
-
-            LastCloseAction = closeAction;
+            LastMessageActions = [closeAction];
+            foreach (var msg in msgs)
+            {
+                if (msg.OnMessage != null)
+                {
+                    LastMessageActions.Add(msg.OnMessage);
+                }
+            }
 
             RectTransform rect = InGame.instance.uiRect;
             var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);

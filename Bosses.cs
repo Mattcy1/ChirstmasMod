@@ -56,14 +56,14 @@ namespace BossHandlerNamespace
         {
             public override string AssetBundleName => "christmas2024";
 
-            public override string PrefabName => "FrostyBoss";
+            public override string PrefabName => "FrostyBossModel";
         }
 
         class CrumblyDisplay : ModCustomDisplay
         {
             public override string AssetBundleName => "christmas2024";
 
-            public override string PrefabName => "CrumblyAnimated";
+            public override string PrefabName => "Crumbly";
         }
 
         [HarmonyPatch(typeof(TitleScreen), nameof(TitleScreen.Start))]
@@ -657,14 +657,14 @@ namespace BossHandlerNamespace
                             Game.instance.model.GetTowerFromId("Mermonkey-050").GetAbility()
                                 .GetBehavior<CreateEffectOnAbilityModel>().effectModel.assetId,
                             new Vector3(0, 0, 0), 0, 1);
-                        boss.trackSpeedMultiplier = 5;
+                        boss.trackSpeedMultiplier = 3;
 
                         Task.Run(async () =>
                         {
-                            await Task.Delay(10000);
+                            await Task.Delay(7500);
                                 
                             Values.disableprojectile = false;
-                            boss.trackSpeedMultiplier = 3;
+                            boss.trackSpeedMultiplier = 2;
                         });
                     }
 
@@ -679,9 +679,9 @@ namespace BossHandlerNamespace
                                 StoryPortrait.GrinchAngryIcon, new(() =>
                                 {
                                     Values.GrinchAngry = true;
-                                    fakeMaxHealth = 60000000;
+                                    fakeMaxHealth = 50000000;
                                     fakeHealth = fakeMaxHealth;
-                                    boss.trackSpeedMultiplier = 3;
+                                    boss.trackSpeedMultiplier = 2;
                                     Values.tsunami = false;
                                     Task.Run(async () =>
                                     {

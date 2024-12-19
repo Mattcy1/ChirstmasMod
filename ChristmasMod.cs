@@ -329,11 +329,11 @@ public class ChristmasMod : BloonsTD6Mod
     }
     public override void OnRoundEnd()
     {
-        if (random.Next(10) == 0 && Values.Snowstorm == false)
+        if (random.Next(0) == 0 && Values.Snowstorm == false)
         {
             PopupScreen.instance?.ShowOkPopup("Snowstorm started");
             Values.Snowstorm = true;
-            Values.SnowstormRound = 5;
+            Values.SnowstormRound = 3;
 
             foreach (var tower in InGame.instance.GetTowers())
             {
@@ -353,6 +353,8 @@ public class ChristmasMod : BloonsTD6Mod
         if (Values.Snowstorm == true && Values.SnowstormRound > 0)
         {
             Values.SnowstormRound -= 1;
+            
+            MelonLogger.Msg(Values.SnowstormRound);
         }
 
         if (Values.Snowstorm == true && Values.SnowstormRound == 0)

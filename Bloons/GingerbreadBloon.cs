@@ -23,7 +23,7 @@ namespace TemplateMod.Bloons
 
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
-            bloonModel.speed *= 2f;
+            bloonModel.speed /= 2f;
             bloonModel.maxHealth = 80;
 
             bloonModel.AddToChildren(ModContent.BloonID<IceBloon>(), 1);

@@ -42,8 +42,7 @@ namespace TemplateMod.Moabs
             {
                 foreach(var renderer in node.GetMeshRenderers())
                 {
-                    renderer.SetMainTexture(GetTexture(Name));
-                    renderer.SetOutlineColor(Color.cyan);
+                    renderer.SetMainTexture(GetTexture(Name)); 
                 }
             }
         }

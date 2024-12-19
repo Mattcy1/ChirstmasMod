@@ -146,6 +146,13 @@ public class Gamemode
                     break;
             }
         }
+
+        public override void ModifyImpoppableRoundModels(RoundModel roundModel, int round)
+        {
+            switch (round)
+            {
+            }
+        }
     }
     
     public class ChristmasGamemode : ModGameMode

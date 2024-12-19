@@ -68,8 +68,10 @@ namespace TemplateMod.Moabs
                 {
                     unallowedIds = ["Bad"];
                 }
+                
+                string[] BossID = ["Lych", "Phayze", "Bloonarius", "Dreadbloon", "Blastapopoulos", "Vortex"];
 
-                if (!unallowedIds.Contains(bloon.baseId))
+                if (!unallowedIds.Contains(bloon.baseId) && !BossID.Contains(bloon.id))
                 {
                     InGame.instance.SpawnBloons(bloon.id, countRand, 10);
                 }

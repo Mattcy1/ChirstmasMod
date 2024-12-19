@@ -151,6 +151,14 @@ public class Gamemode
         {
             switch (round)
             {
+                case 81: // Some Zomgs
+                    roundModel.AddBloonGroup<GingerbreadZomg>(1, 100, 500);
+                    roundModel.AddBloonGroup<IceZomg>(1, 500, 1000);
+                    break;
+                case 82: 
+                    roundModel.AddBloonGroup<GingerbreadZomg>(5, 100, 500);
+                    //Add more
+                    break;
             }
         }
     }

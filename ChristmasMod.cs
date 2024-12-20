@@ -67,7 +67,7 @@ static class ShopMenu_CreateTowerButton
     [HarmonyPostfix]
     public static void Postfix(ITowerPurchaseButton __result)
     {
-        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<ElfLord>(), ModContent.TowerID<PresentTower>()];
+        string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<ElfLord>(), ModContent.TowerID<PresentTower>(), ModContent.TowerID<WorkerElf>(), ModContent.TowerID<PresentTower>()];
 
         if (InGame.instance.GetGameModel().gameMode == ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
         {
@@ -86,6 +86,10 @@ static class ShopMenu_CreateTowerButton
                 else if (__result.TowerModel.baseId == ModContent.TowerID<PresentTower>())
                 {
                     PresentTower.ShopButton = __result.GameObject.transform.parent.gameObject;
+                }
+                else if (__result.TowerModel.baseId == ModContent.TowerID<WorkerElf>())
+                {
+                    WorkerElf.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
             }
         }
@@ -237,6 +241,7 @@ public class ChristmasMod : BloonsTD6Mod
     {
         public bool PresentLauncher = false;
         public bool ElfLord = false;
+        public bool WorkerElf = false;
 
         public string Map = mapName;
     }
@@ -763,6 +768,12 @@ static class RoundPatch
                         tower.tower.UpdateRootModel(tm);
                     }
                 }
+                
+                if (WorkerElf.ShopButton != null)
+                {
+                    WorkerElf.ShopButton.SetActive(true);
+                }
+                
                 AbilityMenu.instance.AbilitiesChanged();
             }));
             
@@ -883,6 +894,14 @@ static class RoundPatch
                 })),
                 new StoryMessage("Uhh... I believe it's in your best intrest to kill those 200 present bloons!", StoryPortrait.SantaWorry)
             ];
+        }
+        
+        if (__instance.GetCurrentRound() == 89)
+        {
+            if (PresentTower.ShopButton != null)
+            {
+                PresentTower.ShopButton.SetActive(true);
+            }
         }
 
         if (__instance.GetCurrentRound() == 98)

@@ -30,7 +30,7 @@ namespace TemplateMod.Towers.Elf.R60
 
         public override string Description => "One of Santa's Minions who typically protects the North Pole against weak threats, throws balls of ice.";
 
-        public override int Cost => 500;
+        public override int Cost => 0;
 
         public override void ModifyBaseTowerModel(TowerModel towerModel)
         {

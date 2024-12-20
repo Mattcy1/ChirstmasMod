@@ -24,7 +24,7 @@ namespace TemplateMod.Towers.Elf.R20
 
         public override string Description => "One of Santa's Minions, throws snow balls.";
 
-        public override int Cost => 160;
+        public override int Cost => 0;
 
         public override void ModifyBaseTowerModel(TowerModel towerModel)
         {

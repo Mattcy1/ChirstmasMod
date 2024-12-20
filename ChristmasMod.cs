@@ -303,7 +303,7 @@ public class ChristmasMod : BloonsTD6Mod
 
     public override void OnTowerDestroyed(Tower tower)
     {
-        //StartCutscene.StartCutsceneUI.CreatePanel();
+        StartCutscene.StartCutsceneUI.CreatePanel();
         
         if (tower.towerModel.baseId == ModContent.TowerID<Santa>())
         {
@@ -339,7 +339,7 @@ public class ChristmasMod : BloonsTD6Mod
     }
     public override void OnUpdate()
     {
-        if (GameObject.Find("Quad") != null)
+        if (GameObject.Find("Cube") != null)
         {
             StartCutscene.StartCutsceneUI.Timer();
         }

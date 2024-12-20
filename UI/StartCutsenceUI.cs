@@ -9,6 +9,7 @@ using MelonLoader;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
+using Quaternion = UnityEngine.Quaternion;
 using Scene = Il2CppAssets.Scripts.Unity.Display.Scene;
 using Vector3 = UnityEngine.Vector3;
 
@@ -40,9 +41,9 @@ public class StartCutscene
                 {
                     instance.Close();
                     
-                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                    cube.transform.localScale = new Vector3(310f, 500, 1f);
-                    cube.transform.localPosition = new Vector3(0, 0, 0);
+                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cube.transform.localScale = new Vector3(310f, 405, 1f);
+                    cube.transform.rotation = Quaternion.Euler(0, 0, 180);
                     
                     var videoPlayer = cube.AddComponent<UnityEngine.Video.VideoPlayer>();
 
@@ -77,7 +78,7 @@ public class StartCutscene
 
         public static void Timer()
         {
-            GameObject cube = GameObject.Find("Quad");
+            GameObject cube = GameObject.Find("Cube");
             VideoPlayer vp = cube.gameObject.GetComponent<VideoPlayer>();
 
             if (vp != null)

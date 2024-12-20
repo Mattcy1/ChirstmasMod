@@ -56,7 +56,7 @@ namespace BossHandlerNamespace
         {
             public override string AssetBundleName => "christmas2024";
 
-            public override string PrefabName => "FrostyBossModel";
+            public override string PrefabName => "FrostyBoss";
         }
 
         class CrumblyDisplay : ModCustomDisplay

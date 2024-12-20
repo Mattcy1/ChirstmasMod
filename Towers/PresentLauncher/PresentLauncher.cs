@@ -16,7 +16,6 @@ using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.Display;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using MelonLoader;
-using NAudio.Utils;
 using UnityEngine;
 
 namespace TemplateMod.Towers.PresentLauncher
@@ -216,7 +215,7 @@ namespace TemplateMod.Towers.PresentLauncher
 
                 num = random.Next(ids.Length);
 
-                model.projectile = Game.instance.model.GetTowerFromId(ids[num]).GetWeapon().projectile.Duplicate();
+                //model.projectile = Game.instance.model.GetTowerFromId(ids[num].Split(',')[0]).GetWeapon(int.Parse(ids[num].Split(',')[1])).projectile.Duplicate();
             }
             else if (proj.id == "PresentT3")
             {
@@ -231,7 +230,7 @@ namespace TemplateMod.Towers.PresentLauncher
 
                 num = random.Next(ids.Length);
 
-                model.projectile = Game.instance.model.GetTowerFromId(ids[num]).GetWeapon().projectile.Duplicate();
+                //model.projectile = Game.instance.model.GetTowerFromId(ids[num].Split(',')[0]).GetWeapon(int.Parse(ids[num].Split(',')[1])).projectile.Duplicate();
             }
             else if (proj.id == "PresentT4")
             {
@@ -245,8 +244,7 @@ namespace TemplateMod.Towers.PresentLauncher
 
 
                 num = random.Next(ids.Length);
-
-                model.projectile = Game.instance.model.GetTowerFromId(ids[num]).GetWeapon().projectile.Duplicate();
+                //model.projectile = Game.instance.model.GetTowerFromId(ids[num].Split(',')[0]).GetWeapon(int.Parse(ids[num].Split(',')[1])).projectile.Duplicate();
             }
         }
     }

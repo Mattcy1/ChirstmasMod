@@ -11,19 +11,20 @@ using System.Threading.Tasks;
 
 namespace TemplateMod.Towers.PresentLauncher.Upgrades.Middle
 {
-    public class SharperPresent : ModUpgrade<PresentLauncher>
+    public class SturdyBoxes : ModUpgrade<PresentLauncher>
     {
         public override int Path => Bottom;
 
-        public override int Tier => 2;
+        public override int Tier => 1;
 
-        public override string Description =>"Even Sharper Present also for even more pierce";
+        public override string Description =>"Sturdy boxes allow for the present to hit more bloons and travel further.";
 
-        public override int Cost => 8;
+        public override int Cost => 5;
 
         public override void ApplyUpgrade(TowerModel towerModel)
         {
             towerModel.GetWeapon().projectile.pierce += 2;
+            towerModel.IncreaseRange(5);
         }
     }
 }

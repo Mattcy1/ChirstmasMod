@@ -16,7 +16,7 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Middle
         public override string Description => "All weapons are now only T5. Also shoots 2x faster cuz y not";
         public override int Tier => 5;
 
-        public override int Cost => 467;
+        public override int Cost => 300;
 
         public override void ApplyUpgrade(TowerModel towerModel)
         {

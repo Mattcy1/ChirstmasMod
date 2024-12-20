@@ -31,7 +31,7 @@ namespace TemplateMod.Moabs
     {
         public override string AssetBundleName => "christmas2024";
 
-        public override string PrefabName => "PresentMoab";
+        public override string PrefabName => "PresentMoabAnimated";
     }
 
     [HarmonyPatch(typeof(Bloon), nameof(Bloon.OnDestroy))]

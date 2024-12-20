@@ -15,6 +15,7 @@ namespace TemplateMod.Bloons
 
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
+            bloonModel.speed /= 1.5f;
             bloonModel.RemoveAllChildren();
 
             bloonModel.maxHealth = 3;

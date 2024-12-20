@@ -288,6 +288,8 @@ public class ChristmasMod : BloonsTD6Mod
 
     public override void OnTowerDestroyed(Tower tower)
     {
+        //StartCutscene.StartCutsceneUI.CreatePanel();
+        
         if (tower.towerModel.baseId == ModContent.TowerID<Santa>())
         {
             bool towerPlaced = false;
@@ -330,7 +332,7 @@ public class ChristmasMod : BloonsTD6Mod
     }
     public override void OnRoundEnd()
     {
-        if (random.Next(0) == 0 && Values.Snowstorm == false)
+        if (random.Next(10) == 0 && Values.Snowstorm == false)
         {
             PopupScreen.instance?.ShowOkPopup("Snowstorm started");
             Values.Snowstorm = true;
@@ -431,7 +433,7 @@ static class SnowstormPatch
         if (Values.Snowstorm == true)
         {
             BuffBloonSpeedModel buff = Game.instance.model.GetBloon("Vortex1").GetBehavior<BuffBloonSpeedModel>();
-            buff.speedBoost = 1.5f;
+            buff.speedBoost = 1.3f;
             var mutator = buff.Mutator;
             __instance.AddMutator(mutator, 99999);
         }
@@ -881,6 +883,11 @@ static class RoundPatch
                 })),
                 new StoryMessage("Uhh... I believe it's in your best intrest to kill those 200 present bloons!", StoryPortrait.SantaWorry)
             ];
+        }
+
+        if (__instance.GetCurrentRound() == 98)
+        {
+            //StartCutscene.StartCutsceneUI.CreatePanel();
         }
 
         if (__instance.GetCurrentRound() == 100)

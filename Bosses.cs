@@ -106,7 +106,7 @@ namespace BossHandlerNamespace
 
                 //Frosty the Snowbloon
 
-                BloonModel FrostyBoss = CreateBossBase(80000, 1f);
+                BloonModel FrostyBoss = CreateBossBase(70000, 1f);
                 FrostyBoss.ApplyDisplay<FrostyDisplay>();
 
                 BossRegisteration frostyBossRegisteration = new BossRegisteration(FrostyBoss, "Frosty",
@@ -131,7 +131,7 @@ namespace BossHandlerNamespace
 
                 // Crumbly 
 
-                BloonModel Crumbly = CreateBossBase(50000, 1f);
+                BloonModel Crumbly = CreateBossBase(15000, 1f);
 
                 Crumbly.ApplyDisplay<CrumblyDisplay>();
 
@@ -142,8 +142,8 @@ namespace BossHandlerNamespace
                 crumblyBossRegisteration.usesExtraInfo = true;
                 crumblyBossRegisteration.extraInfoText = "Test";
                 crumblyBossRegisteration.extraInfoIcon = "descriptionButton";
-                crumblyBossRegisteration.fakeHealth = 50000;
-                crumblyBossRegisteration.fakeMaxHealth = 50000;
+                crumblyBossRegisteration.fakeHealth = 15000;
+                crumblyBossRegisteration.fakeMaxHealth = 15000;
                 crumblyBossRegisteration.SpawnOnRound(60);
                 crumblyBossRegisteration.usesHealthOverride = true;
 
@@ -205,7 +205,7 @@ namespace BossHandlerNamespace
 
                 //R55 Gift Box
 
-                BloonModel Giftbox = CreateBossBase(225000, 1f);
+                BloonModel Giftbox = CreateBossBase(100000, 0.7f);
 
                 BossRegisteration giftboxBossRegisteration = new BossRegisteration(Giftbox, "Giftbox",
                     "Massive Giftbox", true, "GiftsParticle", 0,
@@ -277,7 +277,7 @@ namespace BossHandlerNamespace
 
                 // Crumbly 
 
-                BloonModel CrumblyNHB = CreateBossBase(50000, 1f);
+                BloonModel CrumblyNHB = CreateBossBase(15000, 1f);
 
                 BossRegisteration crumblyBossRegisterationNHB = new BossRegisteration(CrumblyNHB, "CrumblyNHB", "Crumbly", false,
                     "CrumblyIcon", 0,
@@ -286,8 +286,8 @@ namespace BossHandlerNamespace
                 crumblyBossRegisterationNHB.usesExtraInfo = true;
                 crumblyBossRegisterationNHB.extraInfoText = "Test";
                 crumblyBossRegisterationNHB.extraInfoIcon = "descriptionButton";
-                crumblyBossRegisterationNHB.fakeHealth = 50000;
-                crumblyBossRegisterationNHB.fakeMaxHealth = 50000;
+                crumblyBossRegisterationNHB.fakeHealth = 15000;
+                crumblyBossRegisterationNHB.fakeMaxHealth = 15000;
                 crumblyBossRegisterationNHB.usesHealthOverride = true;
 
                 // Cookie Monster 
@@ -353,8 +353,8 @@ namespace BossHandlerNamespace
             public Bloon boss;
             public double SpeedMultiplier = 1f;
             public BossRegisteration registration;
-            public int fakeHealth = 50000;
-            public int fakeMaxHealth = 50000;
+            public int fakeHealth = 15000;
+            public int fakeMaxHealth = 15000;
             private static readonly System.Random random = new System.Random();
             public MonoBehaviorCrumbly() : base()
             {
@@ -371,11 +371,11 @@ namespace BossHandlerNamespace
                 {
                     if (TimeManager.FastForwardActive == true)
                     {
-                        SpeedMultiplier += 3 * 0.001f;
+                        SpeedMultiplier += 3 * 0.0001f;
                     }
                     else
                     {
-                        SpeedMultiplier += 1 * 0.001f;
+                        SpeedMultiplier += 1 * 0.0001f;
                     }
 
 
@@ -401,12 +401,10 @@ namespace BossHandlerNamespace
                         Values.bossDead = true;
                        
                         boss.trackSpeedMultiplier = -10;
-                        boss.Rotation = boss.PercThroughMap() * 20000;
-                        boss.prevRot = boss.Rotation;
                         
                         Task.Run(async () =>
                         {
-                            await Task.Delay(2000);
+                            await Task.Delay(500);
 
                             if (Values.DefeatedCounter <= 6)
                             {

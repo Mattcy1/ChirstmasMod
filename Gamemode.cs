@@ -11,6 +11,8 @@ using Il2CppAssets.Scripts.Simulation;
 using TemplateMod.Bloons;
 using TemplateMod.Moabs;
 using TemplateMod.Towers;
+using UnityEngine;
+using UnityEngine.Video;
 
 namespace ChristmasMod;
 
@@ -155,15 +157,40 @@ public class Gamemode
                     roundModel.AddBloonGroup<GingerbreadZomg>(1, 100, 500);
                     roundModel.AddBloonGroup<IceZomg>(1, 500, 1000);
                     break;
-                case 82: 
+                case 82:
+                    roundModel.AddBloonGroup<PresentMoab>(5, 0, 100);
+                    roundModel.AddBloonGroup<PresentBloon>(30, 0, 100);
                     roundModel.AddBloonGroup<GingerbreadZomg>(5, 100, 500);
-                    //Add more
                     break;
-                case 84: 
+                case 84:
                     roundModel.AddBloonGroup<GingerbreadZomg>(5, 100, 500);
                     roundModel.AddBloonGroup<IceZomg>(5, 500, 1000);
                     roundModel.AddBloonGroup<SnowZomg>(5, 1000, 2000);
                     roundModel.AddBloonGroup<PresentMoab>(10, 0, 100);
+                    break;
+                case 89:
+                    roundModel.AddBloonGroup<GingerbreadZomg>(7, 100, 500);
+                    roundModel.AddBloonGroup<IceZomg>(7, 500, 1000);
+                    roundModel.AddBloonGroup<SnowZomg>(7, 1000, 2000);
+                    roundModel.AddBloonGroup<PresentMoab>(10, 0, 100);
+                    roundModel.AddBloonGroup<PresentBloon>(50, 0, 100);
+                    break;
+                case 94: // Final modded round
+                    roundModel.AddBloonGroup<PresentBloon>(5, 0, 0);
+                    roundModel.AddBloonGroup<PresentMoab>(5, 0, 0);
+                    roundModel.AddBloonGroup<CandyCaneBloon>(5, 0, 0);
+                    roundModel.AddBloonGroup<SnowBloon>(5, 0, 0);
+                    roundModel.AddBloonGroup<GingerbreadBloon>(5, 0, 0);
+                    roundModel.AddBloonGroup<IceBloon>(5, 0, 0);
+                    roundModel.AddBloonGroup<IceMoab>(5, 0, 0);
+                    roundModel.AddBloonGroup<GingerbreadMoab>(5, 0, 0);
+                    roundModel.AddBloonGroup<SnowMoab>(5, 0, 0);
+                    roundModel.AddBloonGroup<IceBfb>(5, 0, 0);
+                    roundModel.AddBloonGroup<GingerbreadBfb>(5, 0, 0);
+                    roundModel.AddBloonGroup<SnowBfb>(5, 0, 0);
+                    roundModel.AddBloonGroup<SnowZomg>(5, 0, 0);
+                    roundModel.AddBloonGroup<IceZomg>(5, 0, 0);
+                    roundModel.AddBloonGroup<GingerbreadZomg>(5, 0, 0);
                     break;
             }
         }
@@ -180,7 +207,7 @@ public class Gamemode
 
         public override void ModifyBaseGameModeModel(ModModel gameModeModel)
         {
-            gameModeModel.UseRoundSet<CustomRS>();
+            gameModeModel.UseRoundSet<Gamemode.CustomRS>();
             gameModeModel.SetEndingRound(102);
         }
     } 

@@ -339,6 +339,10 @@ public class ChristmasMod : BloonsTD6Mod
     }
     public override void OnUpdate()
     {
+        if (GameObject.Find("Quad") != null)
+        {
+            StartCutscene.StartCutsceneUI.Timer();
+        }
         if (Values.Snowstorm == true && SnowstromEffect == true)
         {
             InGame.instance.bridge.Simulation.SpawnEffect(ModContent.CreatePrefabReference<SnowstormEffect>(), new Vector3(0, 0, 0), 0, 1.1f, isFullscreen: (Fullscreen)1);

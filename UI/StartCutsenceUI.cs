@@ -1,12 +1,16 @@
 using System.Collections.Generic;
 using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Extensions;
+using Il2CppAssets.Scripts.Simulation.SMath;
+using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
+using Il2CppMono.Unity;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 using Scene = Il2CppAssets.Scripts.Unity.Display.Scene;
+using Vector3 = UnityEngine.Vector3;
 
 namespace TemplateMod.UI;
 
@@ -25,7 +29,6 @@ public class StartCutscene
                 gameObject.Destroy();
             }
         }
-
         public static void CreatePanel()
         {
             if (InGame.instance != null)
@@ -35,10 +38,12 @@ public class StartCutscene
                 instance = panel.AddComponent<StartCutsceneUI>();
                 var StartCS = panel.AddButton(new("Button_", 0, 0, 450, 450 / 2), VanillaSprites.GreenBtnLong, new System.Action(() =>
                 {
+                    instance.Close();
+                    
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                    cube.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
-                    cube.transform.localScale = new Vector3(1920f, 1080f, 1);
-
+                    cube.transform.localScale = new Vector3(310f, 500, 1f);
+                    cube.transform.localPosition = new Vector3(0, 0, 0);
+                    
                     var videoPlayer = cube.AddComponent<UnityEngine.Video.VideoPlayer>();
 
                     RenderTexture renderTexture = new RenderTexture(1920, 1080, 0);
@@ -54,12 +59,42 @@ public class StartCutscene
                     string videoPath = "C:\\Users\\Mattheo\\OneDrive\\Documents\\BTD6 Mod Sources\\ChirstmasMod\\The_Grinch_has_Arived.mp4";
                     videoPlayer.url = videoPath;
 
-                    videoPlayer.SetDirectAudioVolume(0, 0.7f);
+                    videoPlayer.SetDirectAudioVolume(0, 0);
                     videoPlayer.Play();
                     
-                    instance.Close();
+                    InGame.instance.mapRect.Hide();
+                    InGame.instance.uiRect.Hide();
+                    GameObject.Find("Map").SetActive(false);
+
+                    foreach (var tower in InGame.instance.GetTowers())
+                    {
+                        tower.Scale = new Vector3Boxed(0f, 0f, 0f);
+                    }
                 }));
                 StartCS.AddText(new("Title_", 0, 0, 300, 150), "Start Cutscene", 60);
+            }
+        }
+
+        public static void Timer()
+        {
+            GameObject cube = GameObject.Find("Quad");
+            VideoPlayer vp = cube.gameObject.GetComponent<VideoPlayer>();
+
+            if (vp != null)
+            {
+                if (vp.time > 86)
+                {
+                    vp.Destroy();
+                    cube.Destroy();
+                    InGame.instance.mapRect.Show();
+                    InGame.instance.uiRect.Show();
+                    GameObject.Find("Map").SetActive(true);
+                    
+                    foreach (var tower in InGame.instance.GetTowers())
+                    {
+                        tower.Scale = new Vector3Boxed(1f, 1f, 1f);
+                    }
+                }
             }
         }
     }

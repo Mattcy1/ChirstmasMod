@@ -57,10 +57,10 @@ public class StartCutscene
                     renderer.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
                     renderer.material.mainTexture = renderTexture;
                     
-                    string videoPath = "C:\\Users\\Mattheo\\OneDrive\\Documents\\BTD6 Mod Sources\\ChirstmasMod\\The_Grinch_has_Arived.mp4";
+                    string videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch_has_Arived.mp4";
                     videoPlayer.url = videoPath;
 
-                    videoPlayer.SetDirectAudioVolume(0, 0);
+                    videoPlayer.SetDirectAudioVolume(0, 0.5f);
                     videoPlayer.Play();
                     
                     InGame.instance.mapRect.Hide();

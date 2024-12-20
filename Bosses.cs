@@ -449,8 +449,6 @@ namespace BossHandlerNamespace
 
                         if (Values.DefeatedCounter == 4 && Values.GrinchAngry == false)
                         {
-                            var text = "NOOOOO! Crumbly Stole 10% of your cash before dying";
-                            Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
                         }
                     }

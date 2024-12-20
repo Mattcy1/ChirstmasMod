@@ -4,6 +4,7 @@ using BTD_Mod_Helper.Extensions;
 using Il2CppAssets.Scripts.Simulation.SMath;
 using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
+using Il2CppAssets.Scripts.Utils;
 using Il2CppMono.Unity;
 using MelonLoader;
 using UnityEngine;
@@ -22,6 +23,7 @@ public class StartCutscene
     {
         public static StartCutsceneUI instance = null;
 
+        public static GameObject map = null;
 
         public void Close()
         {
@@ -65,7 +67,8 @@ public class StartCutscene
                     
                     InGame.instance.mapRect.Hide();
                     InGame.instance.uiRect.Hide();
-                    GameObject.Find("Map").SetActive(false);
+                    map = GameObject.Find("Map");
+                    map.SetActive(false);
 
                     foreach (var tower in InGame.instance.GetTowers())
                     {
@@ -89,7 +92,7 @@ public class StartCutscene
                     cube.Destroy();
                     InGame.instance.mapRect.Show();
                     InGame.instance.uiRect.Show();
-                    GameObject.Find("Map").SetActive(true);
+                    map.SetActive(true);
                     
                     foreach (var tower in InGame.instance.GetTowers())
                     {

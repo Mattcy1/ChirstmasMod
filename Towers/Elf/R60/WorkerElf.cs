@@ -38,6 +38,8 @@ namespace TemplateMod.Towers.Elf.R60
         public override void ModifyBaseTowerModel(TowerModel towerModel)
         {
             towerModel.GetAttackModel().RemoveWeapon(towerModel.GetWeapon());
+            towerModel.ApplyDisplay<Elf.R20.Elf.ElfDisplay>();
+            
             
             var bananaFarmAttackModel = Game.instance.model.GetTowerFromId("BananaFarm-003").GetAttackModel().Duplicate();
             bananaFarmAttackModel.name = "ElfWorker_";

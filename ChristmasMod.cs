@@ -251,6 +251,16 @@ public class ChristmasMod : BloonsTD6Mod
         PresentLauncher.AddedToShop = false;
         ElfLord.AddedToShop = false;
     }
+    
+    public override void OnMainMenu()
+    {
+        PopupScreen.instance.ShowOkPopup("You can enable snowstorm effect in settings !WARN! THEIR INSANELY LAGGY");
+    }
+    
+    public static readonly ModSettingBool SnowstromEffect = new(false)
+    {
+        description = "Enable snowstorm effect"
+    };
 
     public override void OnApplicationStart()
     {
@@ -326,11 +336,10 @@ public class ChristmasMod : BloonsTD6Mod
     public override void OnNewGameModel(GameModel result, MapModel map)
     {
         OpenerUI.CreatePanel();
-        Values.snowflake += 100;
     }
     public override void OnUpdate()
     {
-        if (Values.Snowstorm == true)
+        if (Values.Snowstorm == true && SnowstromEffect == true)
         {
             InGame.instance.bridge.Simulation.SpawnEffect(ModContent.CreatePrefabReference<SnowstormEffect>(), new Vector3(0, 0, 0), 0, 1.1f, isFullscreen: (Fullscreen)1);
         }

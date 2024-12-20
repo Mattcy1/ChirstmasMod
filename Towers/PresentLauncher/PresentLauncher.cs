@@ -230,7 +230,7 @@ namespace TemplateMod.Towers.PresentLauncher
 
                 num = random.Next(ids.Length);
 
-                //model.projectile = Game.instance.model.GetTowerFromId(ids[num].Split(',')[0]).GetWeapon(int.Parse(ids[num].Split(',')[1])).projectile.Duplicate();
+                model.projectile = Game.instance.model.GetTowerFromId(ids[num].Split(',')[0]).GetWeapon(int.Parse(ids[num].Split(',')[1])).projectile.Duplicate();
             }
             else if (proj.id == "PresentT3")
             {
@@ -245,7 +245,7 @@ namespace TemplateMod.Towers.PresentLauncher
 
                 num = random.Next(ids.Length);
 
-                //model.projectile = Game.instance.model.GetTowerFromId(ids[num].Split(',')[0]).GetWeapon(int.Parse(ids[num].Split(',')[1])).projectile.Duplicate();
+                model.projectile = Game.instance.model.GetTowerFromId(ids[num].Split(',')[0]).GetWeapon(int.Parse(ids[num].Split(',')[1])).projectile.Duplicate();
             }
             else if (proj.id == "PresentT4")
             {
@@ -259,7 +259,7 @@ namespace TemplateMod.Towers.PresentLauncher
 
 
                 num = random.Next(ids.Length);
-                //model.projectile = Game.instance.model.GetTowerFromId(ids[num].Split(',')[0]).GetWeapon(int.Parse(ids[num].Split(',')[1])).projectile.Duplicate();
+                model.projectile = Game.instance.model.GetTowerFromId(ids[num].Split(',')[0]).GetWeapon(int.Parse(ids[num].Split(',')[1])).projectile.Duplicate();
             }
         }
     }

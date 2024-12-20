@@ -40,7 +40,7 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
             tm.GetWeapon().rate /= 6;
             tm.GetWeapon().projectile.GetDamageModel().damage += 5;
 
-            tm.GetBehavior<TowerExpireModel>().lifespan *= 2;
+            tm.GetBehavior<TowerExpireModel>().lifespan /= 2;
 
             tm.GetWeapon().projectile.id = "PresentT3";
             tm.GetWeapon().projectile.ApplyDisplay<Present>();

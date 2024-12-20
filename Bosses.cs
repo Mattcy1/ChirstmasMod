@@ -57,13 +57,102 @@ namespace BossHandlerNamespace
             public override string AssetBundleName => "christmas2024";
 
             public override string PrefabName => "FrostyBoss";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+                foreach(var renderer in node.GetMeshRenderers())
+                {
+                    renderer.ApplyOutlineShader();
+
+
+                    renderer.SetOutlineColor(new(0.4f, 0.4f, 0.4f));
+
+                    switch (renderer.name)
+                    {
+                        case "Hat" or "Rocks" or "Rocks.001" or "Icosphere.019":
+                            renderer.SetOutlineColor(Color.black);
+                            break;
+                        case "Carrot":
+                            renderer.SetOutlineColor(new(0.65f, 0.25f, 0));
+                            break;
+                        case "Arms" or "Arms.001":
+                            renderer.SetOutlineColor(new(0.25f, 0.12f, 0));
+                            break;
+                        case "Scarf":
+                            renderer.SetOutlineColor(new(0.8f, 0, 0));
+                            break;
+                    }
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(HealthPercentTrigger), nameof(HealthPercentTrigger.Trigger))]
+        static class HealthPercentTrigger_Trigger
+        {
+            [HarmonyPostfix]
+            public static void Postfix(HealthPercentTrigger __instance)
+            {
+                var bloon = __instance.bloon;
+                var bm = bloon.bloonModel;
+
+                string[] acceptedIds = ["Frosty"/*, "Crumbly", "CookieMonster"*/];
+
+                if (acceptedIds.Contains(bm.baseId))
+                {
+                    bloon.GetUnityDisplayNode().GetComponent<Animator>().SetTrigger("Skull");
+                }
+            }
+        }
+
+        class CookieMonsterDisplay : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "CookieMonsterNormalAnimated";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    renderer.ApplyOutlineShader();
+                    renderer.SetOutlineColor(new(0.34f, .21f, .11f));
+                }
+            }
+        }
+
+        class CookieMonsterAngryDisplay : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "CookieMonsterAngryAnimated";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    renderer.ApplyOutlineShader();
+                    renderer.SetOutlineColor(new(0.34f, .21f, .11f));
+                }
+            }
         }
 
         class CrumblyDisplay : ModCustomDisplay
         {
             public override string AssetBundleName => "christmas2024";
 
-            public override string PrefabName => "Crumbly";
+            public override string PrefabName => "CrumblyAnimated";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    renderer.ApplyOutlineShader();
+                    renderer.SetOutlineColor(new(0.63f, .36f, .15f));
+                }
+            }
         }
 
         [HarmonyPatch(typeof(TitleScreen), nameof(TitleScreen.Start))]

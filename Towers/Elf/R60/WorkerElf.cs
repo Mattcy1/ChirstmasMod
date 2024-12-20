@@ -39,7 +39,8 @@ namespace TemplateMod.Towers.Elf.R60
         {
             towerModel.GetAttackModel().RemoveWeapon(towerModel.GetWeapon());
             towerModel.ApplyDisplay<Elf.R20.Elf.ElfDisplay>();
-            
+
+            towerModel.RemoveBehavior<TowerExpireModel>();
             
             var bananaFarmAttackModel = Game.instance.model.GetTowerFromId("BananaFarm-003").GetAttackModel().Duplicate();
             bananaFarmAttackModel.name = "ElfWorker_";
@@ -48,6 +49,18 @@ namespace TemplateMod.Towers.Elf.R60
             bananaFarmAttackModel.weapons[0].GetBehavior<EmissionsPerRoundFilterModel>().count = 10;
             bananaFarmAttackModel.weapons[0].rate = 5f;
             towerModel.AddBehavior(bananaFarmAttackModel);
+        }
+    }
+
+    public class WorkerElfDisplay : ModTowerDisplay<WorkerElf>
+    {
+        public override string BaseDisplay => MonkeyVillageElfPet;
+
+        public override bool UseForTower(params int[] tiers) => true;
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            SetMeshTexture(node, Name);
         }
     }
 }

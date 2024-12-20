@@ -111,11 +111,11 @@ namespace TemplateMod.Towers.PresentLauncher
                 }
                 else if (pathIndex == 1 && tier == 4)
                 {
-                    upgradeCost = 105;
+                    upgradeCost = 115;
                 }
                 else if (pathIndex == 1 && tier == 5)
                 {
-                    upgradeCost = 467;
+                    upgradeCost = 325;
                 }
                 
                 if (pathIndex == 2 && tier == 1)

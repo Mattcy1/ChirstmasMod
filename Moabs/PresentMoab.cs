@@ -69,7 +69,7 @@ namespace TemplateMod.Moabs
                     unallowedIds = ["Bad"];
                 }
                 
-                string[] BossID = ["Lych", "Phayze", "Bloonarius", "Dreadbloon", "Blastapopoulos", "Vortex"];
+                string[] BossID = ["Lych", "Phayze", "Bloonarius", "Dreadbloon", "Blastapopoulos", "Vortex", "Test"];
 
                 if (!unallowedIds.Contains(bloon.baseId) && !BossID.Contains(bloon.id))
                 {

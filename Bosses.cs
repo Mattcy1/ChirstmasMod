@@ -529,7 +529,7 @@ namespace BossHandlerNamespace
                                 {
                                     fakeMaxHealth *= 3;
                                     fakeHealth = fakeMaxHealth;
-                                    boss.trackSpeedMultiplier *= 5;
+                                    boss.trackSpeedMultiplier = 2;
                                     Values.DefeatedCounter += 1;
                                     Values.tsunami = false;
                                     InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
@@ -541,7 +541,7 @@ namespace BossHandlerNamespace
                                 
                                 fakeMaxHealth *= 3;
                                 fakeHealth = fakeMaxHealth;
-                                boss.trackSpeedMultiplier *= 5;
+                                boss.trackSpeedMultiplier = 2;
                                 Values.DefeatedCounter += 1;
                                 Values.tsunami = false;
                                 InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);

@@ -127,6 +127,21 @@ namespace TemplateMod.Towers.PresentLauncher
                     upgradeCost = 10;
                 }
                 
+                else if (pathIndex == 2 && tier == 3)
+                {
+                    upgradeCost = 16;
+                }
+                
+                else if (pathIndex == 2 && tier == 4)
+                {
+                    upgradeCost = 35;
+                }
+                
+                else if (pathIndex == 2 && tier == 5)
+                {
+                    upgradeCost = 205;
+                }
+                
                 MelonLogger.Msg(upgradeCost);
 
                 if (Values.snowflake >= upgradeCost)

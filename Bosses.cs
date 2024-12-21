@@ -64,22 +64,27 @@ namespace BossHandlerNamespace
                 {
                     renderer.ApplyOutlineShader();
 
+                    renderer.SetMainTexture(GetTexture("FrostyBossBody"));
 
                     renderer.SetOutlineColor(new(0.4f, 0.4f, 0.4f));
 
                     switch (renderer.name)
                     {
-                        case "Hat" or "Rocks" or "Rocks.001" or "Icosphere.019":
+                        case "Hat" or "Stones":
                             renderer.SetOutlineColor(Color.black);
+                            renderer.SetMainTexture(GetTexture("FrostyParts"));
                             break;
                         case "Carrot":
                             renderer.SetOutlineColor(new(0.65f, 0.25f, 0));
+                            renderer.SetMainTexture(GetTexture("FrostyParts"));
                             break;
                         case "Arms" or "Arms.001":
                             renderer.SetOutlineColor(new(0.25f, 0.12f, 0));
+                            renderer.SetMainTexture(GetTexture("FrostyParts"));
                             break;
                         case "Scarf":
                             renderer.SetOutlineColor(new(0.8f, 0, 0));
+                            renderer.SetMainTexture(GetTexture("FrostyParts"));
                             break;
                     }
                 }

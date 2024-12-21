@@ -20,7 +20,6 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
         public override string Icon => Portrait;
 
         public override string Description => "Presents now contain Present Turrets, which shoot presents of their own.";
-        public override string Portrait => "PresentLauncher-Portrait";
 
         public override int Cost => 35;
 
@@ -43,7 +42,12 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
             tm.GetAttackModel().ApplyDisplay<PresentTurretAttackDisplay>();
             tm.ApplyDisplay<PresentTurretDisplay>();
 
-            towerModel.GetWeapon().projectile.AddBehavior(ctm);
+            var newWep = towerModel.GetWeapon().Duplicate();
+            newWep.projectile.AddBehavior(ctm);
+            newWep.projectile.pierce = 0;
+            newWep.projectile.id = "PresentTurretPresent";
+
+            towerModel.GetAttackModel().AddWeapon(newWep);
         }
     }
 
@@ -53,7 +57,7 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
 
         public override void ModifyDisplayNode(UnityDisplayNode node)
         {
-            SetMeshTexture(node, "PresentLauncherColours");
+            SetMeshTexture(node, "PresentTurretColours");
         }
     }
     public class PresentTurretAttackDisplay : ModDisplay
@@ -62,7 +66,7 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
 
         public override void ModifyDisplayNode(UnityDisplayNode node)
         {
-            SetMeshTexture(node, "PresentLauncherColours");
+            SetMeshTexture(node, "PresentTurretColours");
         }
     }
 }

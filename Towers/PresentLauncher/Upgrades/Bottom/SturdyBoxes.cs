@@ -24,6 +24,7 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Middle
         public override void ApplyUpgrade(TowerModel towerModel)
         {
             towerModel.GetWeapon().projectile.pierce += 2;
+            towerModel.GetWeapon().projectile.GetBehavior<TravelStraitModel>().lifespan *= 1.1f;
             towerModel.IncreaseRange(5);
         }
     }

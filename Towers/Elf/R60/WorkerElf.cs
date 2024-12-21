@@ -27,7 +27,6 @@ namespace TemplateMod.Towers.Elf.R60
         public static GameObject ShopButton = null;
         
         public override string BaseTower => TowerType.DartMonkey;
-        public override string Portrait => "Elf-Portrait";
 
         public override string Icon => Portrait;
 
@@ -39,8 +38,6 @@ namespace TemplateMod.Towers.Elf.R60
         {
             towerModel.GetAttackModel().RemoveWeapon(towerModel.GetWeapon());
             towerModel.ApplyDisplay<Elf.R20.Elf.ElfDisplay>();
-
-            towerModel.RemoveBehavior<TowerExpireModel>();
             
             var bananaFarmAttackModel = Game.instance.model.GetTowerFromId("BananaFarm-003").GetAttackModel().Duplicate();
             bananaFarmAttackModel.name = "ElfWorker_";

@@ -56,7 +56,7 @@ using Input = UnityEngine.Windows.Input;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
 using TemplateMod.Bloons;
 
-[assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
+[assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.Author)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
 
 namespace ChristmasMod;

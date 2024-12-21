@@ -12,4 +12,10 @@ Defeating all 5 bosses and collecting the 5 gifts will reward you with the ultim
 
 Are you ready for the challenge? The fate of Christmas is in your hands!
 
+## Credits:
+* DatJaneDoe: Boss System from Boss Charged Refreshed.
+* PoppingProductionsYT: Made most of the boss models and helped make frosty look better and all boss icons. Made the Grinch and the cutscene, and Santa icons.
+* DarkTerraYT(lerpmcgerk): Some moabs, present launcher, elf textures and moab icons, as well as animations, player icons, Santa's "Special" icon, elf icons and upgrade + tower icons (except santa).
+* Mattcy1: Milk + Gingerbread bloon, all bfbs and zomg textures and icons.
+
 [![Requires BTD6 Mod Helper](https://raw.githubusercontent.com/gurrenm3/BTD-Mod-Helper/master/banner.png)](https://github.com/gurrenm3/BTD-Mod-Helper#readme)

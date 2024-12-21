@@ -31,6 +31,8 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
 
         public override void ApplyUpgrade(TowerModel towerModel)
         {
+            towerModel.GetWeapon(1).projectile.RemoveBehavior<CreateTowerModel>();
+
             var ctm = Game.instance.model.GetTowerFromId("EngineerMonkey-200").GetDescendant<CreateTowerModel>().Duplicate();
             var tm = ctm.tower;
 
@@ -48,7 +50,7 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
             tm.GetAttackModel().ApplyDisplay<StrongerPresentTurretAttackDisplay>();
             tm.ApplyDisplay<StrongerPresentTurretDisplay>();
 
-            towerModel.GetWeapon().projectile.AddBehavior(ctm);
+            towerModel.GetWeapon(1).projectile.AddBehavior(ctm);
         }
     }
 

@@ -17,12 +17,14 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Middle
 
         public override int Tier => 2;
 
-        public override string Description =>"Sturdier boxes allow the presents to hit even more bloons.";
+        public override string Description =>"Sturdier boxes allow the presents to hit even more bloons, and travel even further.";
 
         public override int Cost => 8;
 
         public override void ApplyUpgrade(TowerModel towerModel)
         {
+            towerModel.IncreaseRange(5);
+            towerModel.GetWeapon().projectile.GetBehavior<TravelStraitModel>().lifespan *= 1.1f;
             towerModel.GetWeapon().projectile.pierce += 2;
         }
     }

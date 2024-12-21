@@ -76,7 +76,7 @@ public class Gift
 
                         foreach (var bloon in InGame.instance.GetAllBloonToSim().ToList())
                         {
-                            bloon.GetBloon().Destroy();
+                            bloon.GetBloon().Scale = new Vector3Boxed(0f, 0f, 0f);
                         }
                     }
                     

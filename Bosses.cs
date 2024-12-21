@@ -914,48 +914,17 @@ namespace BossHandlerNamespace
 
                         if (Values.GrinchAngry == false)
                         {
-                            StoryMessage messages = new StoryMessage(
-                                "YOU FOOL! YOU CAN'T STOP ME! I AM THE GRINCH, THE ULTIMATE BOSS! HOW ABOUT WE EVEN THE BATTLEFIELD? MUAHAHA! GRINCHVENGERS ASSEMBLE LET THE FUN BEGIN SANTA!!",
-                                StoryPortrait.GrinchAngryIcon, new(() =>
-                                {
-                                    boss.bloonModel.ApplyDisplay<AngryGrinchDisplay>();
-                                    boss.UpdateDisplay();
+                            boss.bloonModel.ApplyDisplay<AngryGrinchDisplay>();
+                            boss.UpdateDisplay();
                                     
-                                    Values.GrinchAngry = true;
-                                    fakeMaxHealth = 50000000;
-                                    fakeHealth = fakeMaxHealth;
-                                    boss.trackSpeedMultiplier = 2;
-                                    Values.tsunami = false;
-                                    Task.Run(async () =>
-                                    {
-                                        await Task.Delay(2000);
-
-                                        InGame.instance.SpawnBloons("CandyCaneBossNHB", 1, 0);
-                                    });
-                                    Task.Run(async () =>
-                                    {
-                                        await Task.Delay(4000);
-
-                                        Values.storyExecuted = true;
-
-                                        InGame.instance.SpawnBloons("FrostyNHB", 1, 0);
-                                    });
-                                    Task.Run(async () =>
-                                    {
-                                        await Task.Delay(6000);
-
-                                        InGame.instance.SpawnBloons("CrumblyNHB", 1, 0);
-                                    });
-                                    Task.Run(async () =>
-                                    {
-                                        await Task.Delay(8000);
-
-                                        InGame.instance.SpawnBloons("CookieMonsterNHB", 1, 0);
-                                    });
-                                }));
-
-                            Story.StoryUI.CreatePanel(messages);
-
+                            Values.GrinchAngry = true;
+                            fakeMaxHealth = 50000000;
+                            fakeHealth = fakeMaxHealth;
+                            boss.trackSpeedMultiplier = 2;
+                            Values.tsunami = false;
+                            
+                            StartCutscene.StartCutsceneUI.CreatePanel(true, boss);
+                            
                             Values.bossDead = false;
                         }
                         else if (Values.GrinchAngry == true)

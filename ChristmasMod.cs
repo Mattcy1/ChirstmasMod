@@ -210,7 +210,6 @@ public class Values
         get { return grinchAngry; }
         set { grinchAngry = value; }
     }
-
     public static PrefabReference SnowstormPrefab;
 }
 
@@ -303,8 +302,6 @@ public class ChristmasMod : BloonsTD6Mod
 
     public override void OnTowerDestroyed(Tower tower)
     {
-        StartCutscene.StartCutsceneUI.CreatePanel();
-        
         if (tower.towerModel.baseId == ModContent.TowerID<Santa>())
         {
             bool towerPlaced = false;
@@ -343,6 +340,12 @@ public class ChristmasMod : BloonsTD6Mod
         {
             StartCutscene.StartCutsceneUI.Timer();
         }
+        
+        if (GameObject.Find("CubeAngry") != null)
+        {
+            StartCutscene.StartCutsceneUI.Timer1();
+        }
+        
         if (Values.Snowstorm == true && SnowstromEffect == true)
         {
             InGame.instance.bridge.Simulation.SpawnEffect(ModContent.CreatePrefabReference<SnowstormEffect>(), new Vector3(0, 0, 0), 0, 1.1f, isFullscreen: (Fullscreen)1);
@@ -920,7 +923,7 @@ static class RoundPatch
         if (__instance.GetCurrentRound() == 98)
         {
             InGame.instance.SpawnBloons("TestMoab", 100, 999);
-            StartCutscene.StartCutsceneUI.CreatePanel();
+            StartCutscene.StartCutsceneUI.CreatePanel(false, null);
         }
 
         if (__instance.GetCurrentRound() == 100)

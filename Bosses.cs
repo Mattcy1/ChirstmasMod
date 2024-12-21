@@ -143,6 +143,41 @@ namespace BossHandlerNamespace
             }
         }
 
+        class GrinchDisplay : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "Grinch-o-MaticAnimated";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    renderer.ApplyOutlineShader();
+                    renderer.SetOutlineColor(Color.green);
+                }
+            }
+        }
+        
+        class AngryGrinchDisplay : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "Grinch-O-Mega-MaticAnimated";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    node.transform.localScale *= 0.3f;
+                    renderer.ApplyOutlineShader();
+                    renderer.SetOutlineColor(Color.green);
+                }
+            }
+        }
+        
         class CrumblyDisplay : ModCustomDisplay
         {
             public override string AssetBundleName => "christmas2024";
@@ -151,9 +186,112 @@ namespace BossHandlerNamespace
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
-
                 foreach (var renderer in node.GetMeshRenderers())
                 {
+                    if (renderer.name == "Body_Body.003")
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyPartsDamage0"));
+                    }
+                    else
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyBodyDamage0"));
+                    }
+                    renderer.ApplyOutlineShader();
+                    renderer.SetOutlineColor(new(0.63f, .36f, .15f));
+                }
+            }
+        }
+        
+        class CrumblyDisplay1 : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "CrumblyAnimated";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    if (renderer.name == "Body_Body.003")
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyPartsDamage1"));
+                    }
+                    else
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyBodyDamage1"));
+                    }
+                    renderer.ApplyOutlineShader();
+                    renderer.SetOutlineColor(new(0.63f, .36f, .15f));
+                }
+            }
+        }
+        
+        class CrumblyDisplay2 : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "CrumblyAnimated";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    if (renderer.name == "Body_Body.003")
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyPartsDamage2"));
+                    }
+                    else
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyBodyDamage2"));
+                    }
+                    renderer.ApplyOutlineShader();
+                    renderer.SetOutlineColor(new(0.63f, .36f, .15f));
+                }
+            }
+        }
+        
+        class CrumblyDisplay3 : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "CrumblyAnimated";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    if (renderer.name == "Body_Body.003")
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyPartsDamage3"));
+                    }
+                    else
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyBodyDamage3"));
+                    }
+                    renderer.ApplyOutlineShader();
+                    renderer.SetOutlineColor(new(0.63f, .36f, .15f));
+                }
+            }
+        }
+        
+        class CrumblyDisplay4 : ModCustomDisplay
+        {
+            public override string AssetBundleName => "christmas2024";
+
+            public override string PrefabName => "CrumblyAnimated";
+
+            public override void ModifyDisplayNode(UnityDisplayNode node)
+            {
+                foreach (var renderer in node.GetMeshRenderers())
+                {
+                    if (renderer.name == "Body_Body.003")
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyPartsDamage4"));
+                    }
+                    else
+                    {
+                        renderer.SetMainTexture(GetTexture("CrumblyBodyDamage4"));
+                    }
                     renderer.ApplyOutlineShader();
                     renderer.SetOutlineColor(new(0.63f, .36f, .15f));
                 }
@@ -242,9 +380,11 @@ namespace BossHandlerNamespace
                 crumblyBossRegisteration.usesHealthOverride = true;
 
                 // Cookie Monster 
-
+                
                 BloonModel CookieMonster = CreateBossBase(1500000, 1f);
 
+                CookieMonster.ApplyDisplay<CookieMonsterDisplay>();
+                
                 BossRegisteration cookieMonsterBossRegisteration = new BossRegisteration(CookieMonster, "CookieMonster",
                     "Cookie Monster", true, "CookieMonsterIcon", 0, "");
 
@@ -258,6 +398,8 @@ namespace BossHandlerNamespace
 
                 BloonModel Grinch = CreateBossBase(20000000, 1f);
 
+                Grinch.ApplyDisplay<GrinchDisplay>();
+                
                 BossRegisteration grinchRegisteration = new BossRegisteration(Grinch, "GrinchBoss",
                     "The Grinch", true, "GrinchIcon", 0, "The Grinch, the strongest boss yet, contains abilities from all bosses like snowstorm, stun towers, and more. Prepare for the craziest battle.");
                 
@@ -368,22 +510,8 @@ namespace BossHandlerNamespace
 
                 FrostyBossNHB.AddBehavior(health1NHB);
                 FrostyBossNHB.AddBehavior(stunNHB);
-
-                // Crumbly 
-
-                BloonModel CrumblyNHB = CreateBossBase(15000, 1f);
-
-                BossRegisteration crumblyBossRegisterationNHB = new BossRegisteration(CrumblyNHB, "CrumblyNHB", "Crumbly", false,
-                    "CrumblyIcon", 0,
-                    "I’m Crumbly, the Gingerbread Boss! I’ve got 5 lives, and with each one, my HP doubles. To make things even sweeter, my speed increases every second—I’ve gotta go fast! Catch me if you can!");
-
-                crumblyBossRegisterationNHB.usesExtraInfo = true;
-                crumblyBossRegisterationNHB.extraInfoText = "Test";
-                crumblyBossRegisterationNHB.extraInfoIcon = "descriptionButton";
-                crumblyBossRegisterationNHB.fakeHealth = 15000;
-                crumblyBossRegisterationNHB.fakeMaxHealth = 15000;
-                crumblyBossRegisterationNHB.usesHealthOverride = true;
-
+                FrostyBossNHB.ApplyDisplay<FrostyDisplay>();
+                
                 // Cookie Monster 
 
                 BloonModel CookieMonsterNHB = CreateBossBase(1500000, 1f);
@@ -391,6 +519,7 @@ namespace BossHandlerNamespace
                 BossRegisteration cookieMonsterBossRegisterationNHB = new BossRegisteration(CookieMonsterNHB, "CookieMonsterNHB",
                     "Cookie Monster", false, "CookieMonsterIcon", 0, "");
 
+                CookieMonsterNHB.ApplyDisplay<CookieMonsterDisplay>();
                 cookieMonsterBossRegisterationNHB.usesHealthOverride = true;
                 cookieMonsterBossRegisterationNHB.fakeHealth = 1500000;
                 cookieMonsterBossRegisterationNHB.fakeMaxHealth = 1500000;
@@ -422,7 +551,7 @@ namespace BossHandlerNamespace
                 mono.registration = registration;
             }
 
-            if (bloonModel.id.Contains("CookieMonster"))
+            if (bloonModel.id.Contains("Cookie"))
             {
                 MonoBehaviorCookieMonster mono =
                     StartMonobehavior<MonoBehaviorCookieMonster>();
@@ -457,6 +586,7 @@ namespace BossHandlerNamespace
 
             public void Start()
             {
+                Values.DefeatedCounter = 0;
             }
 
             public void Update()
@@ -515,6 +645,9 @@ namespace BossHandlerNamespace
 
                         if (Values.DefeatedCounter == 0 && Values.GrinchAngry == false)
                         {
+                            boss.bloonModel.ApplyDisplay<CrumblyDisplay1>();
+                            boss.UpdateDisplay();
+                            
                             var text = "Im not that tasty! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
@@ -522,6 +655,9 @@ namespace BossHandlerNamespace
 
                         if (Values.DefeatedCounter == 1 && Values.GrinchAngry == false)
                         {
+                            boss.bloonModel.ApplyDisplay<CrumblyDisplay2>();
+                            boss.UpdateDisplay();
+                            
                             var text = "Ouch! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
@@ -529,6 +665,9 @@ namespace BossHandlerNamespace
 
                         if (Values.DefeatedCounter == 2 && Values.GrinchAngry == false)
                         {
+                            boss.bloonModel.ApplyDisplay<CrumblyDisplay3>();
+                            boss.UpdateDisplay();
+                            
                             var text = "Im not eatable! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
@@ -536,6 +675,9 @@ namespace BossHandlerNamespace
 
                         if (Values.DefeatedCounter == 3 && Values.GrinchAngry == false)
                         {
+                            boss.bloonModel.ApplyDisplay<CrumblyDisplay4>();
+                            boss.UpdateDisplay();
+                            
                             var text = "Stop it! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
@@ -573,6 +715,7 @@ namespace BossHandlerNamespace
             public void Start()
             {
                 Values.DefeatedCounter = 0;
+                Values.DefeatedCounterCookie = 0;
             }
 
             public void Update()
@@ -613,7 +756,7 @@ namespace BossHandlerNamespace
                     {
                         Values.bossDead = true;
 
-                        if (Values.DefeatedCounter < 2)
+                        if (Values.DefeatedCounterCookie < 2)
                         {
                             Values.cookieAngry = true;
                             
@@ -624,13 +767,17 @@ namespace BossHandlerNamespace
                                     fakeMaxHealth *= 3;
                                     fakeHealth = fakeMaxHealth;
                                     boss.trackSpeedMultiplier = 2;
-                                    Values.DefeatedCounter += 1;
+                                    Values.DefeatedCounterCookie += 1;
                                     Values.tsunami = false;
                                     InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
                                 }));
 
-                            if (Values.GrinchAngry == true && Values.DefeatedCounter < 2)
+                            if (Values.GrinchAngry == true && Values.DefeatedCounterCookie < 2)
                             {
+                                boss.bloonModel.ApplyDisplay<CookieMonsterAngryDisplay>();
+                                boss.UpdateDisplay();
+                                
+                                
                                 Values.cookieAngry = true;
                                 
                                 fakeMaxHealth *= 3;
@@ -646,12 +793,15 @@ namespace BossHandlerNamespace
                                 {
                                     Story.StoryUI.CreatePanel(messages);
                                 }
-                                else if (Values.cookieAngry == true && Values.DefeatedCounter <= 2)
+                                else if (Values.cookieAngry == true && Values.DefeatedCounterCookie <= 2)
                                 {
+                                    boss.bloonModel.ApplyDisplay<CookieMonsterAngryDisplay>();
+                                    boss.UpdateDisplay();
+                                    
                                     fakeMaxHealth *= 3;
                                     fakeHealth = fakeMaxHealth;
                                     boss.trackSpeedMultiplier *= 5;
-                                    Values.DefeatedCounter += 1;
+                                    Values.DefeatedCounterCookie += 1;
                                     Values.tsunami = false;
                                     InGame.instance.SpawnBloons(ModContent.BloonID<MilkMoab>(), 20, 50);
                                 }
@@ -659,7 +809,7 @@ namespace BossHandlerNamespace
 
                             Values.bossDead = false;
                         }
-                        if (Values.DefeatedCounter == 2 && Values.GrinchAngry == false)
+                        if (Values.DefeatedCounterCookie == 2 && Values.GrinchAngry == false)
                         {
                             boss.trackSpeedMultiplier = -40;
                             boss.Rotation = boss.PercThroughMap() * 20000;
@@ -673,7 +823,7 @@ namespace BossHandlerNamespace
                             });
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.5f);
                         }
-                        else if (Values.DefeatedCounter == 2 && Values.GrinchAngry == true)
+                        else if (Values.DefeatedCounterCookie == 2 && Values.GrinchAngry == true)
                         {
                             boss.trackSpeedMultiplier = -40;
                             boss.Rotation = boss.PercThroughMap() * 20000;
@@ -768,6 +918,9 @@ namespace BossHandlerNamespace
                                 "YOU FOOL! YOU CAN'T STOP ME! I AM THE GRINCH, THE ULTIMATE BOSS! HOW ABOUT WE EVEN THE BATTLEFIELD? MUAHAHA! GRINCHVENGERS ASSEMBLE LET THE FUN BEGIN SANTA!!",
                                 StoryPortrait.GrinchAngryIcon, new(() =>
                                 {
+                                    boss.bloonModel.ApplyDisplay<AngryGrinchDisplay>();
+                                    boss.UpdateDisplay();
+                                    
                                     Values.GrinchAngry = true;
                                     fakeMaxHealth = 50000000;
                                     fakeHealth = fakeMaxHealth;

@@ -1,11 +1,15 @@
+using System.Linq;
 using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Extensions;
 using ChristmasMod;
+using Il2CppAssets.Scripts.Simulation.SMath;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using MelonLoader;
 using UnityEngine;
 using UnityEngine.Video;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 namespace TemplateMod.UI;
 
@@ -16,6 +20,7 @@ public class Gift
     {
         public static GiftUI instance = null;
 
+        public static GameObject map = null;
 
         public void Close()
         {
@@ -38,25 +43,41 @@ public class Gift
                     if (storyGift)
                     {
                         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        cube.transform.rotation = Quaternion.Euler(90f, 0f, 0f); 
-                        cube.transform.localScale *= 200f;
-        
+                        cube.transform.localScale = new Vector3(310f, 405, 1f);
+                        cube.transform.rotation = Quaternion.Euler(0, 0, 180);
+                    
                         var videoPlayer = cube.AddComponent<UnityEngine.Video.VideoPlayer>();
-        
+
                         RenderTexture renderTexture = new RenderTexture(1920, 1080, 0);
                         renderTexture.Create();
-        
+
                         videoPlayer.renderMode = VideoRenderMode.RenderTexture;
                         videoPlayer.targetTexture = renderTexture;
-        
+
                         Renderer renderer = cube.GetComponent<Renderer>();
                         renderer.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
                         renderer.material.mainTexture = renderTexture;
-        
-                        string videoPath = @"C:\Users\Mattheo\OneDrive\Documents\BTD6 Mod Sources\ChirstmasMod\Video.mp4";
+                    
+                        string videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch_has_Arived.mp4";
                         videoPlayer.url = videoPath;
-        
+
+                        videoPlayer.SetDirectAudioVolume(0, 0.5f);
                         videoPlayer.Play();
+                    
+                        InGame.instance.mapRect.Hide();
+                        InGame.instance.uiRect.Hide();
+                        map = GameObject.Find("Map");
+                        map.SetActive(false);
+
+                        foreach (var tower in InGame.instance.GetTowers())
+                        {
+                            tower.Scale = new Vector3Boxed(0f, 0f, 0f);
+                        }
+
+                        foreach (var bloon in InGame.instance.GetAllBloonToSim().ToList())
+                        {
+                            bloon.GetBloon().Destroy();
+                        }
                     }
                     
                     Values.gift += 1;

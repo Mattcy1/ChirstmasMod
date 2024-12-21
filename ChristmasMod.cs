@@ -919,7 +919,8 @@ static class RoundPatch
 
         if (__instance.GetCurrentRound() == 98)
         {
-            //StartCutscene.StartCutsceneUI.CreatePanel();
+            InGame.instance.SpawnBloons("TestMoab", 100, 999);
+            StartCutscene.StartCutsceneUI.CreatePanel();
         }
 
         if (__instance.GetCurrentRound() == 100)

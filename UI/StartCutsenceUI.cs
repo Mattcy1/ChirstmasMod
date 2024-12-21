@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Extensions;
 using Il2CppAssets.Scripts.Simulation.SMath;
@@ -74,6 +75,11 @@ public class StartCutscene
                     {
                         tower.Scale = new Vector3Boxed(0f, 0f, 0f);
                     }
+
+                    foreach (var bloon in InGame.instance.GetAllBloonToSim().ToList())
+                    {
+                        bloon.GetBloon().Destroy();
+                    }
                 }));
                 StartCS.AddText(new("Title_", 0, 0, 300, 150), "Start Cutscene", 60);
             }
@@ -98,6 +104,8 @@ public class StartCutscene
                     {
                         tower.Scale = new Vector3Boxed(1f, 1f, 1f);
                     }
+                    
+                    InGame.instance.SetRound(99);
                 }
             }
         }

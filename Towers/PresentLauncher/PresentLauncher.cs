@@ -3,6 +3,7 @@ using BTD_Mod_Helper.Api.Display;
 using BTD_Mod_Helper.Api.Towers;
 using BTD_Mod_Helper.Extensions;
 using ChristmasMod;
+using ChristmasMod.Towers.PresentLauncher.Upgrades.Paragon;
 using HarmonyLib;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Towers;
@@ -62,6 +63,7 @@ namespace ChristmasMod.Towers.PresentLauncher
                 if (Values.snowflake >= modelToUse.Cast<TowerModel>().cost)
                 {
                     Values.snowflake -= (int)modelToUse.Cast<TowerModel>().cost;
+                    InGame.instance.AddCash((int)modelToUse.Cast<TowerModel>().cost);
                     return;
                 }
 
@@ -79,7 +81,7 @@ namespace ChristmasMod.Towers.PresentLauncher
         static class TowerToSimulation_Upgrade
         {
             [HarmonyPrefix]
-            public static bool Prefix(TowerToSimulation __instance, int pathIndex, bool isParagon)
+            public static bool Prefix(TowerToSimulation __instance, int pathIndex, bool isParagon, double nonUpgradeCashInvestment)
             {
                 if (__instance.tower.towerModel.baseId != TowerID<PresentLauncher>())
                 {
@@ -87,12 +89,22 @@ namespace ChristmasMod.Towers.PresentLauncher
                 }
 
 
+                int cost;
+
+
                 var t = __instance.tower;
                 var tm = t.towerModel;
-                int tiers = tm.tiers[pathIndex];
-                int tier = tiers + 1;
 
-                int cost = !isParagon ? __instance.tower.towerModel.GetUpgrade(pathIndex, tier).cost : 1150;
+                if (!isParagon)
+                {
+                    int tiers = tm.tiers[pathIndex];
+                    int tier = tiers + 1;
+                    cost = __instance.tower.towerModel.GetUpgrade(pathIndex, tier).cost;
+                }
+                else
+                {
+                    cost = GetInstance<PresentGawd>().Cost + (int)nonUpgradeCashInvestment;
+                }
 
 
 
@@ -126,8 +138,6 @@ namespace ChristmasMod.Towers.PresentLauncher
                 {
                     return;
                 }
-                
-                MelonLogger.Msg(t.SaleValue);
 
                 __instance.AddCash(t.SaleValue);
 
@@ -247,7 +257,6 @@ namespace ChristmasMod.Towers.PresentLauncher
                     ["Druid-300"] = 2,
                     ["BananaFarm-420"] = 0,
                     ["EngineerMonkey-400"] = 1,
-                    ["EngineerMonkey-004"] = 1
                 };
 
                 var num = random.Next(weapons.Count);
@@ -291,7 +300,6 @@ namespace ChristmasMod.Towers.PresentLauncher
                     ["Druid-500"] = 2,
                     ["BananaFarm-520"] = 0,
                     ["EngineerMonkey-500"] = 1,
-                    ["EngineerMonkey-005"] = 1
                 };
 
                 var num = random.Next(weapons.Count);

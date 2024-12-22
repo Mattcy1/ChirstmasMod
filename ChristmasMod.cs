@@ -249,11 +249,6 @@ public class ChristmasMod : BloonsTD6Mod
         ElfLord.AddedToShop = false;
     }
     
-    public override void OnMainMenu()
-    {
-        PopupScreen.instance.ShowOkPopup("You can enable snowstorm effect in settings !WARN! THEIR INSANELY LAGGY");
-    }
-    
     public static readonly ModSettingBool SnowstromEffect = new(false)
     {
         description = "Enable snowstorm effect"
@@ -331,6 +326,7 @@ public class ChristmasMod : BloonsTD6Mod
     public override void OnNewGameModel(GameModel result, MapModel map)
     {
         OpenerUI.CreatePanel();
+        SnowstormIndicator.Create(false);
     }
     public override void OnUpdate()
     {
@@ -344,9 +340,9 @@ public class ChristmasMod : BloonsTD6Mod
             StartCutscene.StartCutsceneUI.Timer1();
         }
         
-        if (Values.Snowstorm == true && SnowstromEffect == true)
+        if (Values.Snowstorm == true)
         {
-            InGame.instance.bridge.Simulation.SpawnEffect(ModContent.CreatePrefabReference<SnowstormEffect>(), new Vector3(0, 0, 0), 0, 1.1f, isFullscreen: (Fullscreen)1);
+            InGame.instance?.bridge?.Simulation?.SpawnEffect(ModContent.CreatePrefabReference<SnowstormEffect>(), new Vector3(0, 0, 0), 0, 1.1f, isFullscreen: Fullscreen.Scene, limit: 1);
         }
     }
     public override void OnRoundEnd()
@@ -571,8 +567,6 @@ static class RoundPatch
     [HarmonyPostfix]
     public static void Postfix(Simulation __instance)
     {
-        Values.snowflake = 1000000000;
-
         if (__instance.GetCurrentRound() == 2)
         {
             StoryMessage[] messages = [

@@ -32,6 +32,7 @@ using Color = UnityEngine.Color;
 using Math = Il2CppAssets.Scripts.Simulation.SMath.Math;
 using Vector2 = Il2CppAssets.Scripts.Simulation.SMath.Vector2;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
+using BTD_Mod_Helper;
 
 namespace BossHandlerNamespace
 {
@@ -100,11 +101,12 @@ namespace BossHandlerNamespace
                 var bloon = __instance.bloon;
                 var bm = bloon.bloonModel;
 
-                string[] acceptedIds = ["Frosty"/*, "Crumbly", "CookieMonster"*/];
+                string[] acceptedIds = ["Frosty"];
 
                 if (acceptedIds.Contains(bm.baseId))
                 {
                     bloon.GetUnityDisplayNode().GetComponent<Animator>().SetTrigger("Skull");
+                    ModHelper.Log<ChristmasMod.ChristmasMod>("Skull");
                 }
             }
         }

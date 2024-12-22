@@ -9,19 +9,20 @@ using System.Threading.Tasks;
 
 namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Middle
 {
-    public class PrimaryGifts : ModUpgrade<PresentLauncher>
+    public class TrulySpectacular : ModUpgrade<PresentLauncher>
     {
         public override int Path => Middle;
 
-        public override int Tier => 3;
+        public override string Description => "All weapons are now only T5. Also shoots 2x faster cuz y not";
 
-        public override int Cost => 30;
+        public override int Tier => 5;
 
-        public override string Description => "Presents now have T4 primary projectiles and t3 projectiles from millitary, magic and support";
+        public override int Cost => 300;
 
         public override void ApplyUpgrade(TowerModel towerModel)
         {
-            towerModel.GetWeapon().projectile.id = "PresentT2";
+            towerModel.GetWeapon().rate /= 2;
+            towerModel.GetWeapon().projectile.id = "PresentT4";
         }
     }
 }

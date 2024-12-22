@@ -9,17 +9,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TemplateMod.Towers.PresentLauncher.Upgrades.Middle
+namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Middle
 {
-    public class EvenLighterPresent : ModUpgrade<PresentLauncher>
+    public class LighterPresents : ModUpgrade<PresentLauncher>
     {
         public override int Path => TOP;
 
-        public override int Tier => 2;
+        public override int Tier => 1;
 
-        public override string Description =>"Even Lighter Present allows for more attack speed";
+        public override string Description =>"Lighter Present allows for more attack speed";
 
-        public override int Cost => 10;
+        public override int Cost => 5;
 
         public override void ApplyUpgrade(TowerModel towerModel)
         {

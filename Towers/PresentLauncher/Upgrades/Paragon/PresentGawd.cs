@@ -12,15 +12,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TemplateMod.Towers.PresentLauncher.Upgrades.Bottom;
+using ChristmasMod.Towers.PresentLauncher.Upgrades.Bottom;
 
-namespace TemplateMod.Towers.PresentLauncher.Upgrades.Paragon
+namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Paragon
 {
     public class PresentGawd : ModParagonUpgrade<PresentLauncher>
     {
         public override int Cost => 1150;
 
         public override string Description => "Shooting presents at an unbelievable rate, this tower shreads with what lays inside the presents...";
+
+        public override string DisplayName => "Present Gawd";
+
+        public override string Icon => "PresentGawd-Icon";
+
+        public override string Portrait => Icon;
 
         public override void ApplyUpgrade(TowerModel towerModel)
         {

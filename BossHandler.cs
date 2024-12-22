@@ -111,6 +111,11 @@ namespace BossHandlerNamespace
                 // By default it prevents any other Bloons from spawning that round, but this can be disabled.
                 foreach (RoundSetModel roundSet in GameData.Instance.roundSets)
                 {
+                    /*if(roundSet.name == ModContent.RoundSetId<ChristmasRouds>())
+                    {
+                        continue;
+                    }*/
+
                     try
                     {
                         if (clearOtherSpawns)

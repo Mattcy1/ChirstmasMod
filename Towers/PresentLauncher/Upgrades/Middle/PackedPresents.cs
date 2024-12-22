@@ -9,15 +9,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TemplateMod.Towers.PresentLauncher.Upgrades.Middle
+namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Middle
 {
     internal class PackedPresents : ModUpgrade<PresentLauncher>
     {
         public override int Path => Middle;
 
         public override int Tier => 1;
-        
-        public override string Icon => "GiftsForAll";
 
         public override string Description => "Presents now contain 6 items instead of one.";
 

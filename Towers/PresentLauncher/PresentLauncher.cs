@@ -22,7 +22,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace TemplateMod.Towers.PresentLauncher
+namespace ChristmasMod.Towers.PresentLauncher
 {
     public class PresentLauncher : ModTower<ChristmasTowers>
     {
@@ -78,8 +78,6 @@ namespace TemplateMod.Towers.PresentLauncher
         [HarmonyPatch(typeof(TowerToSimulation), nameof(TowerToSimulation.Upgrade))]
         static class TowerToSimulation_Upgrade
         {
-            private static float upgradeCost;
-            
             [HarmonyPrefix]
             public static bool Prefix(TowerToSimulation __instance, int pathIndex, bool isParagon)
             {
@@ -88,72 +86,21 @@ namespace TemplateMod.Towers.PresentLauncher
                     return true;
                 }
 
+
                 var t = __instance.tower;
                 var tm = t.towerModel;
                 int tiers = tm.tiers[pathIndex];
                 int tier = tiers + 1;
 
-                if (pathIndex == 0 && tier == 1)
-                {
-                    upgradeCost = 5;
-                }
-                else if (pathIndex == 0 && tier == 2)
-                {
-                    upgradeCost = 8;
-                }
-                
-                if (pathIndex == 1 && tier == 1)
-                {
-                    upgradeCost = 10;
-                }
-                else if (pathIndex == 1 && tier == 2)
-                {
-                    upgradeCost = 12;
-                }
-                else if (pathIndex == 1 && tier == 3)
-                {
-                    upgradeCost = 30;
-                }
-                else if (pathIndex == 1 && tier == 4)
-                {
-                    upgradeCost = 115;
-                }
-                else if (pathIndex == 1 && tier == 5)
-                {
-                    upgradeCost = 325;
-                }
-                
-                if (pathIndex == 2 && tier == 1)
-                {
-                    upgradeCost = 5;
-                }
-                else if (pathIndex == 2 && tier == 2)
-                {
-                    upgradeCost = 10;
-                }
-                
-                else if (pathIndex == 2 && tier == 3)
-                {
-                    upgradeCost = 16;
-                }
-                
-                else if (pathIndex == 2 && tier == 4)
-                {
-                    upgradeCost = 35;
-                }
-                
-                else if (pathIndex == 2 && tier == 5)
-                {
-                    upgradeCost = 205;
-                }
-                
-                MelonLogger.Msg(upgradeCost);
+                int cost = !isParagon ? __instance.tower.towerModel.GetUpgrade(pathIndex, tier).cost : 1150;
 
-                if (Values.snowflake >= upgradeCost)
+
+
+                if (Values.snowflake >= cost)
                 {
-                    t.worth = tm.cost + upgradeCost;
-                    InGame.instance.AddCash(upgradeCost);
-                    Values.snowflake -= (int)upgradeCost;
+                    t.worth = tm.cost + cost;
+                    InGame.instance.AddCash(cost);
+                    Values.snowflake -= cost;
                     return true;
                 }
                 else

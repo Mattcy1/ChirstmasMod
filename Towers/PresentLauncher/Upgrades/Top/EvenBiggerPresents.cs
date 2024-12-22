@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TemplateMod.Towers.PresentLauncher.Upgrades.Top
+namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Top
 {
     public class EvenBiggerPresents : ModUpgrade<PresentLauncher>
     {

@@ -22,8 +22,8 @@ using Il2CppAssets.Scripts.Unity.Scenes;
 using Il2CppAssets.Scripts.Unity.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using MelonLoader;
-using TemplateMod.Moabs;
-using TemplateMod.UI;
+using ChristmasMod.Moabs;
+using ChristmasMod.UI;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using static BossHandlerNamespace.BossHandler;
@@ -645,9 +645,6 @@ namespace BossHandlerNamespace
 
                         if (Values.DefeatedCounter == 0 && Values.GrinchAngry == false)
                         {
-                            boss.bloonModel.ApplyDisplay<CrumblyDisplay1>();
-                            boss.UpdateDisplay();
-                            
                             var text = "Im not that tasty! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
@@ -655,8 +652,6 @@ namespace BossHandlerNamespace
 
                         if (Values.DefeatedCounter == 1 && Values.GrinchAngry == false)
                         {
-                            boss.bloonModel.ApplyDisplay<CrumblyDisplay2>();
-                            boss.UpdateDisplay();
                             
                             var text = "Ouch! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
@@ -665,9 +660,7 @@ namespace BossHandlerNamespace
 
                         if (Values.DefeatedCounter == 2 && Values.GrinchAngry == false)
                         {
-                            boss.bloonModel.ApplyDisplay<CrumblyDisplay3>();
-                            boss.UpdateDisplay();
-                            
+
                             var text = "Im not eatable! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);
@@ -675,9 +668,6 @@ namespace BossHandlerNamespace
 
                         if (Values.DefeatedCounter == 3 && Values.GrinchAngry == false)
                         {
-                            boss.bloonModel.ApplyDisplay<CrumblyDisplay4>();
-                            boss.UpdateDisplay();
-                            
                             var text = "Stop it! Crumbly Stole 10% of your cash";
                             Story.StoryUI.CreatePanel(StoryPortrait.CrumblyIcon, text);
                             InGame.instance.AddCash(-InGame.instance.GetCash() * 0.1f);

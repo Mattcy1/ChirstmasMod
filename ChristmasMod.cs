@@ -1,5 +1,5 @@
-global using StoryPortrait = TemplateMod.UI.Story.StoryPortrait;
-global using StoryMessage = TemplateMod.UI.Story.StoryMessage;
+global using StoryPortrait = ChristmasMod.UI.Story.StoryPortrait;
+global using StoryMessage = ChristmasMod.UI.Story.StoryMessage;
 using System;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
@@ -42,19 +42,19 @@ using BTD_Mod_Helper.Api.ModOptions;
 using Il2CppAssets.Scripts.Models.Effects;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors;
 using Il2CppNinjaKiwi.LiNK.Lobbies;
-using TemplateMod.Moabs;
-using TemplateMod.Towers;
-using TemplateMod.Towers.Elf.R20;
-using TemplateMod.Towers.Elf.R60;
-using TemplateMod.Towers.Elf.R80;
-using TemplateMod.Towers.PresentLauncher;
-using TemplateMod.UI;
+using ChristmasMod.Moabs;
+using ChristmasMod.Towers;
+using ChristmasMod.Towers.Elf.R20;
+using ChristmasMod.Towers.Elf.R60;
+using ChristmasMod.Towers.Elf.R80;
+using ChristmasMod.Towers.PresentLauncher;
+using ChristmasMod.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.Video;
 using Input = UnityEngine.Windows.Input;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
-using TemplateMod.Bloons;
+using ChristmasMod.Bloons;
 
 [assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.Author)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -69,7 +69,7 @@ static class ShopMenu_CreateTowerButton
     {
         string[] ids = [ModContent.TowerID<PresentLauncher>(), ModContent.TowerID<ElfLord>(), ModContent.TowerID<PresentTower>(), ModContent.TowerID<WorkerElf>(), ModContent.TowerID<PresentTower>()];
 
-        if (InGame.instance.GetGameModel().gameMode == ModContent.GetInstance<Gamemode.ChristmasGamemode>().Id)
+        if (InGame.instance.GetGameModel().gameMode == ModContent.GetInstance<ChristmasGameMode>().Id)
         {
             if (ids.Contains(__result.TowerModel.baseId))
             {
@@ -218,8 +218,6 @@ public class ChristmasMod : BloonsTD6Mod
     private static readonly System.Random random = new System.Random();
 
     internal static GameObject PresentLauncherButton = null;
-    
-    private VideoPlayer player;
 
     public override void OnRestart()
     {
@@ -573,6 +571,8 @@ static class RoundPatch
     [HarmonyPostfix]
     public static void Postfix(Simulation __instance)
     {
+        Values.snowflake = 1000000000;
+
         if (__instance.GetCurrentRound() == 2)
         {
             StoryMessage[] messages = [

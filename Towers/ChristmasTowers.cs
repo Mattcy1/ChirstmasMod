@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TemplateMod.Towers
+namespace ChristmasMod.Towers
 {
     public class ChristmasTowers : ModTowerSet
     {

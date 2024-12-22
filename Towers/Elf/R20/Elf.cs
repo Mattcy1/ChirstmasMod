@@ -9,10 +9,10 @@ using Il2CppAssets.Scripts.Models.TowerSets;
 using Il2CppAssets.Scripts.Simulation.Bloons;
 using Il2CppAssets.Scripts.Simulation.Towers.Projectiles;
 using Il2CppAssets.Scripts.Unity.Display;
-using TemplateMod.Bloons;
+using ChristmasMod.Bloons;
 using UnityEngine;
 
-namespace TemplateMod.Towers.Elf.R20
+namespace ChristmasMod.Towers.Elf.R20
 {
     public class Elf : ModTower<ChristmasTowers>
     {
@@ -51,7 +51,7 @@ namespace TemplateMod.Towers.Elf.R20
                 {
                     System.Random rand = new();
 
-                    GetAudioClip<ChristmasMod.ChristmasMod>("SnowBloon_" + rand.Next(4)).Play();
+                    GetAudioClip<ChristmasMod>("SnowBloon_" + rand.Next(4)).Play();
                 }
             }
         }

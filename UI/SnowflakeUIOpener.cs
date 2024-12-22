@@ -5,7 +5,7 @@ using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TemplateMod.UI
+namespace ChristmasMod.UI
 {
     [RegisterTypeInIl2Cpp(false)]
     public class OpenerUI : MonoBehaviour

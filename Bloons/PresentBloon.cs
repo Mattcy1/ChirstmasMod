@@ -18,7 +18,7 @@ using MelonLoader;
 using BTD_Mod_Helper.Api.Display;
 using Il2CppAssets.Scripts.Unity.Display;
 
-namespace TemplateMod.Bloons
+namespace ChristmasMod.Bloons
 {
     public class PresentBloon : ModBloon
     {

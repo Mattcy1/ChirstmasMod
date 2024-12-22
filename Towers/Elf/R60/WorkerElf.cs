@@ -18,7 +18,7 @@ using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using UnityEngine;
 
-namespace TemplateMod.Towers.Elf.R60
+namespace ChristmasMod.Towers.Elf.R60
 {
     public class WorkerElf : ModTower<ChristmasTowers>
     {

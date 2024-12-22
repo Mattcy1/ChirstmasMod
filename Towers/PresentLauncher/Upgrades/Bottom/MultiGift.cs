@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
+namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Bottom
 {
     public class MultiGift : ModUpgrade<PresentLauncher>
     {

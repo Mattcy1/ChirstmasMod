@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Il2CppAssets.Scripts.Unity;
 using BTD_Mod_Helper.Extensions;
 
-namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
+namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Bottom
 {
     public class StrongerPresentTurret : ModUpgrade<PresentLauncher>
     {
@@ -44,7 +44,6 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
 
             tm.GetBehavior<TowerExpireModel>().lifespan /= 2;
 
-            tm.GetWeapon().projectile.id = "PresentT3";
             tm.GetWeapon().projectile.ApplyDisplay<Present>();
 
             tm.GetAttackModel().ApplyDisplay<StrongerPresentTurretAttackDisplay>();

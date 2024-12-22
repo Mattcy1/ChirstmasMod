@@ -13,7 +13,7 @@ using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using MelonLoader;
 using UnityEngine;
-namespace TemplateMod.Bloons
+namespace ChristmasMod.Bloons
 {
     public class GingerbreadBloon : ModBloon
     {
@@ -23,7 +23,7 @@ namespace TemplateMod.Bloons
 
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
-            bloonModel.speed /= 2f;
+            bloonModel.speed *= 2f;
             bloonModel.maxHealth = 80;
 
             bloonModel.AddToChildren(ModContent.BloonID<IceBloon>(), 1);

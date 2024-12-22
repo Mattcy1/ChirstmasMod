@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace TemplateMod.UI;
+namespace ChristmasMod.UI;
 
 public class Story
 {
@@ -85,7 +85,7 @@ public class Story
                 RectTransform rect = InGame.instance.uiRect;
                 var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
                 instance = panel.AddComponent<StoryUI>();
-                var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetTextureGUID<ChristmasMod.ChristmasMod>(msg.Portrait.ToString()));
+                var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetTextureGUID<ChristmasMod>(msg.Portrait.ToString()));
                 var text_ = panel.AddText(new("Title_", 0, 0, 1150, 500), $"{msg.Message}");
                 text_.Text.enableAutoSizing = text_;
 
@@ -138,7 +138,7 @@ public class Story
             RectTransform rect = InGame.instance.uiRect;
             var panel = rect.gameObject.AddModHelperPanel(new("Panel_", 0, -1000, 1250, 600), VanillaSprites.BrownPanel);
             instance = panel.AddComponent<StoryUI>();
-            var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetTextureGUID<ChristmasMod.ChristmasMod>(msgs[0].Portrait.ToString()));
+            var image = panel.AddImage(new("Image_", 1000, 0, 750, 750), ModContent.GetTextureGUID<ChristmasMod>(msgs[0].Portrait.ToString()));
             var text_ = panel.AddText(new("Title_", 0, 0, 1150, 500), $"{msgs[0].Message}");
             text_.Text.enableAutoSizing = text_;
 

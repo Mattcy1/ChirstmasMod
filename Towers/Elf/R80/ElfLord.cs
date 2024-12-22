@@ -11,11 +11,11 @@ using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Simulation.Towers.Weapons;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
-using TemplateMod.Towers.Elf.R60;
-using TemplateMod.Towers.PresentLauncher;
+using ChristmasMod.Towers.Elf.R60;
+using ChristmasMod.Towers.PresentLauncher;
 using UnityEngine;
 
-namespace TemplateMod.Towers.Elf.R80
+namespace ChristmasMod.Towers.Elf.R80
 {
     public class ElfLord : ModTower<ChristmasTowers>
     {

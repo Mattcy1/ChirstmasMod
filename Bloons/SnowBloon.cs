@@ -12,7 +12,7 @@ using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using MelonLoader;
 using UnityEngine;
-namespace TemplateMod.Bloons
+namespace ChristmasMod.Bloons
 {
     public class SnowBloon : ModBloon
     {
@@ -60,7 +60,7 @@ namespace TemplateMod.Bloons
                     
                     if (__instance.bloonModel.baseId == BloonID<SnowBloon>())
                     {
-                        GetAudioClip<ChristmasMod.ChristmasMod>("SnowBloon_" + rand.Next(4)).Play();
+                        GetAudioClip<ChristmasMod>("SnowBloon_" + rand.Next(4)).Play();
                         MelonLogger.Msg("Playing SnowBloon_");
                     }
                     
@@ -68,7 +68,7 @@ namespace TemplateMod.Bloons
                     {
                         if (__instance.bloonModel.baseId == BloonID<IceBloon>())
                         {
-                            GetAudioClip<ChristmasMod.ChristmasMod>("IceShatter" + rand.Next(4)).Play();
+                            GetAudioClip<ChristmasMod>("IceShatter" + rand.Next(4)).Play();
                             
                             MelonLogger.Msg("Playing IceShatter_");
                         }

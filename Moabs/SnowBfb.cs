@@ -8,14 +8,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TemplateMod.Bloons;
+using ChristmasMod.Bloons;
 using UnityEngine;
 
-namespace TemplateMod.Moabs
+namespace ChristmasMod.Moabs
 {
     public class SnowBfb : ModBloon
     {
         public override string BaseBloon => BloonType.sBfb;
+
+        public override IEnumerable<string> DamageStates => [];
 
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {

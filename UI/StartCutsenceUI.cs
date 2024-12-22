@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Extensions;
 using ChristmasMod;
+using HarmonyLib;
+using Il2CppAssets.Scripts;
 using Il2CppAssets.Scripts.Models.Bloons;
 using Il2CppAssets.Scripts.Simulation.Bloons;
 using Il2CppAssets.Scripts.Simulation.SMath;
+using Il2CppAssets.Scripts.Simulation.Towers.Weapons;
 using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Utils;
@@ -19,16 +22,22 @@ using Quaternion = UnityEngine.Quaternion;
 using Scene = Il2CppAssets.Scripts.Unity.Display.Scene;
 using Vector3 = UnityEngine.Vector3;
 
-namespace TemplateMod.UI;
+namespace ChristmasMod.UI;
 
 public class StartCutscene
 {
     [RegisterTypeInIl2Cpp(false)]
     public class StartCutsceneUI : MonoBehaviour
     {
+        static bool playingCutscene = false;
+
+        static Dictionary<ObjectId, float> speedCache = [];
+
         public static StartCutsceneUI instance = null;
 
         public static GameObject map = null;
+
+        public static GameObject objects = null;
 
         public static Bloon bloon;
         
@@ -55,7 +64,7 @@ public class StartCutscene
                 var StartCS = panel.AddButton(new("Button_", 0, 0, 450, 450 / 2), VanillaSprites.GreenBtnLong, new System.Action(() =>
                 {
                     instance.Close();
-                    
+
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cube.transform.localScale = new Vector3(310f, 405, 1f);
                     cube.transform.rotation = Quaternion.Euler(0, 0, 180);
@@ -78,14 +87,21 @@ public class StartCutscene
                     videoPlayer.SetDirectAudioVolume(0, 0.5f);
                     videoPlayer.Play();
                     
+                    playingCutscene = true;
+
                     InGame.instance.mapRect.Hide();
                     InGame.instance.uiRect.Hide();
                     map = GameObject.Find("Map");
                     map.SetActive(false);
+                    objects = GameObject.Find("Objects");
+                    objects.SetActive(false);
 
-                    foreach (var tower in InGame.instance.GetTowers())
+                    foreach (var bloon in InGame.instance.GetBloons())
                     {
-                        tower.Scale = new Vector3Boxed(0f, 0f, 0f);
+                        speedCache.Add(bloon.Id, bloon.bloonModel.speed);
+                        bloon.bloonModel.speed = 0;
+                        bloon.UpdatedModel(bloon.bloonModel);
+                        bloon.UpdateRootModel(bloon.bloonModel);
                     }
                 }));
                 StartCS.AddText(new("Title_", 0, 0, 300, 150), "Start Cutscene", 60);
@@ -124,11 +140,7 @@ public class StartCutscene
                     InGame.instance.uiRect.Hide();
                     map = GameObject.Find("Map");
                     map.SetActive(false);
-
-                    foreach (var tower in InGame.instance.GetTowers())
-                    {
-                        tower.Scale = new Vector3Boxed(0f, 0f, 0f);
-                    }
+                    objects.SetActive(false);
                 }
             }
         }
@@ -147,13 +159,22 @@ public class StartCutscene
                     InGame.instance.mapRect.Show();
                     InGame.instance.uiRect.Show();
                     map.SetActive(true);
-                    
-                    foreach (var tower in InGame.instance.GetTowers())
-                    {
-                        tower.Scale = new Vector3Boxed(1f, 1f, 1f);
-                    }
+                    objects.SetActive(true);
                     
                     InGame.instance.SetRound(99);
+
+                    playingCutscene = false;
+
+                    foreach (var bloon in InGame.instance.GetBloons())
+                    {
+                        if (speedCache.ContainsKey(bloon.Id))
+                        {
+                            bloon.bloonModel.speed = speedCache[bloon.Id];
+                            bloon.UpdatedModel(bloon.bloonModel);
+                            bloon.UpdateRootModel(bloon.bloonModel);
+                            speedCache.Remove(bloon.Id);
+                        }
+                    }
                 }
             }
         }
@@ -171,13 +192,9 @@ public class StartCutscene
                     InGame.instance.mapRect.Show();
                     InGame.instance.uiRect.Show();
                     map.SetActive(true);
-                    
-                    bloon.trackSpeedMultiplier = 2;
+                    objects.SetActive(true);
 
-                    foreach (var tower in InGame.instance.GetTowers())
-                    {
-                        tower.Scale = new Vector3Boxed(1f, 1f, 1f);
-                    }
+                    bloon.trackSpeedMultiplier = 2;
                     
                     Task.Run(async () =>
                     {
@@ -199,6 +216,16 @@ public class StartCutscene
 
                         InGame.instance.SpawnBloons("CookieMonsterNHB", 1, 0);
                     });
+                }
+                foreach (var bloon in InGame.instance.GetBloons())
+                {
+                    if (speedCache.ContainsKey(bloon.Id))
+                    {
+                        bloon.bloonModel.speed = speedCache[bloon.Id];
+                        bloon.UpdatedModel(bloon.bloonModel);
+                        bloon.UpdateRootModel(bloon.bloonModel);
+                        speedCache.Remove(bloon.Id);
+                    }
                 }
             }
         }

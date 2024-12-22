@@ -10,14 +10,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
 using Il2CppAssets.Scripts.Unity;
-using TemplateMod.Bloons;
+using ChristmasMod.Bloons;
 using UnityEngine;
 
-namespace TemplateMod.Moabs
+namespace ChristmasMod.Moabs
 {
     public class SnowZomg : ModBloon
     {
         public override string BaseBloon => BloonType.sZomg;
+
+        public override IEnumerable<string> DamageStates => [];
 
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {

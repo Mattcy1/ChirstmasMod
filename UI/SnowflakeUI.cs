@@ -6,7 +6,7 @@ using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using MelonLoader;
 using UnityEngine;
 
-namespace TemplateMod.UI;
+namespace ChristmasMod.UI;
 
 public class Snowflake
 {

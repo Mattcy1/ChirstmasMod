@@ -9,7 +9,7 @@ using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame.EditorMenus;
 
-namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
+namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Bottom
 {
     public class PresentTurret : ModUpgrade<PresentLauncher>
     {
@@ -35,8 +35,7 @@ namespace TemplateMod.Towers.PresentLauncher.Upgrades.Bottom
             tm.GetWeapon().projectile.GetDamageModel().damage += 1;
 
             tm.GetBehavior<TowerExpireModel>().lifespan /= 2;
-
-            tm.GetWeapon().projectile.id = "PresentT2";
+            
             tm.GetWeapon().projectile.ApplyDisplay<Present>();
 
             tm.GetAttackModel().ApplyDisplay<PresentTurretAttackDisplay>();

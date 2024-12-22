@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TemplateMod.Bloons
+namespace ChristmasMod.Bloons
 {
     public class IceBloon : ModBloon
     {

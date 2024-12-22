@@ -9,7 +9,7 @@ using Il2CppAssets.Scripts.Simulation.Towers;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using UnityEngine;
-namespace TemplateMod.Bloons
+namespace ChristmasMod.Bloons
 {
     public class MilkBloon : ModBloon
     {

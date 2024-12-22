@@ -9,14 +9,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Il2CppAssets.Scripts.Models.Bloons.Behaviors;
-using TemplateMod.Bloons;
+using ChristmasMod.Bloons;
 using UnityEngine;
 
-namespace TemplateMod.Moabs
+namespace ChristmasMod.Moabs
 {
     public class IceBfb : ModBloon
     {
         public override string BaseBloon => BloonType.sBfb;
+
+        public override IEnumerable<string> DamageStates => [];
 
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
@@ -42,7 +44,8 @@ namespace TemplateMod.Moabs
             {
                 foreach(var renderer in node.GetMeshRenderers())
                 {
-                    renderer.SetMainTexture(GetTexture(Name)); 
+                    renderer.SetMainTexture(GetTexture(Name));
+                    renderer.SetOutlineColor(Color.cyan);
                 }
             }
         }

@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <RootNamespace>TemplateMod</RootNamespace>
+        <RootNamespace>ChristmasMod</RootNamespace>
         <Configurations>Debug;Release</Configurations>
-        <AssemblyName>TemplateMod</AssemblyName>
+        <AssemblyName>ChristmasMod</AssemblyName>
         <LangVersion>latest</LangVersion>
         <Optimize>False</Optimize>
         <DebugType>embedded</DebugType>

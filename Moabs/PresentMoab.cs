@@ -10,15 +10,16 @@ using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TemplateMod.Bloons;
+using ChristmasMod.Bloons;
+using Il2CppAssets.Scripts.Unity.Display;
 
-namespace TemplateMod.Moabs
+namespace ChristmasMod.Moabs
 {
     public class PresentMoab : ModBloon
     {
         public override string BaseBloon => BloonType.sMoab;
+
+        public override IEnumerable<string> DamageStates => [];
 
         public override void ModifyBaseBloonModel(BloonModel bloonModel)
         {
@@ -32,6 +33,16 @@ namespace TemplateMod.Moabs
         public override string AssetBundleName => "christmas2024";
 
         public override string PrefabName => "PresentMoabAnimated";
+
+        public override void ModifyDisplayNode(UnityDisplayNode node)
+        {
+            foreach(var renderer in node.GetMeshRenderers())
+            {
+                renderer.ApplyOutlineShader();
+                renderer.SetOutlineColor(UnityEngine.Color.green);
+            }
+        }
+
     }
 
     [HarmonyPatch(typeof(Bloon), nameof(Bloon.OnDestroy))]

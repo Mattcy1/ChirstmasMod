@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TemplateMod.Bloons;
+using ChristmasMod.Bloons;
 
-namespace TemplateMod.Moabs
+namespace ChristmasMod.Moabs
 {
     public class IceMoab : ModBloon
     {

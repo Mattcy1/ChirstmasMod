@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TemplateMod.Towers.PresentLauncher.Upgrades.Middle
+namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Middle
 {
-    public class TruelySpactacular : ModUpgrade<PresentLauncher>
+    public class TrulySpactacular : ModUpgrade<PresentLauncher>
     {
         public override int Path => Middle;
 

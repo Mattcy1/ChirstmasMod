@@ -16,7 +16,7 @@ using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Display;
 using UnityEngine;
 
-namespace TemplateMod.Towers.Elf.R60
+namespace ChristmasMod.Towers.Elf.R60
 {
     public class StronkElf : ModTower<ChristmasTowers>
     {
@@ -62,7 +62,7 @@ namespace TemplateMod.Towers.Elf.R60
                 {
                     System.Random rand = new();
 
-                    GetAudioClip<ChristmasMod.ChristmasMod>("IceShatter" + rand.Next(4)).Play();
+                    GetAudioClip<ChristmasMod>("IceShatter" + rand.Next(4)).Play();
                 }
             }
         }

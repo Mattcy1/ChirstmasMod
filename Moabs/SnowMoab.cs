@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TemplateMod.Bloons;
+using ChristmasMod.Bloons;
 using UnityEngine;
 
-namespace TemplateMod.Moabs
+namespace ChristmasMod.Moabs
 {
     public class SnowMoab : ModBloon
     {
@@ -21,7 +21,7 @@ namespace TemplateMod.Moabs
 
             public override void ModifyBaseBloonModel(BloonModel bloonModel)
             {
-                bloonModel.id = GetId<ChristmasMod.ChristmasMod>(Name);
+                bloonModel.id = GetId<ChristmasMod>(Name);
                 bloonModel.dontShowInSandbox = true;
                 bloonModel.danger -= 1;
                 bloonModel.RemoveAllChildren();

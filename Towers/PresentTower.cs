@@ -10,7 +10,7 @@ using Il2CppAssets.Scripts.Simulation.Towers.Behaviors.Abilities;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using UnityEngine;
 
-namespace TemplateMod.Towers
+namespace ChristmasMod.Towers
 {
     public class PresentTower : ModTower<ChristmasTowers>
     {

@@ -261,6 +261,14 @@ namespace BossHandlerNamespace
                             bossIcon.Image.Destroy();
                             bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetTextureGUID<BossHandler>("AngryCookieMonsterIcon"));
                         }
+                        
+                        if (Values.grinchAngryIcon == true)
+                        {
+                            Values.grinchAngryIcon = false;
+                    
+                            bossIcon.Image.Destroy();
+                            bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetTextureGUID<BossHandler>("FinalIcon"));
+                        }
                         // Uses the default boss health bar, but you can add custom ones by setting bossPanels healthBar property
                         // to the name of the health bar image you'd like to use.
                         // Image is only updated when the property is altered.

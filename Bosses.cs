@@ -904,18 +904,20 @@ namespace BossHandlerNamespace
                     {
                         Values.bossDead = true;
 
+                        Values.grinchAngryIcon = true;
+
                         if (Values.GrinchAngry == false)
                         {
                             boss.bloonModel.ApplyDisplay<AngryGrinchDisplay>();
                             boss.UpdateDisplay();
                                     
                             Values.GrinchAngry = true;
-                            fakeMaxHealth = 50000000;
+                            fakeMaxHealth = 40000000;
                             fakeHealth = fakeMaxHealth;
                             boss.trackSpeedMultiplier = 2;
                             Values.tsunami = false;
                             
-                            StartCutscene.StartCutsceneUI.CreatePanel(true, boss);
+                            StartCutscene.StartCutsceneUI.CreatePanel(true, false, boss);
                             
                             Values.bossDead = false;
                         }

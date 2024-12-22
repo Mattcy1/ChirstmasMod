@@ -190,6 +190,20 @@ public class Values
         set { Disableprojectile = value; }
     }
     
+    private static bool GrinchAngryIcon = false;
+    public static bool grinchAngryIcon
+    {
+        get { return GrinchAngryIcon; }
+        set { GrinchAngryIcon = value; }
+    }
+    
+    private static bool over = false;
+    public static bool Over
+    {
+        get { return over; }
+        set { over = value; }
+    }
+    
     private static bool CookieAngry = false;
     public static bool cookieAngry
     {
@@ -340,6 +354,11 @@ public class ChristmasMod : BloonsTD6Mod
             StartCutscene.StartCutsceneUI.Timer1();
         }
         
+        if (GameObject.Find("CubeDead") != null)
+        {
+            StartCutscene.StartCutsceneUI.Timer2();
+        }
+        
         if (Values.Snowstorm == true)
         {
             InGame.instance?.bridge?.Simulation?.SpawnEffect(ModContent.CreatePrefabReference<SnowstormEffect>(), new Vector3(0, 0, 0), 0, 1.1f, isFullscreen: Fullscreen.Scene, limit: 1);
@@ -469,6 +488,11 @@ static class SnowstormPatch
 
             Story.StoryUI.CreatePanel(messages);
             InGame.instance.AddCash(1000000);
+        }
+
+        if (Values.Over == true)
+        {
+            __instance.Destroy();
         }
     }
 }
@@ -917,23 +941,27 @@ static class RoundPatch
         if (__instance.GetCurrentRound() == 98)
         {
             InGame.instance.SpawnBloons("TestMoab", 100, 999);
-            StartCutscene.StartCutsceneUI.CreatePanel(false, null);
+            StartCutscene.StartCutsceneUI.CreatePanel(false, false, null);
         }
 
         if (__instance.GetCurrentRound() == 100)
         {
-            StoryMessage[] messages = [
-                new("At long last, I was defeated... sigh. Don’t close the game yet! There’s a secret cutscene waiting for you once all the bosses are defeated.", StoryPortrait.GrinchAngryIcon),
-                new("Ha! You didn't win this time Grinch!", StoryPortrait.SantaHappy),
-                new("I guess I never stood a chance again you all anyway...", StoryPortrait.GrinchAngryIcon),
-                new("Guys I obviously carried the game, y'know? Anyway thanks for the money, you gave me a lot! Can't wait to spend it!", StoryPortrait.ElfLordWant),
-                new("It was all of us, Elf Lord don't even get ahead of yourself.", StoryPortrait.Player),
-                new("Throughout North, and South, I alone am the Jolly one.", StoryPortrait.SantaGojo),
-                new("Oh you haven't won yet Go- Santa! There's always next year!", StoryPortrait.GrinchAngryIcon),
-                new("Christmas Mod 2025 Confirmed?????", StoryPortrait.PlayerNoWay, new(() => Gift.GiftUI.CreatePanel(1000000, 50, true)))
-            ];
+            StartCutscene.StartCutsceneUI.CreatePanel(false, true, null);
 
-            Story.StoryUI.CreatePanel(messages);
+            Values.Over = true;
+
+            //StoryMessage[] messages = [
+            //    new("At long last, I was defeated... sigh. Don’t close the game yet! There’s a secret cutscene waiting for you once all the bosses are defeated.", StoryPortrait.GrinchAngryIcon),
+            //    new("Ha! You didn't win this time Grinch!", StoryPortrait.SantaHappy),
+            //    new("I guess I never stood a chance again you all anyway...", StoryPortrait.GrinchAngryIcon),
+            //    new("Guys I obviously carried the game, y'know? Anyway thanks for the money, you gave me a lot! Can't wait to spend it!", StoryPortrait.ElfLordWant),
+            //    new("It was all of us, Elf Lord don't even get ahead of yourself.", StoryPortrait.Player),
+            //    new("Throughout North, and South, I alone am the Jolly one.", StoryPortrait.SantaGojo),
+            //    new("Oh you haven't won yet Go- Santa! There's always next year!", StoryPortrait.GrinchAngryIcon),
+            //    new("Christmas Mod 2025 Confirmed?????", StoryPortrait.PlayerNoWay, new(() => Gift.GiftUI.CreatePanel(1000000, 50, true)))
+            //];
+            //
+            //Story.StoryUI.CreatePanel(messages);
         }
     }
 }

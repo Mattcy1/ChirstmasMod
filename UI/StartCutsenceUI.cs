@@ -48,7 +48,7 @@ public class StartCutscene
                 gameObject.Destroy();
             }
         }
-        public static void CreatePanel(bool Angry, Bloon boss)
+        public static void CreatePanel(bool Angry, bool dying, Bloon boss)
         {
             if (InGame.instance != null)
             {
@@ -106,8 +106,56 @@ public class StartCutscene
                 }));
                 StartCS.AddText(new("Title_", 0, 0, 300, 150), "Start Cutscene", 60);
 
+                if (dying == true)
+                {
+                    StartCS.Destroy();
+                    
+                    instance.Close();
+                    
+                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cube.transform.localScale = new Vector3(310f, 405, 1f);
+                    cube.transform.rotation = Quaternion.Euler(0, 0, 180);
+                    cube.name = "CubeDead";
+                    MelonLogger.Msg("Renammed Cube: " + cube.name);
+                    
+                    var videoPlayer = cube.AddComponent<UnityEngine.Video.VideoPlayer>();
+
+                    RenderTexture renderTexture = new RenderTexture(1920, 1080, 0);
+                    renderTexture.Create();
+
+                    videoPlayer.renderMode = VideoRenderMode.RenderTexture;
+                    videoPlayer.targetTexture = renderTexture;
+
+                    Renderer renderer = cube.GetComponent<Renderer>();
+                    renderer.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+                    renderer.material.mainTexture = renderTexture;
+                    
+                    string videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch-o-Matic_2.0.mp4";
+                    videoPlayer.url = videoPath;
+
+                    videoPlayer.SetDirectAudioVolume(0, 0.5f);
+                    videoPlayer.Play();
+                    
+                    InGame.instance.mapRect.Hide();
+                    InGame.instance.uiRect.Hide();
+                    map = GameObject.Find("Map");
+                    map.SetActive(false);
+                    //objects.SetActive(false);
+                    
+                    foreach (var bloon in InGame.instance.GetBloons())
+                    {
+                        speedCache.Add(bloon.Id, bloon.bloonModel.speed);
+                        bloon.bloonModel.speed = 0;
+                        bloon.UpdatedModel(bloon.bloonModel);
+                        bloon.UpdateRootModel(bloon.bloonModel);
+                    }
+                }
+                
+                
                 if (Angry == true)
                 {
+                    boss.trackSpeedMultiplier = 0;
+                    
                     StartCS.Destroy();
                     
                     instance.Close();
@@ -140,7 +188,15 @@ public class StartCutscene
                     InGame.instance.uiRect.Hide();
                     map = GameObject.Find("Map");
                     map.SetActive(false);
-                    objects.SetActive(false);
+                    //objects.SetActive(false);
+                    
+                    foreach (var bloon in InGame.instance.GetBloons())
+                    {
+                        speedCache.Add(bloon.Id, bloon.bloonModel.speed);
+                        bloon.bloonModel.speed = 0;
+                        bloon.UpdatedModel(bloon.bloonModel);
+                        bloon.UpdateRootModel(bloon.bloonModel);
+                    }
                 }
             }
         }
@@ -159,7 +215,7 @@ public class StartCutscene
                     InGame.instance.mapRect.Show();
                     InGame.instance.uiRect.Show();
                     map.SetActive(true);
-                    objects.SetActive(true);
+                    //objects.SetActive(true);
                     
                     InGame.instance.SetRound(99);
 
@@ -185,14 +241,14 @@ public class StartCutscene
 
             if (vp != null)
             {
-                if (vp.time > 1000)
+                if (vp.time > 132)
                 {
                     vp.Destroy();
                     cube.Destroy();
                     InGame.instance.mapRect.Show();
                     InGame.instance.uiRect.Show();
                     map.SetActive(true);
-                    objects.SetActive(true);
+                    //objects.SetActive(true);
 
                     bloon.trackSpeedMultiplier = 2;
                     
@@ -225,6 +281,40 @@ public class StartCutscene
                         bloon.UpdatedModel(bloon.bloonModel);
                         bloon.UpdateRootModel(bloon.bloonModel);
                         speedCache.Remove(bloon.Id);
+                    }
+                }
+            }
+        }
+        
+        public static void Timer2()
+        {
+            GameObject cube = GameObject.Find("CubeDead");
+            VideoPlayer vp = cube.gameObject.GetComponent<VideoPlayer>();
+
+            if (vp != null)
+            {
+                if (vp.time > 1000)
+                {
+                    vp.Destroy();
+                    cube.Destroy();
+                    InGame.instance.mapRect.Show();
+                    InGame.instance.uiRect.Show();
+                    map.SetActive(true); 
+                    //objects.SetActive(true);
+                    
+                    InGame.instance.SetRound(99);
+
+                    playingCutscene = false;
+
+                    foreach (var bloon in InGame.instance.GetBloons())
+                    {
+                        if (speedCache.ContainsKey(bloon.Id))
+                        {
+                            bloon.bloonModel.speed = speedCache[bloon.Id];
+                            bloon.UpdatedModel(bloon.bloonModel);
+                            bloon.UpdateRootModel(bloon.bloonModel);
+                            speedCache.Remove(bloon.Id);
+                        }
                     }
                 }
             }

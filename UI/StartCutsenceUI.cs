@@ -130,7 +130,7 @@ public class StartCutscene
                     renderer.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
                     renderer.material.mainTexture = renderTexture;
                     
-                    string videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch-o-Matic_2.0.mp4";
+                    string videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch-o-matic_is_finally_destroyed.mp4";
                     videoPlayer.url = videoPath;
 
                     videoPlayer.SetDirectAudioVolume(0, 0.5f);

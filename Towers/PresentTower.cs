@@ -18,7 +18,9 @@ namespace ChristmasMod.Towers
 
         public static GameObject ShopButton = null;
 
-        public override int Cost => 4999999;
+        public static bool AddedToShop = false;
+
+        public override int Cost => 1250000;
 
         public override string DisplayName => "Present of Doom";
 
@@ -49,13 +51,10 @@ namespace ChristmasMod.Towers
                 foreach (var bloon in InGame.instance.GetBloons())
                 {
                     InGame.instance.bridge.simulation.SpawnEffect(ModContent.CreatePrefabReference<GiftEffect>(), bloon.Position, 0, 2);
-                    InGame.instance.bridge.simulation.SpawnEffect(ModContent.CreatePrefabReference<GiftEffect>(), bloon.Position, 0, 2);
-                    InGame.instance.bridge.simulation.SpawnEffect(ModContent.CreatePrefabReference<GiftEffect>(), bloon.Position, 0, 2);
                     bloon.Damage(10000000, null, true, true, false, tower: null);
                 }
 
-                twr.worth = 0;
-                twr.SellTower();
+                twr.Destroy();
             }
         }
     }

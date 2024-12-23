@@ -7,9 +7,11 @@ using ChristmasMod;
 using HarmonyLib;
 using Il2CppAssets.Scripts;
 using Il2CppAssets.Scripts.Models.Bloons;
+using Il2CppAssets.Scripts.Simulation;
 using Il2CppAssets.Scripts.Simulation.Bloons;
 using Il2CppAssets.Scripts.Simulation.SMath;
 using Il2CppAssets.Scripts.Simulation.Towers.Weapons;
+using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Utils;
@@ -293,7 +295,7 @@ public class StartCutscene
 
             if (vp != null)
             {
-                if (vp.time > 1000)
+                if (vp.time > 140)
                 {
                     vp.Destroy();
                     cube.Destroy();
@@ -316,6 +318,8 @@ public class StartCutscene
                             speedCache.Remove(bloon.Id);
                         }
                     }
+
+                    ChristmasMod.saveData.unlockedTower = true;
                 }
             }
         }

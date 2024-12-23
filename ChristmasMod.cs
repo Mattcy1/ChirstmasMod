@@ -55,6 +55,7 @@ using UnityEngine.Video;
 using Input = UnityEngine.Windows.Input;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
 using ChristmasMod.Bloons;
+using System.Collections.Generic;
 
 [assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.Author)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -75,28 +76,24 @@ static class ShopMenu_CreateTowerButton
             {
                 __result.GameObject.transform.parent.gameObject.SetActive(false);
 
-                if (__result.TowerModel.baseId == ModContent.TowerID<PresentLauncher>() && !PresentLauncher.AddedToShop)
+                if (__result.TowerModel.baseId == ModContent.TowerID<PresentLauncher>() && !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<PresentLauncher>()))
                 {
                     ChristmasMod.PresentLauncherButton = __result.GameObject.transform.parent.gameObject;
                 }
-                else if (__result.TowerModel.baseId == ModContent.TowerID<ElfLord>() && !ElfLord.AddedToShop)
+                else if (__result.TowerModel.baseId == ModContent.TowerID<ElfLord>() && !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<ElfLord>()))
                 {
                     ElfLord.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
-                else if (__result.TowerModel.baseId == ModContent.TowerID<PresentTower>())
+                else if (__result.TowerModel.baseId == ModContent.TowerID<PresentTower>() && !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<PresentTower>()))
                 {
                     PresentTower.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
-                else if (__result.TowerModel.baseId == ModContent.TowerID<WorkerElf>())
+                else if (__result.TowerModel.baseId == ModContent.TowerID<WorkerElf>() && !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<WorkerElf>()))
                 {
                     WorkerElf.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
             }
         }
-        //else if (__result.TowerModel.baseId == ModContent.TowerID<Santa>())
-        //{
-        //    __result.GameObject.transform.parent.gameObject.SetActive(false);
-        //}
     }
 }
 
@@ -233,9 +230,15 @@ public class ChristmasMod : BloonsTD6Mod
 
     internal static GameObject PresentLauncherButton = null;
 
+    public static bool CompletedGame = false;
+
+    static readonly string SavePath = Path.Combine(MelonEnvironment.ModsDirectory, "Christmas");
+    static readonly string SaveFile = Path.Combine(SavePath, "save");
+
     public override void OnRestart()
     {
         PresentLauncher.AddedToShop = false;
+        saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()] = [];
         ElfLord.AddedToShop = false;
         Values.Snowstorm = false;
         Values.DefeatedCounter = 0;
@@ -248,19 +251,79 @@ public class ChristmasMod : BloonsTD6Mod
         Values.DefeatedCounterCookie = 0;
     }
 
-    private class SaveData(string mapName = "Tutorial")
-    {
-        public bool PresentLauncher = false;
-        public bool ElfLord = false;
-        public bool WorkerElf = false;
+    internal static SaveData saveData = new();
 
-        public string Map = mapName;
+    internal class SaveData()
+    {
+        internal bool unlockedTower = false;
+
+        internal Dictionary<string, string[]> UnlockedTowersPerMap = [];
+
+        internal static SaveData Load()
+        {
+            if (!Directory.Exists(SavePath))
+            {
+                Directory.CreateDirectory(SavePath);
+                return new();
+            }
+            if (!File.Exists(SaveFile))
+            {
+                return new();
+            }
+
+            var data = File.ReadAllText(SaveFile);
+            return JsonConvert.DeserializeObject<SaveData>(data);
+        }
+
+        internal bool Save()
+        {
+            string oldData = null;
+
+            try
+            {
+
+                if (!Directory.Exists(SavePath))
+                {
+                    Directory.CreateDirectory(SavePath);
+                }
+                if (File.Exists(SaveFile))
+                {
+                    oldData = File.ReadAllText(SaveFile);
+                    File.Delete(SaveFile);
+                }
+
+
+                var data = JsonConvert.SerializeObject(this);
+
+                File.WriteAllText(SaveFile, data);
+
+                return true;
+            }
+            catch
+            {
+                if(oldData != null)
+                {
+                    File.WriteAllText(SaveFile, oldData);
+                }
+
+                return false;
+            }
+        }
     }
 
     public override void OnMatchEnd()
     {
         PresentLauncher.AddedToShop = false;
         ElfLord.AddedToShop = false;
+        Values.Snowstorm = false;
+        Values.DefeatedCounter = 0;
+        Values.disableprojectile = false;
+        Values.trivia1 = false;
+        Values.gift = 0;
+        Values.bossDead = false;
+        Values.tsunami = false;
+        Values.snowflake = 0;
+        Values.DefeatedCounterCookie = 0;
     }
     
     public static readonly ModSettingBool SnowstromEffect = new(false)
@@ -270,7 +333,7 @@ public class ChristmasMod : BloonsTD6Mod
 
     public override void OnApplicationStart()
     {
-        ModHelper.Msg<ChristmasMod>("ChirstmasMod loaded!");
+        saveData = SaveData.Load();
     }
 
     public override void OnTowerCreated(Tower tower, Entity target, Model modelToUse)
@@ -358,14 +421,59 @@ public class ChristmasMod : BloonsTD6Mod
         {
             StartCutscene.StartCutsceneUI.Timer2();
         }
-        
-        if (Values.Snowstorm == true)
+    }
+
+    [HarmonyPatch(typeof(InGame), nameof(InGame.StartMatch))]
+    static class InGame_StartMatch
+    {
+        public static void Postfix(InGame __instance, bool wasSaveOverwritten)
         {
-            InGame.instance?.bridge?.Simulation?.SpawnEffect(ModContent.CreatePrefabReference<SnowstormEffect>(), new Vector3(0, 0, 0), 0, 1.1f, isFullscreen: Fullscreen.Scene, limit: 1);
+            if(saveData.UnlockedTowersPerMap.ContainsKey(__instance.bridge.GetMapName()) && wasSaveOverwritten)
+            {
+                saveData.UnlockedTowersPerMap.Remove(__instance.bridge.GetMapName());
+                saveData.Save();
+            }
         }
     }
+
     public override void OnRoundEnd()
     {
+
+        if(InGame.instance.GetGameModel().gameMode == ModContent.GameModeId<ChristmasGameMode>())
+        {
+            string mapName = InGame.instance.bridge.GetMapName();
+
+            if (!saveData.UnlockedTowersPerMap.ContainsKey(mapName))
+            {
+                saveData.UnlockedTowersPerMap.Add(mapName, []);
+            }
+
+            List<string> unlockedTowers = new(4);
+
+            if(PresentLauncher.AddedToShop)
+            {
+                unlockedTowers.Add(ModContent.TowerID<PresentLauncher>());
+            }
+            if (WorkerElf.AddedToShop)
+            {
+                unlockedTowers.Add(ModContent.TowerID<WorkerElf>());
+            }
+            if (ElfLord.AddedToShop)
+            {
+                unlockedTowers.Add(ModContent.TowerID<ElfLord>());
+            }
+            if (PresentTower.AddedToShop)
+            {
+                unlockedTowers.Add(ModContent.TowerID<PresentTower>());
+            }
+
+            saveData.UnlockedTowersPerMap[mapName] = [.. unlockedTowers];
+
+            saveData.Save();
+        }
+
+
+
         if (random.Next(10) == 0 && Values.Snowstorm == false)
         {
             PopupScreen.instance?.ShowOkPopup("Snowstorm started");
@@ -397,8 +505,6 @@ public class ChristmasMod : BloonsTD6Mod
         if (Values.Snowstorm == true && Values.SnowstormRound == 0)
         {
             Values.Snowstorm = false;
-
-            MelonLogger.Msg("Snowstorm finished" + Values.Snowstorm);
 
             foreach (var tower in InGame.instance.GetTowers())
             {

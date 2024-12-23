@@ -25,7 +25,9 @@ namespace ChristmasMod.Towers.Elf.R60
         protected override int Order => 1;
 
         public static GameObject ShopButton = null;
-        
+
+        public static bool AddedToShop = false;
+
         public override string BaseTower => TowerType.DartMonkey;
 
         public override string Icon => Portrait;

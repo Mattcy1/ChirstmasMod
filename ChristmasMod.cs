@@ -76,19 +76,22 @@ static class ShopMenu_CreateTowerButton
             {
                 __result.GameObject.transform.parent.gameObject.SetActive(false);
 
-                if (__result.TowerModel.baseId == ModContent.TowerID<PresentLauncher>() && !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<PresentLauncher>()))
+                bool mapExists = false;
+                mapExists = ChristmasMod.saveData.UnlockedTowersPerMap.ContainsKey(InGame.instance.bridge.GetMapName());
+
+                if (__result.TowerModel.baseId == ModContent.TowerID<PresentLauncher>() && (!mapExists || !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<PresentLauncher>())))
                 {
                     ChristmasMod.PresentLauncherButton = __result.GameObject.transform.parent.gameObject;
                 }
-                else if (__result.TowerModel.baseId == ModContent.TowerID<ElfLord>() && !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<ElfLord>()))
+                else if (__result.TowerModel.baseId == ModContent.TowerID<ElfLord>() && (!mapExists || !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<ElfLord>())))
                 {
                     ElfLord.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
-                else if (__result.TowerModel.baseId == ModContent.TowerID<PresentTower>() && !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<PresentTower>()))
+                else if (__result.TowerModel.baseId == ModContent.TowerID<PresentTower>() && (!mapExists || !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<PresentTower>())))
                 {
                     PresentTower.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
-                else if (__result.TowerModel.baseId == ModContent.TowerID<WorkerElf>() && !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<WorkerElf>()))
+                else if (__result.TowerModel.baseId == ModContent.TowerID<WorkerElf>() && (!mapExists || !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<WorkerElf>())))
                 {
                     WorkerElf.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
@@ -253,13 +256,13 @@ public class ChristmasMod : BloonsTD6Mod
 
     internal static SaveData saveData = new();
 
-    internal class SaveData()
+    public class SaveData()
     {
-        internal bool unlockedTower = false;
+        public bool unlockedTower = false;
 
-        internal Dictionary<string, string[]> UnlockedTowersPerMap = [];
+        public Dictionary<string, string[]> UnlockedTowersPerMap = [];
 
-        internal static SaveData Load()
+        public static SaveData Load()
         {
             if (!Directory.Exists(SavePath))
             {
@@ -275,7 +278,7 @@ public class ChristmasMod : BloonsTD6Mod
             return JsonConvert.DeserializeObject<SaveData>(data);
         }
 
-        internal bool Save()
+        public bool Save()
         {
             string oldData = null;
 

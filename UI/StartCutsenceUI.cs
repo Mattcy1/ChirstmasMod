@@ -142,7 +142,7 @@ public class StartCutscene
                     InGame.instance.uiRect.Hide();
                     map = GameObject.Find("Map");
                     map.SetActive(false);
-                    //objects.SetActive(false);
+                    objects.SetActive(false);
                     
                     foreach (var bloon in InGame.instance.GetBloons())
                     {
@@ -190,7 +190,7 @@ public class StartCutscene
                     InGame.instance.uiRect.Hide();
                     map = GameObject.Find("Map");
                     map.SetActive(false);
-                    //objects.SetActive(false);
+                    objects.SetActive(false);
                     
                     foreach (var bloon in InGame.instance.GetBloons())
                     {
@@ -208,6 +208,8 @@ public class StartCutscene
             GameObject cube = GameObject.Find("Cube");
             VideoPlayer vp = cube.gameObject.GetComponent<VideoPlayer>();
 
+            playingCutscene = true;
+
             if (vp != null)
             {
                 if (vp.time > 86)
@@ -217,7 +219,7 @@ public class StartCutscene
                     InGame.instance.mapRect.Show();
                     InGame.instance.uiRect.Show();
                     map.SetActive(true);
-                    //objects.SetActive(true);
+                    objects.SetActive(true);
                     
                     InGame.instance.SetRound(99);
 
@@ -241,6 +243,8 @@ public class StartCutscene
             GameObject cube = GameObject.Find("CubeAngry");
             VideoPlayer vp = cube.gameObject.GetComponent<VideoPlayer>();
 
+            playingCutscene = true;
+
             if (vp != null)
             {
                 if (vp.time > 132)
@@ -250,10 +254,12 @@ public class StartCutscene
                     InGame.instance.mapRect.Show();
                     InGame.instance.uiRect.Show();
                     map.SetActive(true);
-                    //objects.SetActive(true);
+                    objects.SetActive(true);
 
                     bloon.trackSpeedMultiplier = 2;
-                    
+
+                    playingCutscene = false;
+
                     Task.Run(async () =>
                     {
                         await Task.Delay(2000);
@@ -302,7 +308,7 @@ public class StartCutscene
                     InGame.instance.mapRect.Show();
                     InGame.instance.uiRect.Show();
                     map.SetActive(true); 
-                    //objects.SetActive(true);
+                    objects.SetActive(true);
                     
                     InGame.instance.SetRound(99);
 
@@ -318,8 +324,6 @@ public class StartCutscene
                             speedCache.Remove(bloon.Id);
                         }
                     }
-
-                    ChristmasMod.saveData.unlockedTower = true;
                 }
             }
         }

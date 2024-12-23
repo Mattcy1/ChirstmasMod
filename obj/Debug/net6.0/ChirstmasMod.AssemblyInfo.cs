@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChristmasMod")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+91d5a88631db863f70211b8f9c96fbb471666e60")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a3626295a598ca0b9baf9c12098994d3a5aa9ce0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChristmasMod")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChristmasMod")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

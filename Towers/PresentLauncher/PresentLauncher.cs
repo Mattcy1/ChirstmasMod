@@ -204,7 +204,6 @@ namespace ChristmasMod.Towers.PresentLauncher
                     ["MonkeyAce-300"] = 0,
                     ["SuperMonkey-302"] = 0,
                     ["SuperMonkey-204"] = 0,
-                    ["NinjaMonkey-003"] = 2,
                     ["WizardMonkey-300"] = 0,
                     ["WizardMonkey-030"] = 2,
                     ["Alchemist-030"] = 0,

@@ -20,8 +20,11 @@ using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using MelonLoader;
 using System.Collections.Generic;
 using System.Linq;
+using Il2CppAssets.Scripts.Data.Behaviors.Projectiles;
+using Il2CppAssets.Scripts.Simulation.Bloons;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 namespace ChristmasMod.Towers.PresentLauncher
 {

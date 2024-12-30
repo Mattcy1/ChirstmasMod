@@ -264,8 +264,6 @@ namespace BossHandlerNamespace
                         
                         if (Values.grinchAngryIcon == true)
                         {
-                            Values.grinchAngryIcon = false;
-                    
                             bossIcon.Image.Destroy();
                             bossIcon.AddImage(new BTD_Mod_Helper.Api.Components.Info("BossIcon", 0, 0, 150), ModContent.GetTextureGUID<BossHandler>("FinalIcon"));
                         }

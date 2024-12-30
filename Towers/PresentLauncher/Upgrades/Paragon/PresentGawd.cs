@@ -47,7 +47,7 @@ namespace ChristmasMod.Towers.PresentLauncher.Upgrades.Paragon
             tm.name = "PresentTurret";
             tm.portrait = GetSpriteReference("PresentTurretParagon-Portrait");
 
-            tm.GetWeapon().rate /= 7;
+            tm.GetWeapon().rate = 0.7f; //Nerfing this shit oneshotting final boss
             tm.GetWeapon().projectile.GetDamageModel().damage += 10;
 
             tm.GetBehavior<TowerExpireModel>().lifespan /= 2;

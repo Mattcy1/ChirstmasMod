@@ -56,7 +56,6 @@ using Input = UnityEngine.Windows.Input;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
 using ChristmasMod.Bloons;
 using System.Collections.Generic;
-using BTD_Mod_Helper.Api.Components;
 
 [assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.Author)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -77,22 +76,19 @@ static class ShopMenu_CreateTowerButton
             {
                 __result.GameObject.transform.parent.gameObject.SetActive(false);
 
-                bool mapExists = false;
-                mapExists = ChristmasMod.saveData.UnlockedTowersPerMap.ContainsKey(InGame.instance.bridge.GetMapName());
-
-                if (__result.TowerModel.baseId == ModContent.TowerID<PresentLauncher>() && (!mapExists || !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<PresentLauncher>())))
+                if (__result.TowerModel.baseId == ModContent.TowerID<PresentLauncher>())
                 {
                     ChristmasMod.PresentLauncherButton = __result.GameObject.transform.parent.gameObject;
                 }
-                else if (__result.TowerModel.baseId == ModContent.TowerID<ElfLord>() && (!mapExists || !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<ElfLord>())))
+                else if (__result.TowerModel.baseId == ModContent.TowerID<ElfLord>())
                 {
                     ElfLord.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
-                else if (__result.TowerModel.baseId == ModContent.TowerID<PresentTower>() && (!mapExists || !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<PresentTower>())))
+                else if (__result.TowerModel.baseId == ModContent.TowerID<PresentTower>())
                 {
                     PresentTower.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
-                else if (__result.TowerModel.baseId == ModContent.TowerID<WorkerElf>() && (!mapExists || !ChristmasMod.saveData.UnlockedTowersPerMap[InGame.instance.bridge.GetMapName()].Contains(ModContent.TowerID<WorkerElf>())))
+                else if (__result.TowerModel.baseId == ModContent.TowerID<WorkerElf>())
                 {
                     WorkerElf.ShopButton = __result.GameObject.transform.parent.gameObject;
                 }
@@ -238,13 +234,12 @@ public class ChristmasMod : BloonsTD6Mod
 
     static readonly string SavePath = Path.Combine(MelonEnvironment.ModsDirectory, "Christmas");
     static readonly string SaveFile = Path.Combine(SavePath, "save");
-    public static readonly string VideoPath = Path.Combine(SavePath, "Videos");
 
+    public static readonly string VideoPath = Path.Combine(SavePath, "Videos");
     public static ModSettingBool OfflineMode = new(false)
     {
         description = "To use this please download the videos from the github release and put then in Mods/Christmas/Videos/. If this path doesn't exist please create it."
     };
-
     public override void OnRestart()
     {
         PresentLauncher.AddedToShop = false;
@@ -263,13 +258,13 @@ public class ChristmasMod : BloonsTD6Mod
 
     internal static SaveData saveData = new();
 
-    public class SaveData()
+    internal class SaveData()
     {
-        public bool unlockedTower = false;
+        internal bool unlockedTower = false;
 
-        public Dictionary<string, string[]> UnlockedTowersPerMap = [];
+        internal Dictionary<string, string[]> UnlockedTowersPerMap = [];
 
-        public static SaveData Load()
+        internal static SaveData Load()
         {
             if (!Directory.Exists(SavePath))
             {
@@ -285,7 +280,7 @@ public class ChristmasMod : BloonsTD6Mod
             return JsonConvert.DeserializeObject<SaveData>(data);
         }
 
-        public bool Save()
+        internal bool Save()
         {
             string oldData = null;
 

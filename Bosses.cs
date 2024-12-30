@@ -33,6 +33,7 @@ using Math = Il2CppAssets.Scripts.Simulation.SMath.Math;
 using Vector2 = Il2CppAssets.Scripts.Simulation.SMath.Vector2;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
 using BTD_Mod_Helper;
+using Il2CppInterop.Runtime.Attributes;
 
 namespace BossHandlerNamespace
 {
@@ -132,7 +133,7 @@ namespace BossHandlerNamespace
         {
             public override string AssetBundleName => "christmas2024";
 
-            public override string PrefabName => "CookieMonsterAngryAnimated";
+            public override string PrefabName => "CookieMonsterAngry";
 
             public override void ModifyDisplayNode(UnityDisplayNode node)
             {
@@ -307,7 +308,7 @@ namespace BossHandlerNamespace
 
             public static void Postfix()
             {
-                BloonModel CandyCaneBoss = CreateBossBase(35000, 1f);
+                BloonModel CandyCaneBoss = CreateBossBase(30000, 1f);
 
                 //Poppermint
 
@@ -365,7 +366,7 @@ namespace BossHandlerNamespace
 
                 // Crumbly 
 
-                BloonModel Crumbly = CreateBossBase(15000, 1f);
+                BloonModel Crumbly = CreateBossBase(10000000, 1f);
 
                 Crumbly.ApplyDisplay<CrumblyDisplay>();
 
@@ -383,7 +384,7 @@ namespace BossHandlerNamespace
 
                 // Cookie Monster 
                 
-                BloonModel CookieMonster = CreateBossBase(1500000, 1f);
+                BloonModel CookieMonster = CreateBossBase(10000000, 1f);
 
                 CookieMonster.ApplyDisplay<CookieMonsterDisplay>();
                 
@@ -398,7 +399,7 @@ namespace BossHandlerNamespace
 
                 // Grinch (Oh boy)
 
-                BloonModel Grinch = CreateBossBase(20000000, 1f);
+                BloonModel Grinch = CreateBossBase(10000000, 1f);
 
                 Grinch.ApplyDisplay<GrinchDisplay>();
                 
@@ -571,7 +572,7 @@ namespace BossHandlerNamespace
                 mono.registration = registration;
             }
         }
-
+        
         [RegisterTypeInIl2Cpp(false)]
         public class MonoBehaviorCrumbly : MonoBehaviour
         {
@@ -590,7 +591,7 @@ namespace BossHandlerNamespace
             {
                 Values.DefeatedCounter = 0;
             }
-
+            
             public void Update()
             {
                 if (boss != null)
@@ -709,7 +710,7 @@ namespace BossHandlerNamespace
                 Values.DefeatedCounter = 0;
                 Values.DefeatedCounterCookie = 0;
             }
-
+            
             public void Update()
             {
                 if (boss != null)
@@ -725,6 +726,12 @@ namespace BossHandlerNamespace
                     boss.health = boss.bloonModel.maxHealth;
 
                     fakeHealth = Math.Max(0, fakeHealth);
+
+                    if (Values.cookieAngry == true)
+                    {
+                        boss.bloonModel.ApplyDisplay<CookieMonsterAngryDisplay>();
+                        boss.UpdateDisplay();
+                    }
 
                     if (fakeHealth <= fakeMaxHealth * 0.5f && Values.tsunami == false && Values.GrinchAngry == false)
                     {
@@ -787,10 +794,7 @@ namespace BossHandlerNamespace
                                 }
                                 else if (Values.cookieAngry == true && Values.DefeatedCounterCookie <= 2)
                                 {
-                                    boss.bloonModel.ApplyDisplay<CookieMonsterAngryDisplay>();
-                                    boss.UpdateDisplay();
-                                    
-                                    fakeMaxHealth *= 3;
+                                    fakeMaxHealth *= 2;
                                     fakeHealth = fakeMaxHealth;
                                     boss.trackSpeedMultiplier *= 5;
                                     Values.DefeatedCounterCookie += 1;
@@ -859,7 +863,7 @@ namespace BossHandlerNamespace
                 Values.Snowstorm = true;
                 Values.SnowstormRound = 5;
             }
-
+            
             public void Update()
             {
                 if (boss != null)
@@ -872,6 +876,12 @@ namespace BossHandlerNamespace
                         fakeHealth -= (boss.bloonModel.maxHealth - boss.health);
                     }
 
+                    if (Values.GrinchAngry == true)
+                    {
+                        boss.bloonModel.ApplyDisplay<AngryGrinchDisplay>();
+                        boss.UpdateDisplay();
+                    }
+                    
                     boss.health = boss.bloonModel.maxHealth;
 
                     fakeHealth = Math.Max(0, fakeHealth);
@@ -908,9 +918,6 @@ namespace BossHandlerNamespace
 
                         if (Values.GrinchAngry == false)
                         {
-                            boss.bloonModel.ApplyDisplay<AngryGrinchDisplay>();
-                            boss.UpdateDisplay();
-                                    
                             Values.GrinchAngry = true;
                             fakeMaxHealth = 40000000;
                             fakeHealth = fakeMaxHealth;

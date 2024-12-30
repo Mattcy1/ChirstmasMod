@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Extensions;
 using ChristmasMod;
@@ -82,8 +84,17 @@ public class StartCutscene
                     Renderer renderer = cube.GetComponent<Renderer>();
                     renderer.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
                     renderer.material.mainTexture = renderTexture;
-                    
-                    string videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch_has_Arived.mp4";
+
+                    string videoPath = "";
+
+                    if (ChristmasMod.OfflineMode)
+                    {
+                        videoPath = @"file://" + Path.Combine(ChristmasMod.VideoPath, "The_Grinch_has_Arived.mp4").Replace('\\', '/');
+                    }
+                    else
+                    {
+                        videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch_has_Arived.mp4";
+                    }
                     videoPlayer.url = videoPath;
 
                     videoPlayer.SetDirectAudioVolume(0, 0.5f);
@@ -131,8 +142,18 @@ public class StartCutscene
                     Renderer renderer = cube.GetComponent<Renderer>();
                     renderer.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
                     renderer.material.mainTexture = renderTexture;
-                    
-                    string videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch-o-matic_is_finally_destroyed.mp4";
+
+                    string videoPath = "";
+
+                    if (ChristmasMod.OfflineMode)
+                    {
+                        videoPath = @"file://" + Path.Combine(ChristmasMod.VideoPath, "The_Grinch-o-matic_is_finally_destroyed.mp4").Replace('\\', '/');
+                    }
+                    else
+                    {
+                        videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch-o-matic_is_finally_destroyed.mp4";
+                    }
+                    ModHelper.Log<ChristmasMod>(videoPath);
                     videoPlayer.url = videoPath;
 
                     videoPlayer.SetDirectAudioVolume(0, 0.5f);
@@ -179,8 +200,18 @@ public class StartCutscene
                     Renderer renderer = cube.GetComponent<Renderer>();
                     renderer.material = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
                     renderer.material.mainTexture = renderTexture;
-                    
-                    string videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch-o-Matic_2.0.mp4";
+
+                    string videoPath = "";
+
+                    if (ChristmasMod.OfflineMode)
+                    {
+                        videoPath = @"file://" + Path.Combine(ChristmasMod.VideoPath, "The_Grinch-o-Matic_2.0.mp4").Replace('\\', '/');
+                    }
+                    else
+                    {
+                        videoPath = "https://mattcy1.github.io/VideoHosting/The_Grinch-o-Matic_2.0.mp4";
+                    }
+                    ModHelper.Log<ChristmasMod>(videoPath);
                     videoPlayer.url = videoPath;
 
                     videoPlayer.SetDirectAudioVolume(0, 0.5f);

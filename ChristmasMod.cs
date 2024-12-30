@@ -56,6 +56,7 @@ using Input = UnityEngine.Windows.Input;
 using Vector3 = Il2CppAssets.Scripts.Simulation.SMath.Vector3;
 using ChristmasMod.Bloons;
 using System.Collections.Generic;
+using BTD_Mod_Helper.Api.Components;
 
 [assembly: MelonInfo(typeof(ChristmasMod.ChristmasMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.Author)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -237,6 +238,12 @@ public class ChristmasMod : BloonsTD6Mod
 
     static readonly string SavePath = Path.Combine(MelonEnvironment.ModsDirectory, "Christmas");
     static readonly string SaveFile = Path.Combine(SavePath, "save");
+    public static readonly string VideoPath = Path.Combine(SavePath, "Videos");
+
+    public static ModSettingBool OfflineMode = new(false)
+    {
+        description = "To use this please download the videos from the github release and put then in Mods/Christmas/Videos/. If this path doesn't exist please create it."
+    };
 
     public override void OnRestart()
     {
